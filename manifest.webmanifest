@@ -1,0 +1,15 @@
+{
+  "name": "Arena de Honra",
+  "short_name": "Arena",
+  "description": "Action RPG de horda em 3D low-poly, com multiplayer online P2P.",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0a121c",
+  "theme_color": "#0a121c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
