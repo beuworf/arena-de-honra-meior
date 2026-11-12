@@ -27,15 +27,16 @@ python3 -m http.server 8000
 | Pular | Espaço | ✕ |
 | Esquivar | Shift | R1 |
 | Mochila | Q | L1 |
-| Extra / cone | E | R2 |
 | Elemento do Mago | 1–4 | Direcional |
-| Reiniciar a fase (troca classe e build) | C | Share |
+| Reiniciar a fase (troca classe e build) | C, ou no menu de pausa | Share |
 | **Pausar** | **Esc / P** | — |
+| Cone de flechas (só Arco) | E | R2 |
+| **Girar a câmera** | Clique na tela e mova o mouse | Analógico direito |
 
-No celular aparecem joystick e botões na tela. As teclas podem ser trocadas
+No celular os botões seguem o padrão do PPSSPP: L1 e R1 nos cantos de cima, △○✕□ em losango à direita, SELECT (Arma, só no Mago) e START (Pausa) embaixo no meio; Reiniciar fica no menu de pausa. Em *Configurações → Botões na tela → Editar layout* dá para arrastar cada botão e analógico para onde quiser, mudar o tamanho de cada um e de todos de uma vez, ajustar a transparência e escolher se o analógico de movimento é flutuante (aparece onde você toca) ou fixo. As posições ficam salvas em % da tela, então funcionam em celulares e tablets de tamanhos diferentes. O jogo roda deitado (tela cheia), com analógico de movimento à esquerda, analógico da câmera (📷) à direita e botões na tela; também dá para arrastar a tela para girar a câmera, e o analógico da câmera pode ser desligado nas configurações. As teclas podem ser trocadas
 em **Configurações**.
 
-## Novidades
+## O que mudou em relação ao original
 
 - **Nome e ícone:** o jogo se chama Arena de Honra em toda parte e tem ícone próprio.
 - **Instalável:** dá para adicionar à tela inicial do celular (PWA), em tela cheia e na horizontal.
@@ -50,8 +51,75 @@ em **Configurações**.
 - **Efeitos:** rastro brilhante da arma com a cor de cada uma, faíscas e pedaços ao acertar, explosão de pedaços ao matar (maior no boss), estouro dourado no parry, poeira ao esquivar e ao pousar, e o inimigo "amassa" ao apanhar. As partículas são todas desenhadas de uma vez (1 chamada de desenho).
 - **Jogador e animal:** o jogador ganhou boca, gola, fivela, túnica, braçadeiras, joelheiras e cano das botas. O animal tem corpo novo, com focinho, olhos, presas, cauda, pelo texturizado (o tigre tem listras) e patas que andam de verdade.
 - **Armas realistas:** espada com guarda, empunhadura de couro, pomo e lâmina afiada com sulco; espada longa de duas mãos; machado com lâmina em meia-lua e fio claro; arco curvo com corda; lança com lâmina em folha e ponteira; adagas; cajado com aro dourado; martelo de guerra com faixas e espigão; escudo redondo com bossa e cruz. Os arqueiros inimigos também usam o arco novo.
-- **Animações dos inimigos:** o passo agora segue a velocidade real (parado, eles respiram em vez de andar no lugar) e os braços balançam ao contrário das pernas. Eles se inclinam para frente ao correr, para trás ao preparar o golpe, e avançam o corpo ao bater. Ao apanhar, são empurrados para trás. Tontos, eles cambaleiam; arremessados, se debatem. Ao morrer, piscam, caem de costas, escurecem e afundam no chão.
-- **Configurações:** dá para ligar e desligar o "Visual PS1" e a "Grama e flores" (para celulares fracos).
+- **Animações dos inimigos:** o passo segue a velocidade real (parado, eles respiram) e os braços balançam ao contrário das pernas. Eles se inclinam ao correr, para trás ao preparar o golpe, e avançam o corpo ao bater. Ao apanhar, são empurrados para trás. Tontos, eles cambaleiam; arremessados, se debatem. Ao morrer, piscam, caem de costas, escurecem e afundam no chão.
+- **Câmera no ombro (estilo ação em 3ª pessoa):** a câmera fica atrás do ombro do personagem e o movimento é relativo a ela. Ela segue sozinha quando você corre, desvia das casas e esconde as árvores que ficam na frente. A visão de cima continua disponível nas configurações.
+- **Visual inspirado em "3D pixel art":** contorno escuro de 1 pixel, sombras reais em pixel com o sol acompanhando o jogador, sol quente com sombra azulada, céu em degradê, rua de paralelepípedo e casas com janelas e floreiras.
+- **Raças com visual próprio:** todas usam o mesmo esqueleto, mas cada uma tem proporção, rosto e cabelo diferentes (veja `docs/racas.png` e `docs/corpos.png`). O rosto é pintado numa textura feita para cada raça: pele, olhos com íris colorida, brilho e cílios, sobrancelhas, bochechas, nariz e boca. O Troll e o Goblin têm pupila em fenda, o Meio-orc tem uma cicatriz e o Goblin tem sardas. As peças do corpo são mais arredondadas, e as mãos e as botas deixaram de ser caixas. A túnica é pintada com gola, botões, costuras, dobras e barra; a calça tem costura e joelheira, e a bota tem cadarço.
+  - **Humano:** cabelo curto com franja.
+  - **Elfo:** orelhas longas para trás, corpo esguio, cabelo longo loiro e olhos verdes.
+  - **Anão:** baixo e largo, careca, barba e bigode grandes.
+  - **Gnomo:** bem baixinho, cabeça grande, nariz redondo, topete e bigode brancos.
+  - **Meio-orc:** pele verde, mais largo, presas, sobrancelha pesada e moicano.
+  - **Troll:** pele azul, alto, nariz comprido, presas grandes, orelhas caídas e cabelo laranja selvagem.
+  - **Minotauro:** chifres, focinho com argola, orelhas de touro, grande e forte.
+  - **Goblin:** pequeno, verde, orelhas enormes, nariz pontudo, dentes afiados e olhos amarelos.
+- **Proporções por raça (estilo WoW Classic):** todas usam o mesmo esqueleto, mas com tronco, ombros, braços, pernas, cabeça e postura próprios (veja `docs/racas-corpo.png`). O anão é baixo e largo; o gnomo, minúsculo e cabeçudo; o meio-orc, largo, de mãos grandes e ombros caídos; o troll, alto, magro, de braços longos e curvado; o minotauro, enorme; e o goblin, o menor de todos. As armas e o escudo acompanham o tamanho de cada um.
+- **Balanceamento:** o Monge ganha +60% de dano no single player, porque no multiplayer ele é suporte. O Mago de Gelo ganhou um pouco de dano. Os arqueiros inimigos atiram mais devagar, erram mais e o jogador tem 20% de chance de evadir as flechas. O chefe agora arremessa inimigos menores (com marca no chão) e golpeia o chão com uma onda de choque que atordoa; dá para pular a onda ou esquivar. Veja `docs/balanceamento.md`.
+- **Animação de combate refeita (braços com ombro, cotovelo e mão):** a arma agora fica de verdade na mão. Cada golpe define o caminho da mão e da lâmina, e o ombro, o cotovelo e a mão são calculados para acompanhar (cinemática inversa). A articulação do ombro avança com o alcance, o tronco gira sobre as pernas e a cabeça continua olhando para frente. Espada longa, lança e martelo são segurados com as duas mãos; o escudo vai no braço e sobe no bloqueio; o arco é puxado ao atirar; o Monge fica em guarda e soca com o braço certo. O personagem passou a ser destro. Os outros jogadores no multiplayer usam o mesmo sistema. Veja `docs/animacoes.png`.
+- **Paladino com martelo pesado:** o martelo é segurado com as duas mãos o tempo todo. Parado, o martelo descansa no ombro, com as duas mãos no cabo e esse ombro um pouco mais baixo por causa do peso (veja `docs/paladino-parado.png`). Nos golpes, as mãos ficam juntas perto do peito, o cabo varre largo, o tronco gira e inclina junto e o personagem agacha no impacto; os movimentos têm um atraso de peso. Veja `docs/paladino.png`.
+- **Monge (antigo Pugilista):** a classe mudou de nome e de visual, com as mesmas habilidades. Túnica laranja, faixa vermelha na cintura e no peito, colar de contas, faixas de pano nos antebraços e postura de artes marciais. Veja `docs/monge.png`.
+- **Animal do caçador com ataques de verdade:** o animal ganhou cabeça, mandíbula e cauda que se movem, e deixou de "encostar" no inimigo. Ele dá **patadas** alternadas, **morde** abrindo a boca, dá o **bote** (salta sobre o alvo e o derruba) e o urso se **ergue nas patas traseiras e bate no chão**, derrubando quem está perto. O golpe de lança chama o animal para avançar e morder, e a mordida especial virou um bote. Ele se vira para onde anda e para quem ataca, e cai de lado quando é derrotado. Urso, tigre e lobo têm corpo, orelhas, focinho e cauda diferentes. Veja `docs/animal-ataques.png`.
+- **Invocações do Necromante com modelos novos:** zumbi guerreiro curvado com costelas à mostra, espada enferrujada e escudo quebrado; esqueleto mago com caveira, manto e cajado; escudeiro de armadura com escudo-torre; cão espectral de ossos; abutre com asas que batem. Veja `docs/invocacoes.png`.
+- **Sem aliado no single player:** o boneco de capa verde que seguia o jogador era só um teste do começo do projeto e foi removido. O que dependia dele mudou: o teleporte do Mago de Ilusão agora salta para longe do inimigo mais perto, o "puxar aliado" do Paladino vira um escudo sagrado (+25), o L1 do Necromante abre a mochila, o orbe do Monge cura você, e o bônus do Minotauro vira +8% de cura em você. No multiplayer, essas habilidades continuam valendo para os outros jogadores.
+- **Multiplayer completo:** cada jogador vê os outros com o personagem detalhado (raça, proporções, rosto, classe, armas e escudo) e com as mesmas animações: golpes com antecipação, corrida, pulo, esquiva e bloqueio. Também chegam pela rede:
+  - os projéteis (flechas, magias, martelo, soco à distância, orbe) e os efeitos de área;
+  - as invocações do Necromante e o animal do Arqueiro;
+  - as faíscas e os números de dano quando outro jogador acerta um inimigo, e a queda dos inimigos ao morrer;
+  - a altura dos inimigos arremessados e os dois ataques do chefe (aviso, onda e arremesso), que acertam e atordoam qualquer jogador.
+- **Ajustes de kit (rodada 3):**
+  - **Adagas:** a esquiva gasta 40 de estamina (a barra amarela) e demora mais para recarregar.
+  - **Dois Machados:** cada inimigo eliminado devolve 6 de vida.
+  - **Mago de Fogo:** explodir um inimigo queimado causa dano em área nos vizinhos. A bola de fogo é um projétil maior, atravessa até 3 inimigos e cada acerto causa dano em área e queima os vizinhos.
+  - **Mago de Gelo:** acertar o projétil num inimigo lento ou enfraquecido congela na hora; a nevasca congela os enfraquecidos; o estilhaçar pega lentos, enfraquecidos e congelados, com dano maior nos congelados.
+  - **Mago de Ilusão:** invoca 3 clones de verdade (fogo, gelo e sombra), que andam, escolhem alvos e usam magias sozinhos por 14 s. Os inimigos os atacam e eles somem com um golpe. No online funciona igual para quem hospeda e para quem entra: todos veem os clones (como cópias do personagem do dono), e os inimigos os atacam e derrubam.
+- **Ajustes de kit (rodada 4):**
+  - **Mago de Ilusão:** os clones têm recarga própria de 20 s, separada das outras magias.
+  - **Chefe:** no solo, recupera 4% da vida ao devorar um inimigo (no online continua 7%).
+  - **Adagas:** a esquiva gasta 30 de estamina (eram 40).
+  - **Necromante:** jogando sozinho, as invocações se curam um pouco cada vez que causam dano ou empurram inimigos.
+  - **Lança:** com o animal caído, os golpes de lança causam 80% a mais de dano.
+- **Classe nova: Corrompido** (😈, focada em dano; veja `docs/corrompido.png`). Todos os golpes acertam em círculo em volta dele.
+  - **Barra de poder:** começa vazia e não enche sozinha. Enche um pouco a cada acerto e bastante com os **fragmentos de alma**, que os inimigos eliminados deixam cair e que também curam.
+  - **○ Golpe rápido:** sequência de cortes em círculo; o terceiro é um giro maior.
+  - **△ Golpe forte:** salta sobre o inimigo mais próximo (sem poder ser atingido no ar) e explode, jogando longe quem está perto.
+  - **□ Habilidade (segurar):** raio pelos olhos, que gasta a barra enquanto estiver segurando.
+  - **✕ no ar com a barra cheia:** pancada no chão e **forma gigante** por 2 minutos: recebe metade do dano, ganha 25% de evasão e os golpes ficam maiores e mais fortes. Gigante, ele não recolhe fragmentos, mas eles ficam no chão sem sumir.
+  - **Evasão passiva:** cada acerto dá 8% de chance de desviar, até 40%; some se ficar 2,5 s sem acertar.
+  - **Com a esquiva (R1 / Shift) logo depois de uma habilidade:** ○ lança uma onda cortante para frente; △ causa dano no alvo e leva o personagem 4 m para trás dele; □ concentra o raio (mais forte, gasta mais rápido); na forma gigante, causa uma explosão enorme que encerra a transformação.
+- **Classe nova: Xamã** (🪶, controle de área e suporte; veja `docs/xama-totens.png` e `docs/xama-lobo.png`).
+  - **□ Totem:** coloca um totem à frente (até 3; o quarto substitui o mais antigo; duram 30 s). Cada totem tem uma área circular grande que deixa lento quem passa por ela e ataca sozinho o inimigo mais próximo com um pequeno raio.
+  - **Três totens:** um inimigo que esteja dentro da área dos 3 totens ao mesmo tempo explode, causando dano em volta (no máximo uma vez a cada 3 s por inimigo).
+  - **△ Cura das águas:** cura o xamã, os aliados perto dele e os aliados dentro da área dos totens (recarga de 7 s).
+  - **○ Raio em cadeia:** acerta o inimigo mais próximo e salta para até 4 vizinhos. Os totens lançam o mesmo raio ao mesmo tempo. **Toque ○ de novo logo em seguida** para puxar o raio de volta e deixar presos no chão todos os inimigos atingidos. **Segure ○** para canalizar: o raio dura mais e o dano cresce, mas o xamã não anda enquanto segura (soltar e tocar de novo também prende, por mais tempo).
+  - **✕ no ar:** vira **lobo espiritual**, 50% mais rápido, com 25% de evasão e sem ser atordoado nem empurrado pelos inimigos, e **atravessa a multidão** afastando para os lados quem estiver no caminho (menos o chefe). No lobo: **□** é um avanço que derruba todos os inimigos no caminho, **○** golpe rápido e **△** golpe forte (com combos). **✕** volta à forma de xamã.
+  - Online, os outros jogadores veem os totens, os raios e o lobo.
+  - **Modelo do lobo** (veja `docs/lobo-poses-1.png` e `docs/lobo-poses-2.png`): peito fundo, juba, cabeça com focinho, orelhas, mandíbula e dentes, pernas com joelho e jarrete, rabo felpudo em 3 partes, marcas e chamas espirituais. Animações: galope com a coluna flexionando, respiração e orelhas mexendo quando parado, pulo com as pernas recolhidas, avanço esticado de boca aberta, mordida (recua, avança e fecha a boca), garra (empina e bate com a pata), mordida girando no combo e uivo ao se transformar. O rabo segue as curvas com atraso e o lobo inclina o corpo nas curvas.
+- **Ajustes de equilíbrio:**
+  - Corrompido: dano base dos golpes corpo a corpo 20% menor (as habilidades continuam iguais).
+  - Projéteis do jogador (flechas, magias, martelo arremessado, onda do Corrompido etc.): dano base 25% maior.
+  - Arqueiro (Arco): o ○ (rajada) ficou um pouco mais lento, 0,34 s entre rajadas em vez de 0,28 s.
+  - Paladino: o solo sagrado agora também deixa lentos os inimigos dentro dele.
+  - Online: os inimigos preferem atacar quem luta corpo a corpo (Guerreiro, Lança, Paladino, Monge, Corrompido e Xamã em forma de lobo). O assassino de Adagas fica de fora dessa regra.
+- **Online que funciona em qualquer rede:** o multiplayer deixou de usar conexão direta entre os aparelhos (WebRTC/PeerJS), que falhava em 4G/5G e em muitos roteadores. Agora as mensagens passam por um servidor público de retransmissão (broker MQTT por WebSocket), sem conta e sem servidor próprio. O jogo tenta quatro servidores em ordem (EMQX, Eclipse, HiveMQ e Mosquitto) e quem entra procura o lobby em todos. O lobby mostra o servidor em uso. Para usar outro, defina `window.ARENA_BROKERS` antes do script.
+- **Sexo do personagem:** todas as raças têm versão masculina e feminina, escolhida na tela de seleção (botões no topo, tecla G ou △ no controle) e no lobby do online. A versão feminina usa os mesmos ossos, com ombros e braços mais estreitos, postura mais ereta, rosto com cílios, sobrancelha fina e lábios, e cabelo próprio em cada raça: humana de cabelo longo, elfa com tiara, anã de tranças e sem barba, gnoma de marias-chiquinhas rosa, meio-orc de rabo de cavalo e presas menores, troll de tranças azul-esverdeadas, minotaura de chifres menores e tranças, goblin de rabo de cavalo roxo. Veja `docs/racas-femininas.png`.
+- **Ranking no online:** quando todos caem, aparece uma tabela para todos os jogadores com os abates de cada um (total e por tipo: comuns, arqueiros, conjuradores, grandes e chefes), o dano causado ao chefe, o nível alcançado e o tempo da partida. O host credita cada golpe a quem o deu; dano contínuo (queimadura, sangramento, veneno) conta para quem acertou por último. Veja `docs/ranking.png`.
+- **Tela cheia e iPhone:** no Android e no iPad o jogo entra em tela cheia no primeiro toque; o botão **Tela cheia** no canto superior esquerdo do menu faz o mesmo. No iPhone o Safari não permite tela cheia em sites, então o botão explica como usar **Compartilhar → Adicionar à Tela de Início** (o jogo abre sem as barras do navegador). O zoom de toque duplo e de pinça do iPhone fica bloqueado durante o jogo.
+- **Online mais estável:** os outros jogadores e os inimigos são desenhados com um pequeno atraso ajustado à conexão, entre duas posições recebidas, o que tira as travadas e os teleportes quando os pacotes chegam atrasados ou juntos. Se a conexão com o servidor de sala cair, o jogo reconecta sozinho sem sair da partida.
+- **Desistir da run:** no menu de pausa, encerra a partida e mostra o resumo com o recorde.
+- **Personagens VRoid (opcional, desligado por padrão):** em *Configurações → Boneco 3D (VRoid)* o jogador pode trocar o boneco por um modelo VRM, com animação própria de corpo humano e o visual de cada classe por cima. Nada é baixado enquanto a opção estiver desligada. Veja `modelos/LEIA-ME.md`.
+- **Mira dos projéteis:** facas, magias, martelo arremessado, rajada de flechas, soco à distância e orbe sombrio miram primeiro no inimigo sob o mouse. Com o mouse capturado, no analógico, no controle ou no toque, vale o centro do olhar (a mira no meio da tela); na câmera de cima, a frente do personagem. Sem ninguém na mira, vão no mais forte (boss, depois os grandes) e, se forem todos iguais, no mais perto. Um anel vermelho marca o inimigo na mira.
+- **Celular:** botões no padrão do PPSSPP e editor de layout (posição, tamanho e transparência de cada botão), analógico de câmera, tela cheia na horizontal e aviso para girar o aparelho.
+- **Opções para deixar leve:** Sombras, Contorno, Efeitos de golpe, Grama e flores e Visual PS1 podem ser desligados. No celular as sombras já começam desligadas.
 - **Projeto OhMyGame:** o repositório tem `ohmygame.json`, um documento de design (`docs/design.md`) e regras para o agente (`AGENTS.md`).
 
 ## Abrindo no OhMyGame
@@ -73,6 +141,7 @@ index.html             o jogo inteiro (HTML + CSS + JS, three.js r128 e PeerJS v
 manifest.webmanifest   dados do app instalável
 icon.svg               ícone
 ohmygame.json          tipo do projeto para o OhMyGame
+modelos/               personagens VRoid (.vrm) e instruções
 docs/design.md         documento de design do jogo
 AGENTS.md              regras para agentes de código (OhMyGame, Claude Code, Codex…)
 ```

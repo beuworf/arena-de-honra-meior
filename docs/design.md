@@ -10,7 +10,7 @@ online.
 
 **Pilares**
 1. **Combate que responde:** hit-stop, tremor de câmera, parry e números de dano.
-2. **Muitas formas de jogar:** 8 raças × 6 classes × várias builds.
+2. **Muitas formas de jogar:** 8 raças × 8 classes × várias builds.
 3. **Juntar os amigos sem atrito:** lobby com código de 4 dígitos, sem conta e sem servidor de jogo.
 
 ## Fluxo
@@ -37,8 +37,10 @@ Menu → (Single Player | Host | Entrar com código) → Raça → Classe → Bu
 | 🏹 Arqueiro | Arco (tiros, cone lento, salto), Lança e Animal (Urso, Tigre ou Lobo), Adagas (assassino) |
 | 🔮 Mago | Fogo, Gelo, Sombra e Ilusão: 3 magias cada; a barra amarela é a mana |
 | 🔨 Paladino | Martelo sagrado, cura e controle de horda |
-| 🥊 Pugilista | Socos e chutes rápidos, cura e apoio |
+| 🧘 Monge | Socos e chutes rápidos, cura e apoio |
 | 💀 Necromante | Invoca zumbi, esqueleto, escudeiro, cão e abutre |
+| 😈 Corrompido | Dano em círculo, salto explosivo, raio dos olhos, fragmentos de alma e forma gigante |
+| 🪶 Xamã | Totens que atacam e deixam lentos, raio em cadeia, cura das águas e forma de lobo espiritual |
 
 Mochila: 🧪 Poção (3), 💣 Bomba (2), ⚡ Tônico (2). Também dá para entregar itens a
 um aliado próximo.

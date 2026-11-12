@@ -1,0 +1,201 @@
+[
+ {
+  "nome": "Espada e Escudo",
+  "boss": 59.2,
+  "big": 4.2,
+  "pack": 3.9,
+  "sobrevive": 100,
+  "abates": 50,
+  "nivel": 1,
+  "dano": {
+   "Comum": 87,
+   "Arqueiro inimigo": 228,
+   "Conjurador": 55,
+   "Grande": 79,
+   "Chefe": 28
+  }
+ },
+ {
+  "nome": "Espada Longa",
+  "boss": 19.3,
+  "big": 2.1,
+  "pack": 7.2,
+  "sobrevive": 125,
+  "abates": 76,
+  "nivel": 1,
+  "dano": {
+   "Comum": 68,
+   "Arqueiro inimigo": 192,
+   "Conjurador": 110,
+   "Grande": 196,
+   "Chefe": 20
+  }
+ },
+ {
+  "nome": "Dois Machados",
+  "boss": 61.2,
+  "big": 4.4,
+  "pack": 2.2,
+  "sobrevive": 74,
+  "abates": 45,
+  "nivel": 1,
+  "dano": {
+   "Comum": 154,
+   "Arqueiro inimigo": 143,
+   "Conjurador": 64,
+   "Grande": 104
+  }
+ },
+ {
+  "nome": "Arco",
+  "boss": 26.3,
+  "big": 2.7,
+  "pack": 4.9,
+  "sobrevive": 105,
+  "abates": 96,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 266,
+   "Conjurador": 130,
+   "Grande": 36,
+   "Comum": 4
+  }
+ },
+ {
+  "nome": "Lança+Urso",
+  "boss": 41.2,
+  "big": 2,
+  "pack": 3.1,
+  "sobrevive": 89,
+  "abates": 55,
+  "nivel": 1,
+  "dano": {
+   "Comum": 58,
+   "Arqueiro inimigo": 245,
+   "Conjurador": 131,
+   "Grande": 84
+  }
+ },
+ {
+  "nome": "Adagas",
+  "boss": 24.9,
+  "big": 2.6,
+  "pack": 2.2,
+  "sobrevive": 256,
+  "abates": 289,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 528,
+   "Grande": 385,
+   "Conjurador": 333,
+   "Chefe": 45,
+   "Comum": 15
+  }
+ },
+ {
+  "nome": "Mago (Fogo)",
+  "boss": 63.4,
+  "big": 3.7,
+  "pack": 4.6,
+  "sobrevive": 90,
+  "abates": 44,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 188,
+   "Grande": 124,
+   "Comum": 25,
+   "Conjurador": 38
+  }
+ },
+ {
+  "nome": "Mago (Gelo)",
+  "boss": null,
+  "big": 12.1,
+  "pack": 18.6,
+  "sobrevive": 69,
+  "abates": 18,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 133,
+   "Grande": 54,
+   "Comum": 39,
+   "Conjurador": 17
+  }
+ },
+ {
+  "nome": "Mago (Sombra)",
+  "boss": null,
+  "big": 120,
+  "pack": 4.2,
+  "sobrevive": 158,
+  "abates": 49,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 209,
+   "Conjurador": 87,
+   "Grande": 139,
+   "Comum": 12
+  }
+ },
+ {
+  "nome": "Mago (Ilusão)",
+  "boss": 40.5,
+  "big": 10.5,
+  "pack": 7.7,
+  "sobrevive": 92,
+  "abates": 74,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 214,
+   "Conjurador": 148,
+   "Grande": 57
+  }
+ },
+ {
+  "nome": "Paladino",
+  "boss": 31.4,
+  "big": 5.8,
+  "pack": 2.1,
+  "sobrevive": 139,
+  "abates": 126,
+  "nivel": 1,
+  "dano": {
+   "Comum": 101,
+   "Arqueiro inimigo": 240,
+   "Conjurador": 163,
+   "Grande": 247,
+   "Chefe": 145
+  }
+ },
+ {
+  "nome": "Pugilista",
+  "boss": 73.7,
+  "big": 11.3,
+  "pack": 4.6,
+  "sobrevive": 110,
+  "abates": 51,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 211,
+   "Comum": 36,
+   "Grande": 204,
+   "Conjurador": 110
+  }
+ },
+ {
+  "nome": "Necromante",
+  "boss": 47,
+  "big": 3.2,
+  "pack": 6.3,
+  "sobrevive": 103,
+  "abates": 55,
+  "nivel": 1,
+  "dano": {
+   "Arqueiro inimigo": 143,
+   "Conjurador": 71,
+   "Grande": 72,
+   "Comum": 8,
+   "Chefe": 12
+  }
+ }
+]
