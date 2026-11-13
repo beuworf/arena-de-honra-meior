@@ -501,7 +501,7 @@ const hud=()=>{$('hp').style.width=Math.max(0,p.hp)/PMX*100+'%';$('k').textConte
 
 // ---- Inimigos
 const eg=new THREE.BoxGeometry(.9,.9,.9),hg=new THREE.BoxGeometry(.5,.5,.5),EY=new THREE.BoxGeometry(.09,.09,.05),EM=new THREE.MeshBasicMaterial({color:0xff2200}),AB=new THREE.CylinderGeometry(.1,.07,.6,6),LB=new THREE.CylinderGeometry(.13,.09,.45,6),EH=new THREE.IcosahedronGeometry(.36,1),TEB=(()=>{const g=new THREE.CylinderGeometry(.46,.34,.85,7,2);g.scale(1,1,.7);return g})();
-const EK={n:{sz:1,hp:3,dm:10,cl:0x6aa84f,sp:1},r:{sz:.95,hp:2.5,dm:6,cl:0xb59a4f,sp:.9,rng:1},c:{sz:1,hp:3,dm:8,cl:0x7a5ab8,sp:.85,rng:2},b:{sz:1.7,hp:14,dm:18,cl:0xb5703a,sp:.85},B:{sz:2.7,hp:140,dm:30,cl:0x8a2f5a,sp:.75},k:{sz:.95,hp:2,dm:7,cl:0xe8e0c8,sp:1.1},e:{sz:1.15,hp:7,dm:10,cl:0x5a6a8a,sp:.8},x:{sz:.85,hp:2,dm:24,cl:0xd06a2a,sp:1.6},h:{sz:.95,hp:4,dm:5,cl:0xcfe0c0,sp:.85,rng:2},v:{sz:1.05,hp:6,dm:7,cl:0x4a2a6a,sp:.8,rng:2},m:{sz:.6,hp:1,dm:4,cl:0x7a3aa0,sp:1.45},K:{sz:2.4,hp:120,dm:26,cl:0xe8e0c8,sp:.8},Q:{sz:2.2,hp:130,dm:22,cl:0xd8d0b8,sp:.9},I:{sz:2.6,hp:200,dm:30,cl:0x5a4e50,sp:.8},H:{sz:2.1,hp:170,dm:26,cl:0x6b5a48,sp:1.05}};for(let i=0;i<12;i++)EK['X'+i]={sz:1.15,hp:16,dm:(i<3||i==4||i==7||i==8||i==10)?11:13,cl:0xe8e0c8,sp:1.05,rng:i==3?1:(i==6||i==9||i==11)?2:0};
+const EK={n:{sz:1,hp:3,dm:10,cl:0x6aa84f,sp:1},r:{sz:.95,hp:2.5,dm:6,cl:0xb59a4f,sp:.9,rng:1},c:{sz:1,hp:3,dm:8,cl:0x7a5ab8,sp:.85,rng:2},b:{sz:1.7,hp:14,dm:18,cl:0xb5703a,sp:.85},B:{sz:2.7,hp:140,dm:30,cl:0x8a2f5a,sp:.75},k:{sz:.95,hp:2,dm:7,cl:0xe8e0c8,sp:1.1},e:{sz:1.15,hp:7,dm:10,cl:0x5a6a8a,sp:.8},a:{sz:1.25,hp:9,dm:14,cl:0x6a6e78,sp:.7},x:{sz:.85,hp:2,dm:24,cl:0xd06a2a,sp:1.6},h:{sz:.95,hp:4,dm:5,cl:0xcfe0c0,sp:.85,rng:2},v:{sz:1.05,hp:6,dm:7,cl:0x4a2a6a,sp:.8,rng:2},m:{sz:.6,hp:1,dm:4,cl:0x7a3aa0,sp:1.45},K:{sz:2.4,hp:120,dm:26,cl:0xe8e0c8,sp:.8},Q:{sz:2.2,hp:130,dm:22,cl:0xd8d0b8,sp:.9},I:{sz:2.6,hp:200,dm:30,cl:0x5a4e50,sp:.8},H:{sz:2.1,hp:170,dm:26,cl:0x6b5a48,sp:1.05}};for(let i=0;i<12;i++)EK['X'+i]={sz:1.15,hp:16,dm:(i<3||i==4||i==7||i==8||i==10)?11:13,cl:0xe8e0c8,sp:1.05,rng:i==3?1:(i==6||i==9||i==11)?2:0};
 const EGB=MG([[TEB,0,.75,0],[new THREE.SphereGeometry(.3,7,5),0,.72,.12,0,0,0,1,.9,.8],[new THREE.SphereGeometry(.22,6,4),-.38,1.12,0,0,0,0,1,.8,1],[new THREE.SphereGeometry(.22,6,4),.38,1.12,0,0,0,0,1,.8,1],[new THREE.CylinderGeometry(.13,.16,.2,6),0,1.22,.05],[EH,0,1.45,.1],
     [new THREE.BoxGeometry(.36,.14,.26),0,1.27,.2],[new THREE.BoxGeometry(.44,.08,.12),0,1.58,.37,.2],[new THREE.ConeGeometry(.07,.18,4),0,1.46,.5,Math.PI/2],[new THREE.ConeGeometry(.12,.4,4),-.42,1.55,.1,0,0,1.2],[new THREE.ConeGeometry(.12,.4,4),.42,1.55,.1,0,0,-1.2]]),
   EGA=MG([[new THREE.CylinderGeometry(.42,.42,.1,8),0,.42,0,0,0,0,1,1,.74,0x5a3a22],[new THREE.BoxGeometry(.32,.34,.04),0,.22,.3,0,0,0,1,1,1,0x6b4a2b],[new THREE.BoxGeometry(.32,.3,.04),0,.24,-.29,0,0,0,1,1,1,0x6b4a2b],[new THREE.BoxGeometry(.1,.08,.04),0,.42,.32,0,0,0,1,1,1,0xc9a23a],
@@ -518,7 +518,7 @@ function mkE(k,sx,sz){const K=EK[k],m=L(K.cl),g=new THREE.Group();m.map=ESK;
   if(k=='B'){const hm=L(0xe8e0c8),ar=L(0x4a4a58),gd=L(0xf0c040);add(new THREE.ConeGeometry(.14,.6,5),hm,-.22,1.85,.05,g).rotation.z=.4;add(new THREE.ConeGeometry(.14,.6,5),hm,.22,1.85,.05,g).rotation.z=-.4;
     add(new THREE.BoxGeometry(1.1,1.5,.08),L(0xa01030),0,1,-.42,g);add(new THREE.BoxGeometry(.95,.7,.66),ar,0,1.05,0,g);for(const sx of[-1,1])add(new THREE.SphereGeometry(.28,6,5),ar,sx*.62,1.35,0,g);
     add(new THREE.CylinderGeometry(.28,.22,.16,7),gd,0,1.95,.1,g);add(new THREE.CylinderGeometry(.48,.48,.1,8),gd,0,.55,0,g).scale.z=.7}
-  if(k=='k'||k=='K'||k=='I'||k[0]=='X')skelDeco(g,aR,k=='K'||k=='I');if(k=='I')infDeco(g,aR);if(k=='Q')cerbBuild(g);if(k=='H')hBuild(g);if(k[0]=='X')zDeco(g,aL,aR,+k.slice(1));if('exhvm'.includes(k))nDeco(g,k,aL,aR);
+  if(k=='k'||k=='K'||k=='I'||k[0]=='X')skelDeco(g,aR,k=='K'||k=='I');if(k=='I')infDeco(g,aR);if(k=='Q')cerbBuild(g);if(k=='H')hBuild(g);if(k[0]=='X')zDeco(g,aL,aR,+k.slice(1));if('exhvma'.includes(k))nDeco(g,k,aL,aR);
   S.add(g);const hp=K.hp*(1+.5*(LV-1));
   const e={g,m,k,sz:K.sz,boss:k=='B'||k=='K'||k=='Q'||k=='I'||k=='H',rng:K.rng||0,cl:K.cl,sp:K.sp,rr:1.5*(.5+.5*K.sz),dm:K.dm*(1+.3*(LV-1)),mx:hp,hp,x:sx,z:sz,kx:0,kz:0,cd:rnd(.3,1),wind:0,fl:0,stun:0,brk:0,bleed:0,lf:0,y:0,axe:0,eat:8,aL,aR,lL,lR,ph:rnd(0,6.28),cht:rnd(2,5),sw:0,chw:0,ch:0};
   if(g.cb)e.cq=g.cb;return e}
@@ -596,7 +596,7 @@ function upd(dt){{const dh=p.hp-p.lhp;if(dh>.001&&RC.heal>1)p.hp=Math.min(PMX,p.
 
   {const dx=p.x-al.x,dz=p.z-al.z,d=Math.hypot(dx,dz)||1;if(d>(wi==9?9:3.5)&&!al.dead){al.x+=dx/d*6*dt;al.z+=dz/d*6*dt}al.g.position.set(al.x,0,al.z);al.g.rotation.y=Math.atan2(dx,dz)}
   if(pj.visible){if(pjT&&pjT.hp>0){const dx=pjT.x-pj.position.x,dz=pjT.z-pj.position.z,d=Math.hypot(dx,dz)||.01;
-    if(d<.9){pj.visible=false;pjT.hp-=1;pjT.bleed=5;pjT.axe=1;pjT.fl=.12;hs=.04;shake=.2}
+    if(d<.9&&pjT.k=='a'){pj.visible=false;armDefl(pjT,pj.position.x,pj.position.z)}else if(d<.9){pj.visible=false;pjT.hp-=1;pjT.bleed=5;pjT.axe=1;pjT.fl=.12;hs=.04;shake=.2}
     else{pj.position.x+=dx/d*26*dt;pj.position.z+=dz/d*26*dt;pj.rotation.x+=22*dt}}
   else{pj.visible=false;p.ax=0;gear()}}
   portUpd(dt);if(NET.c)bxUpd(dt);if(!NET.c){bossAI(dt);LT+=dt;sp-=dt;bsp-=dt;
@@ -695,7 +695,7 @@ function bagUI(){$('bag').style.display=bag?'block':'none';
 // A escolha fica num painel pequeno no topo (não pausa): botão L1 / Q / toque passa de opção, segurar escolhe; também dá para tocar/clicar na opção ou usar Z X V.
 var XL={sup:0,lv:1,xp:0,dm:0,hp:0,sp:0,cd:0,ev:0,rg:0,kh:0,pj:0,pend:0,opts:null,sel:0,kd:0};var PMX=100;
 const XUP=[['⚔️','Dano +8%',()=>XL.dm+=.08],['❤️','Vida máx. +12',()=>{XL.hp+=12;p.hp+=12}],['👟','Velocidade +6%',()=>XL.sp+=.06],['⏱️','Recarga −7%',()=>XL.cd+=.07],['🌀','Esquiva +4%',()=>XL.ev+=.04],['💚','Regeneração +0,6/s',()=>XL.rg+=.6],['🩸','Cura por abate +2',()=>XL.kh+=2],['🎯','Projéteis +12%',()=>XL.pj+=.12]];
-const XPK={n:2,r:2,c:2.5,k:1,b:8,B:40,K:60,Q:60,I:80,H:60,e:4,x:2,h:4,v:5,m:.5},xpOf=e=>e.k[0]=='X'?25:XPK[e.k]||2,xNeed=()=>10+XL.lv*8;
+const XPK={n:2,r:2,c:2.5,k:1,b:8,B:40,K:60,Q:60,I:80,H:60,e:4,a:6,x:2,h:4,v:5,m:.5},xpOf=e=>e.k[0]=='X'?25:XPK[e.k]||2,xNeed=()=>10+XL.lv*8;
 function xApply(){const b={...RBASE,...RACES[race].m},lv=(XL.lv-1)*.03;RC.phy=b.phy+XL.dm+lv;RC.mag=b.mag+XL.dm+lv;RC.ev=b.ev+XL.ev;RC.shot=b.shot+XL.pj;PMX=100+XL.hp+(XL.lv-1)*4;if(p.hp>PMX)p.hp=PMX}
 function xReset(){Object.assign(XL,{sup:0,lv:1,xp:0,dm:0,hp:0,sp:0,cd:0,ev:0,rg:0,kh:0,pj:0,pend:0,opts:null,sel:0,kd:0});PMX=100;xUI()}
 function xGain(a){if(cls<0||scr!='play')return;XL.xp+=a;let up=0;while(XL.xp>=xNeed()){XL.xp-=xNeed();XL.lv++;XL.pend++;up=1}
@@ -760,8 +760,11 @@ function mouseFoe(r){const ctr=lookCenter();
 function ptarget(r){const m=mouseFoe(r);if(m)return m;let q=null,bt=0,bd=r;for(const e of E){if(e.hp<=0)continue;const d=Math.hypot(e.x-p.x,e.z-p.z);if(d>=r)continue;const t=TIER(e);if(t>bt||(t==bt&&d<bd)){bt=t;bd=d;q=e}}return q}
 function shot(a,o){if(NET.on&&NET.ph=='p'){const G=[AG,SG,HMG,RBG,DKG],Mt=[AM,MF,MI,HMM,RBM,DKM];nemit('ev',{t:'sh',x:+(o.ox!==undefined?o.ox:p.x).toFixed(1),z:+(o.oz!==undefined?o.oz:p.z).toFixed(1),a:+a.toFixed(2),s:o.sp||30,l:+(o.t||.7).toFixed(2),g:Math.max(0,G.indexOf(o.g||AG)),m:Math.max(0,Mt.indexOf(o.m||AM)),h:o.hm?1:0,c:o.sc||1})}sfx('shot');const m=new THREE.Mesh(o.g||AG,o.m||AM);m.position.set(o.ox!==undefined?o.ox:p.x,1.2,o.oz!==undefined?o.oz:p.z);m.rotation.y=a;if(o.sc)m.scale.setScalar(o.sc);S.add(m);PR.push({...o,m,vx:Math.sin(a)*(o.sp||30),vz:Math.cos(a)*(o.sp||30),t:o.t||.7})}
 // dano base dos projéteis do jogador (flechas, magias, martelo, lâminas): +25%
+var ARMT=0;function armDefl(e,x,z){puff(x,1.2,z,6,0xfff2b0,6,3,.25,.07);puff(x,1.2,z,3,0xffffff,3,2,.2,.1);sfx('hit');e.fl=.06;const n=performance.now();if(n-(e.imT||0)>700){e.imT=n;if(DN.length<40){const d=document.createElement('div');d.className='dn';d.style.color='#c8d0dc';d.textContent='🛡 IMUNE';$('dn').appendChild(d);DN.push({d,x:e.x,y:2.3*(e.sz||1),z:e.z,t:.8})}}
+  if(!ARMT){ARMT=1;toast('🛡 Cavaleiro Blindado: imune a projéteis físicos! Use magia ou ataque corpo a corpo')}}
 const PJM=1.25;function projUpd(dt){for(let i=PR.length-1;i>=0;i--){const a=PR[i],m=a.m;a.t-=dt;if(a.tg&&a.tg.hp<=0)a.tg=null;if(a.tg){const tx=a.tg.x-m.position.x,tz=a.tg.z-m.position.z,td=Math.hypot(tx,tz)||1;a.vx=tx/td*(a.sp||30);a.vz=tz/td*(a.sp||30)}if(a.hm)m.rotation.x+=14*dt;m.position.x+=a.vx*dt;m.position.z+=a.vz*dt;
   const h=a.tg?(Math.hypot(a.tg.x-m.position.x,a.tg.z-m.position.z)<1.3?a.tg:null):E.find(e=>e.hp>0&&!(a.hl&&a.hl.includes(e))&&Math.hypot(e.x-m.position.x,e.z-m.position.z)<(a.hr||.9));
+  if(h&&h.k=='a'&&!(a.m===MF||a.m===MI||a.g===DKG||a.g===WVG||a.g===SG)){armDefl(h,m.position.x,m.position.z);S.remove(m);PR.splice(i,1);continue}
   if(h){const mgc=!!a.g&&a.g!==RBG;h.hp-=a.dmg*PJM*(h.lf>0?1.5:1)*(1+RC.shot)*(1+(mgc?RC.mag:RC.phy))+RC.mg0;h.fl=.1;if(a.weak&&a.slow&&(h.slow>0||h.weak>0)&&!h.boss){h.ice=3;ring(h.x,h.z,1.5,0xbfeaff)}if(a.slow)h.slow=a.slow;if(a.burn)h.burn=a.burn;if(a.weak)h.weak=a.weak;if(a.kn){h.bleed=6;p.kn=h;p.knT=5}if(a.hm)holy(h.x,h.z);if(a.psn)h.psn=5;if(a.bn)h.burn=Math.max(h.burn>0?h.burn:0,3);if(a.dk)darkBoom(h.x,h.z);
     if(a.aoe){for(const o of E)if(o!==h&&o.hp>0&&Math.hypot(o.x-h.x,o.z-h.z)<a.aoe){dmg(o,a.dmg*PJM*.5);if(a.burn)o.burn=Math.max(o.burn>0?o.burn:0,a.burn*.6)}ring(h.x,h.z,a.aoe,0xff6a2a);puff(h.x,1,h.z,8,0xff7a2a,5,4,.45,.15);shake=Math.max(shake,.2)}
     if(a.pc>1){a.pc--;(a.hl=a.hl||[]).push(h)}else a.pc=0}
@@ -771,7 +774,7 @@ const PJM=1.25;function projUpd(dt){for(let i=PR.length-1;i>=0;i--){const a=PR[i
 // O dano causado é aplicado sobre toda a vida que o inimigo perde no quadro (golpes, projéteis, magias, invocações e dano contínuo).
 // valores achados pelo laboratório (bot jogando sozinho, vantagens de raça desligadas): fase média de cada build entre 2,0 e 2,9
 // ordem: Espada e Escudo, Espada Longa, Dois Machados, Arco, Lança e Animal, Adagas, Mago, Paladino, Monge, Necromante, Corrompido, Xamã
-const SB0=[[1.68,0.33,0],[1.98,0.69,0],[2.98,0.5,0],[1.72,0.84,0.11],[2.26,0.61,0.16],[2.25,0.88,0.15],[1.15,1,0],[1.25,0.7,0],[2.61,0.64,0.15],[4.1,0.46,0],[0.46,1.15,0],[1,1,0]];
+const SB0=[[1.68,0.33,0],[1.98,0.69,0],[2.98,0.5,0],[1.72,0.84,0.11],[2.26,0.61,0.16],[2.25,0.88,0.15],[1.15,1,0],[1.25,0.7,0],[2.61,0.64,0.15],[4.1,0.46,0],[0.73,1.15,0],[1,1,0]];
 var SB=window.ARENA_SB||SB0;
 function sbOf(){return SB[wi]||[1,1,0]}
 function sbTick(){const f=sbOf()[0];for(const e of E){if(e.dlh===undefined){e.dlh=e.hp;continue}const l=e.dlh-e.hp;if(l>0&&f!==1)e.hp-=l*(f-1);e.dlh=e.hp}}
@@ -1203,7 +1206,7 @@ function epUpd(dt){for(let i=EP.length-1;i>=0;i--){const a=EP[i],m=a.m;a.t-=dt;m
   if(!hit&&NET.h)for(const r of NET.rp)if(r.alive&&Math.hypot(r.x-m.position.x,r.z-m.position.z)<.9&&r.y<1.3){netHit(r,a.e,.8);hit=1;break}
   if(hit||a.t<=0){S.remove(m);EP.splice(i,1)}}}
 // inimigos novos entram aos poucos: kamikaze (fase 1), escudeiro (2), curandeiro (3), invocador (4)
-function pickK(){const r=Math.random(),q=(LV-1)%5+1+5*Math.floor((LV-1)/5);if(LT>25&&r<.06)return 'x';if(q>=2&&LT>15&&r>=.06&&r<.14)return 'e';if(q>=3&&LT>20&&r>=.14&&r<.2)return 'h';if(q>=4&&LT>25&&r>=.2&&r<.25)return 'v';return LT>20&&r<.44?'r':LT>35&&r<.6?'c':'n'}
+function pickK(){const r=Math.random(),q=(LV-1)%5+1+5*Math.floor((LV-1)/5);if(LT>25&&r<.06)return 'x';if(q>=2&&LT>15&&r>=.06&&r<.14)return 'e';if(q>=3&&LT>20&&r>=.14&&r<.2)return 'h';if(q>=4&&LT>25&&r>=.2&&r<.25)return 'v';{const ar=(wi==3?1:0)+(NET.on?(NET.rp||[]).filter(o=>o.w==3).length:0),ac=ar?Math.min(.26,.16+.05*(ar-1)):.06;if((ar?q>=1&&LT>10:q>=2&&LT>18)&&r>=.25&&r<.25+ac)return 'a'}return LT>20&&r<.44?'r':LT>35&&r<.6?'c':'n'}
 const DR=[],DPG=new THREE.SphereGeometry(.28,6,5),DBG=new THREE.IcosahedronGeometry(.3,0),DPM=new THREE.MeshBasicMaterial({color:0xff4060}),DBM=new THREE.MeshBasicMaterial({color:0x303038});
 function dropLoot(e){const n=e.boss?4:e.k=='b'?2:Math.random()<(e.rng?.3:.22)?1:0;for(let i=0;i<n;i++){const k=Math.random()<.6?'p':'b',m=new THREE.Mesh(k=='p'?DPG:DBG,k=='p'?DPM:DBM),x=e.x+rnd(-1,1)*(e.boss?2.5:1),z=e.z+rnd(-1,1)*(e.boss?2.5:1);m.position.set(x,.5,z);S.add(m);DR.push({m,x,z,k,t:25})}}
 function drUpd(dt){for(let i=DR.length-1;i>=0;i--){const d=DR[i];d.t-=dt;d.m.position.y=.5+Math.sin(t*4+d.x)*.12;d.m.rotation.y+=2*dt;
@@ -1286,7 +1289,7 @@ async function relayFind(code,msg){let any=0;for(const url of BROKERS()){let R=n
 addEventListener('pagehide',()=>{if(NET.R&&NET.R.url)try{NET.R.leave()}catch(e){}});
 // ---- Ranking do online: o host credita o dano e os abates de cada jogador e envia a tabela quando todos caem
 function stAdd(peer,e,d){if(!peer)return;const s=NET.st[peer]||(NET.st[peer]={k:{},bd:0});if(e.boss)s.bd+=d;e.ld=peer}
-function stKill(e){if(!NET.st)return;let who=e.ld;if(e.hq!==undefined&&e.hq-Math.max(e.hp,0)>.001){who=NET.mid;if(e.boss)(NET.st[who]||(NET.st[who]={k:{},bd:0})).bd+=e.hq-Math.max(e.hp,0)}if(!who)who=NET.mid;const s=NET.st[who]||(NET.st[who]={k:{},bd:0});const kk=e.k=='K'||e.k=='Q'||e.k=='I'||e.k=='H'?'B':e.k=='k'?'n':e.k[0]=='X'?'b':'exm'.includes(e.k)?'n':'hv'.includes(e.k)?'c':e.k;s.k[kk]=(s.k[kk]||0)+1}
+function stKill(e){if(!NET.st)return;let who=e.ld;if(e.hq!==undefined&&e.hq-Math.max(e.hp,0)>.001){who=NET.mid;if(e.boss)(NET.st[who]||(NET.st[who]={k:{},bd:0})).bd+=e.hq-Math.max(e.hp,0)}if(!who)who=NET.mid;const s=NET.st[who]||(NET.st[who]={k:{},bd:0});const kk=e.k=='K'||e.k=='Q'||e.k=='I'||e.k=='H'?'B':e.k=='k'?'n':e.k[0]=='X'?'b':'exm'.includes(e.k)?'n':e.k=='a'?'b':'hv'.includes(e.k)?'c':e.k;s.k[kk]=(s.k[kk]||0)+1}
 function stTick(){for(const e of E){if(e.hq===undefined){e.hq=e.hp;continue}const d=e.hq-e.hp;if(d>.001){if(d>=.12||!e.dot)e.dot=NET.mid;stAdd(e.dot,e,d)}e.hq=e.hp}}
 function rankData(){const nm={};try{NET.R.peers().forEach(q=>{nm[q.peer]=(q.presence&&q.presence.nm)||'Jogador';nm['lv'+q.peer]=q.isMe?XL.lv:(q.presence&&q.presence.xl)||1;nm['su'+q.peer]=q.isMe?Math.round(XL.sup):(q.presence&&q.presence.su)||0})}catch(e){}const rows=[];for(const id of NET.roster){const s=(NET.st&&NET.st[id])||{k:{},bd:0};rows.push({nm:nm[id]||'Jogador',lv:nm['lv'+id]||1,su:nm['su'+id]||0,k:s.k,bd:+s.bd.toFixed(1)})}
   return{lv:LV,kc:kills,t:Math.round((performance.now()-(NET.stT||performance.now()))/1000),rows}}
@@ -1724,6 +1727,13 @@ function zUpd(f,dt){f.t+=dt;const pd=Math.hypot(p.x-f.x,p.z-f.z);
 function nDeco(g,k,aL,aR){const PI=Math.PI,gl=c=>new THREE.MeshBasicMaterial({color:c}),W2=(geo,arm,rx=-.6)=>{const w=add(geo,WPM,0,-.7,.05,arm);w.rotation.x=rx;return w};
   if(k=='e'){const st=L(0x9aa3b0),bl=L(0x2a3a6a);const sh=add(new THREE.BoxGeometry(.78,1.05,.1),bl,-.32,1.0,.5,g);sh.rotation.y=.12;add(new THREE.BoxGeometry(.5,.08,.12),st,-.32,1.25,.56,g).rotation.y=.12;add(new THREE.BoxGeometry(.08,.7,.12),st,-.32,1,.56,g).rotation.y=.12;
     add(new THREE.SphereGeometry(.27,8,6,0,PI*2,0,PI/2),st,0,1.5,.08,g);add(new THREE.BoxGeometry(.06,.18,.06),st,0,1.6,.36,g);W2(WG.sword,aR)}
+  else if(k=='a'){// armadura de placas: elmo fechado com viseira, ombreiras, peitoral, saiote de placas e espadão
+    const st=L(0xa8b0bc),dk=L(0x3a3e48),gd=L(0xc8a040),ey=gl(0xff5a2a);add(new THREE.BoxGeometry(.62,.62,.46),st,0,1.08,0,g);add(new THREE.BoxGeometry(.5,.08,.48),gd,0,1.32,0,g);add(new THREE.BoxGeometry(.66,.3,.5),dk,0,.68,0,g);
+    for(let i=0;i<4;i++)add(new THREE.BoxGeometry(.18,.32,.08),st,-.27+i*.18,.45,.24,g).rotation.x=-.12;
+    add(new THREE.CylinderGeometry(.25,.27,.42,8),st,0,1.6,0,g);add(new THREE.SphereGeometry(.25,8,6,0,PI*2,0,PI/2),st,0,1.8,0,g);add(new THREE.BoxGeometry(.4,.05,.06),dk,0,1.63,.24,g);
+    for(const sx of[-1,1])add(new THREE.SphereGeometry(.06,6,5),ey,sx*.09,1.63,.26,g);add(new THREE.ConeGeometry(.06,.35,4),L(0x8a1a1a),0,2.08,-.05,g);
+    for(const sx of[-1,1]){const o=add(new THREE.SphereGeometry(.24,8,6,0,PI*2,0,PI/2),st,sx*.42,1.34,0,g);o.scale.set(1.1,.8,1.1);o.rotation.z=-sx*.4;add(new THREE.BoxGeometry(.32,.06,.36),gd,sx*.46,1.24,0,g).rotation.z=-sx*.4}
+    const w=W2(WG.long||WG.sword,aR);w.scale.setScalar(1.35)}
   else if(k=='x'){add(new THREE.SphereGeometry(.34,10,8),L(0x1a1a1e),0,1.1,-.42,g);add(new THREE.CylinderGeometry(.03,.03,.25,5),L(0x8a6a3a),0,1.5,-.42,g);g.fz=add(new THREE.SphereGeometry(.07,6,5),gl(0xffa020),0,1.64,-.42,g);
     add(new THREE.TorusGeometry(.21,.035,4,12),L(0xc0392b),0,1.52,.02,g).rotation.x=PI/2}
   else if(k=='h'){add(new THREE.ConeGeometry(.55,.9,7),L(0xe8f0e0),0,.55,0,g);add(new THREE.ConeGeometry(.24,.42,7),L(0x3f8f4a),0,1.68,-.02,g);add(new THREE.BoxGeometry(.06,1.35,.06),L(0x6b4a2b),0,-.5,.2,aR);add(new THREE.SphereGeometry(.13,6,5),gl(0x66ff88),0,-1.15,.2,aR)}
