@@ -42,8 +42,9 @@ Menu → (Single Player | Host | Entrar com código) → Raça → Classe → Bu
 | 😈 Corrompido | Dano em círculo, salto explosivo, raio dos olhos, fragmentos de alma e forma gigante |
 | 🪶 Xamã | Totens que atacam e deixam lentos, raio em cadeia, cura das águas e forma de lobo espiritual |
 
-Mochila: 🧪 Poção (3), 💣 Bomba (2), ⚡ Tônico (2). Também dá para entregar itens a
-um aliado próximo.
+Nível da run: XP por abate, +3% de dano e +4 de vida máxima por nível e uma melhoria
+à escolha entre 3 (dano, vida, velocidade, recarga, esquiva, regeneração, cura por abate,
+projéteis). Zera no fim da partida. A mochila foi removida; o botão dela escolhe as melhorias.
 
 ## Inimigos e progressão
 

@@ -5,8 +5,9 @@ no PC e no celular. Escolha raça, classe e build, sobreviva às ondas de
 inimigos, derrote o boss de cada nível e jogue com amigos pelo multiplayer
 online P2P.
 
-> Projeto preparado para ser aberto e evoluído no
-> [OhMyGame](https://github.com/WhiteTowerAI/ohmygame). A versão de testes fica em `Arena-de-honra-`.
+> Esta é a versão de testes, preparada para ser aberta e evoluída no
+> [OhMyGame](https://github.com/WhiteTowerAI/ohmygame). O projeto original
+> continua guardado, sem alterações, em `arena-de-honra-meior`.
 
 ## Como jogar
 
@@ -26,7 +27,7 @@ python3 -m http.server 8000
 | Bloqueio (parry no tempo certo) | L | □ |
 | Pular | Espaço | ✕ |
 | Esquivar | Shift | R1 |
-| Mochila | Q | L1 |
+| Melhoria de nível (toque troca, segure escolhe) | Q (ou Z, X, V direto) | L1 |
 | Elemento do Mago | 1–4 | Direcional |
 | Reiniciar a fase (troca classe e build) | C, ou no menu de pausa | Share |
 | **Pausar** | **Esc / P** | — |
@@ -93,8 +94,8 @@ em **Configurações**.
   - **○ Golpe rápido:** sequência de cortes em círculo; o terceiro é um giro maior.
   - **△ Golpe forte:** salta sobre o inimigo mais próximo (sem poder ser atingido no ar) e explode, jogando longe quem está perto.
   - **□ Habilidade (segurar):** raio pelos olhos, que gasta a barra enquanto estiver segurando.
-  - **✕ no ar com a barra cheia:** pancada no chão e **forma gigante** por 2 minutos: recebe metade do dano, ganha 25% de evasão e os golpes ficam maiores e mais fortes. Gigante, ele não recolhe fragmentos, mas eles ficam no chão sem sumir.
-  - **Evasão passiva:** cada acerto dá 8% de chance de desviar, até 40%; some se ficar 2,5 s sem acertar.
+  - **✕ no ar com a barra cheia:** pancada no chão e **forma gigante**: recebe 30% menos dano, ganha 25% de evasão e os golpes ficam maiores e mais fortes. A forma gigante **gasta a barra de energia**, e o gasto aumenta com o tempo: dura uns 13 s sem bater e no máximo uns 22 s batendo sem parar (golpes recarregam pouco nessa forma). Gigante, ele não recolhe fragmentos (eles ficam no chão para depois).
+  - **Evasão passiva:** cada acerto dá 6% de chance de desviar, até 25%; some se ficar 2,5 s sem acertar.
   - **Com a esquiva (R1 / Shift) logo depois de uma habilidade:** ○ lança uma onda cortante para frente; △ causa dano no alvo e leva o personagem 4 m para trás dele; □ concentra o raio (mais forte, gasta mais rápido); na forma gigante, causa uma explosão enorme que encerra a transformação.
 - **Classe nova: Xamã** (🪶, controle de área e suporte; veja `docs/xama-totens.png` e `docs/xama-lobo.png`).
   - **□ Totem:** coloca um totem à frente (até 3; o quarto substitui o mais antigo; duram 30 s). Cada totem tem uma área circular grande que deixa lento quem passa por ela e ataca sozinho o inimigo mais próximo com um pequeno raio.
@@ -110,13 +111,59 @@ em **Configurações**.
   - Arqueiro (Arco): o ○ (rajada) ficou um pouco mais lento, 0,34 s entre rajadas em vez de 0,28 s.
   - Paladino: o solo sagrado agora também deixa lentos os inimigos dentro dele.
   - Online: os inimigos preferem atacar quem luta corpo a corpo (Guerreiro, Lança, Paladino, Monge, Corrompido e Xamã em forma de lobo). O assassino de Adagas fica de fora dessa regra.
+- **Mouse por classe:** os dois botões do mouse funcionam como botões do controle (segurar também vale). Nas classes à distância o clique prioriza os projéteis; nas de corpo a corpo, o esquerdo faz o combo mais longo. No começo da partida aparece um aviso com o que cada botão faz.
+
+  | Build | Esquerdo | Direito |
+  |---|---|---|
+  | Espada e Escudo, Espada Longa, Monge | combo (golpe rápido) | golpe forte |
+  | Dois Machados | combo | arremessar machado |
+  | Arco | rajada de flechas | cone de flechas |
+  | Lança e Animal | combo da lança | golpe forte |
+  | Adagas | combo | arremessar adaga |
+  | Mago | magia principal (bola de fogo, gelo…) | magia de área |
+  | Paladino | combo | arremessar martelo |
+  | Necromante | zumbi | esqueleto |
+  | Corrompido | combo em círculo | raio dos olhos (segure) |
+  | Xamã | raio em cadeia (segure: canaliza; clique de novo: prende) | totem |
+  | Xamã lobo | combo | golpe forte |
+- **Ajustes de equilíbrio (rodada 3):**
+  - Xamã: anda mais devagar na forma humana (o lobo continua rápido).
+  - Corrompido: na forma gigante, menos dano e menos cura ao eliminar; na forma normal, mais cura (abates e fragmentos de alma); explosões do salto e da explosão final mais fortes.
+  - Adagas: mais dano base e +15% de evasão passiva. Dois Machados: mais dano base.
+  - Lança e Animal: combos novos — ○○△ lança o inimigo para o alto, ○△ giro em área, △○ estocada que atordoa, △△ golpe pesado; nos combos o animal ataca junto.
+  - Mago: bola de fogo com mais dano base.
+  - Necromante: o abutre (pular no ar) tem recarga de 10 s e planeio curto; ele não fica mais quase sempre no ar.
+  - Primeiro chefe: devora aliados para se curar com menos frequência (a cada 14 s).
+- **Apoio no online:** as curas do Monge, do solo sagrado e das mãos erguidas do Paladino e o orbe do Monge curam todos os jogadores aliados no alcance (antes só o mais próximo). Quem recebe a cura vê um brilho verde. Os inimigos que miram o aliado do Necromante passam a atacar o jogador de verdade.
+- **Invocações do Necromante lutam sozinhas** quando não estão sob comando: procuram inimigos perto do necromante e usam combos — zumbi (garra, garra, pancada em área e salto com mordida que sangra), esqueleto mago (fogo, queimadura, explosão e chuva de ossos que deixa lento), escudeiro (dois cortes, pancada de escudo que atordoa e investida que derruba), cão (mordidas, arrancada que sangra e bote em quem está longe) e abutre (bicadas e mergulho em área).
+- **Segredo:** no solo ou no online, se você matar qualquer chefe de fase (o chefe comum, o Cavaleiro Esqueleto ou o Rei Esqueleto Infernal) em menos de 40 s depois que ele aparece, surgem dois chefes secretos, o Esqueleto Rei e o Cérbero de Ossos (veja `docs/chefes-secretos.png`, `docs/cerbero.png` e `docs/chefes-secretos-ataques.png`). O portal para a próxima fase só abre quando os dois caem. Ao matar o chefe sem ativar o segredo, o jogo mostra em quantos segundos você o derrotou. Acontece no máximo uma vez por fase.
+  - **Esqueleto Rei:** espadão, coroa e capa. Golpe normal de espada e 3 especiais: *Lâmina do Rei* (cone na frente dele), *Exército dos mortos* (invoca 4 esqueletos) e *Prisão de ossos* (um círculo embaixo de cada jogador; quem não sair é preso pelos espinhos).
+  - **Cérbero de Ossos:** cada cabeça escolhe o próprio alvo e morde sozinha. Cada uma tem um especial: a de fogo solta um *sopro de fogo* em cone, a de sombra dá um *uivo* com onda de choque (pule ou esquive) e a de veneno cospe *ácido* que deixa uma poça no chão.
+  - Todos os ataques especiais mostram um aviso no chão antes de acertar.
+- **Esqueletos campeões** (veja `docs/esqueletos-campeoes.png`): de vez em quando surge um esqueleto raro com a arma, a capa e os olhos da cor de uma build sorteada, usando as habilidades dela. Aparece um aviso quando ele surge e quando é derrotado.
+  - Chance por inimigo gerado: **1% no solo** e **2% no online**, e ela sobe a cada chefe derrotado na run (+0,5% no solo, +0,75% no online). No online podem vir **2 ou 3 de uma vez**. No máximo 3 vivos ao mesmo tempo.
+  - Kits: Guerreiro do Escudo (investida, giro e bloqueio que reduz o dano), Espadachim (estocada veloz, lançar ao ar, corte duplo), Guerreiro do Machado (giro triplo, machado arremessado, salto), Arqueiro (rajada, leque de flechas, armadilha e salto para trás), Lanceiro (estocada longa, arremesso para o alto, lobo de ossos), Assassino (aparece pelas costas, adaga arremessada, leque de lâminas e 30% de esquiva), Mago (bola de fogo, nova de gelo, orbe sombrio e ilusões), Paladino (martelo arremessado, solo sagrado que cura ele e machuca quem fica dentro, salto do martelo), Monge (chute voador, palma explosiva, meditação), Necromante (ergue mortos, orbe sombrio, dreno de vida), Corrompido (salto explosivo, raio dos olhos, lâminas em círculo e forma gigante abaixo de metade da vida) e Xamã (totem que dá choque, raio em cadeia, cura das águas).
+  - Todos os ataques especiais mostram um aviso no chão ou vêm como projétil visível; no online cada jogador vê os mesmos avisos.
+- **Nível do personagem na run:** cada abate dá XP (comuns 2, grandes 8, campeões 25, chefes 40–60) e a barra roxa abaixo da vida mostra o nível. Cada nível dá +3% de dano e +4 de vida máxima e abre um painel pequeno no topo com 3 melhorias sorteadas: dano +8%, vida máx. +12, velocidade +6%, recarga −7%, esquiva +4%, regeneração +0,6/s, cura por abate +2 ou projéteis +12%. O painel não pausa o jogo: o botão L1 / Q passa de opção e segurar escolhe (ou toque/clique na opção, ou Z, X, V). Tudo zera quando a partida acaba. No online, cada abate dá 40% do XP para todos e 60% para quem matou, e o ranking final mostra o nível de cada jogador.
+- **Ajustes (rodada 4):** Xamã mais lento na forma normal (o lobo continua rápido); os clones do Mago (Ilusão) aguentam 2 golpes; o raio do Xamã alcança só até o raio dos totens em volta dele, mas acerta qualquer inimigo que esteja dentro da área de um totem, mesmo longe.
+- **Corrompido (rodada 7):** evasão máxima 25% (era 40%), forma gigante recebe 30% menos dano (era metade) e gasta a energia, fragmento de alma cura 8 (era 12); explosão do salto e explosão final mais fortes. Relatório em `docs/balanceamento-rodada7.md`.
+- **Equilíbrio do single player (rodada 8):** cada build tem um ajuste próprio de dano causado, dano recebido e evasão (vale também no online: cada jogador escala o próprio dano antes de mandar ao host), achado pelo laboratório com as vantagens de raça desligadas, para que em média toda build chegue à fase 2 (fase média entre 2,16 e 2,64, média geral 2,37). Seguindo o tema: guerreiros e paladino com mais defesa e mais dano físico, arqueiro, caçador, assassino e monge com evasão extra, necromante com invocações bem mais fortes, mago com um pouco mais de dano e o Corrompido com menos dano. Tabela em `docs/balanceamento-rodada8.md`.
+- **Pontos de Apoio (online):** curar aliados (Monge, Paladino, Xamã, solo sagrado, orbe), dar escudo (Paladino puxando o aliado) e marcar aliado (Necromante) rendem pontos de Apoio e XP (1 ponto = 0,25 XP). Só conta a cura que o aliado realmente precisava, para não render curando quem está com a vida cheia; marcar o mesmo aliado rende no máximo uma vez a cada 20 s. O Apoio aparece ao lado do nível no HUD e numa coluna própria do ranking, com 💚 para quem mais apoiou.
+- **Mochila removida:** o botão L1 / Q agora é o da melhoria de nível (o Necromante no online continua usando ele para marcar o aliado quando não há melhoria). As bombas que os inimigos deixavam viraram XP; as poções continuam curando na hora.
+- **Tela de abertura:** ao abrir o jogo aparece a marca **beuworf** (um urso de guerra em vermelho-sangue, desenho original) por uns 2,5 s; um toque ou tecla pula.
+- **Som e música do próprio jogo:** todos os efeitos (golpes, golpe pesado, impacto, explosão, raio, flechas, pulo, esquiva, cura, nível, chefe) e a trilha são gerados na hora pelo navegador, sem arquivos de áudio de terceiros. A música é procedural em ré menor com tambores tribais e muda sozinha entre menu (calma), combate e chefe (mais rápida). Em *Configurações* há **volume geral**, **música** e **efeitos** separados (0–100%) e o botão de mudo; dá para zerar a música e ouvir a sua ou conversar no Discord. O som pausa quando o jogo sai da tela.
+- **Um cenário por fase** (repete a cada 5): 1 **entrada da vila** (paliçada com portão e torres, lampiões acesos, poço, feira, casas e cercas), 2 **caminho para o deserto** (chão seco, árvores secas, carroça quebrada, placas), 3 **deserto** (dunas, cactos, oásis com palmeiras, ruínas, costelas gigantes), 4 **entrada do castelo** (muralha, torres, portão com grade, tochas, estandartes, lápides) e 5 **castelo do chefe final** (pilares, braseiros de chama verde e roxa, tapete real e trono). Cada cenário tem céu, cores e obstáculos próprios e é igual para todos no online.
+- **Portal entre fases:** ao derrotar o chefe, um portal se abre na saída do cenário (portão da vila, fim da estrada, trilha do deserto, portão do castelo, porta dos fundos do castelo) e uma seta no chão guia até ele. Enquanto o portal está aberto não chegam inimigos novos. Ao atravessar, a tela escurece com o nome da próxima fase e você chega pela entrada do novo cenário. No online, basta um jogador encostar no portal para todos irem juntos.
+- **Chefe da fase 3: Cavaleiro Esqueleto** (volta a cada 5 fases, no deserto): um esqueleto de elmo, lança e escudo montado num cavalo zumbi de olhos verdes e cascos em chamas fantasma. Investida em linha reta (com faixa de aviso) que deixa rastro de fogo verde, pisoteio em círculo quando o cavalo empina, relincho fantasma (onda: pule ou esquive) e invocação de cavaleiros caídos.
+- **Chefe da fase 5: Rei Esqueleto Infernal** (volta a cada 5 fases): coroado de chamas verdes e roxas, com espada em chamas. Lâmina infernal em cone, chuva de fogo que deixa poças em chamas, exército de esqueletos e prisão de ossos; com metade da vida ele se enfurece, solta uma onda (pule ou esquive) e ataca mais rápido.
+- **Inimigos novos:** **kamikaze** (fase 1+, corre e explode com aviso no chão; morto antes, explode na hora e pega outros inimigos), **escudeiro** (fase 2+, bloqueia 80% do dano de frente e gira devagar, ataque pelas costas), **curandeiro** (fase 3+, cura os inimigos em volta — derrube primeiro) e **invocador** (fase 4+, chama diabinhos).
 - **Online que funciona em qualquer rede:** o multiplayer deixou de usar conexão direta entre os aparelhos (WebRTC/PeerJS), que falhava em 4G/5G e em muitos roteadores. Agora as mensagens passam por um servidor público de retransmissão (broker MQTT por WebSocket), sem conta e sem servidor próprio. O jogo tenta quatro servidores em ordem (EMQX, Eclipse, HiveMQ e Mosquitto) e quem entra procura o lobby em todos. O lobby mostra o servidor em uso. Para usar outro, defina `window.ARENA_BROKERS` antes do script.
 - **Sexo do personagem:** todas as raças têm versão masculina e feminina, escolhida na tela de seleção (botões no topo, tecla G ou △ no controle) e no lobby do online. A versão feminina usa os mesmos ossos, com ombros e braços mais estreitos, postura mais ereta, rosto com cílios, sobrancelha fina e lábios, e cabelo próprio em cada raça: humana de cabelo longo, elfa com tiara, anã de tranças e sem barba, gnoma de marias-chiquinhas rosa, meio-orc de rabo de cavalo e presas menores, troll de tranças azul-esverdeadas, minotaura de chifres menores e tranças, goblin de rabo de cavalo roxo. Veja `docs/racas-femininas.png`.
 - **Ranking no online:** quando todos caem, aparece uma tabela para todos os jogadores com os abates de cada um (total e por tipo: comuns, arqueiros, conjuradores, grandes e chefes), o dano causado ao chefe, o nível alcançado e o tempo da partida. O host credita cada golpe a quem o deu; dano contínuo (queimadura, sangramento, veneno) conta para quem acertou por último. Veja `docs/ranking.png`.
 - **Tela cheia e iPhone:** no Android e no iPad o jogo entra em tela cheia no primeiro toque; o botão **Tela cheia** no canto superior esquerdo do menu faz o mesmo. No iPhone o Safari não permite tela cheia em sites, então o botão explica como usar **Compartilhar → Adicionar à Tela de Início** (o jogo abre sem as barras do navegador). O zoom de toque duplo e de pinça do iPhone fica bloqueado durante o jogo.
 - **Online mais estável:** os outros jogadores e os inimigos são desenhados com um pequeno atraso ajustado à conexão, entre duas posições recebidas, o que tira as travadas e os teleportes quando os pacotes chegam atrasados ou juntos. Se a conexão com o servidor de sala cair, o jogo reconecta sozinho sem sair da partida.
 - **Desistir da run:** no menu de pausa, encerra a partida e mostra o resumo com o recorde.
-- **Personagens VRoid (opcional, desligado por padrão):** em *Configurações → Boneco 3D (VRoid)* o jogador pode trocar o boneco por um modelo VRM, com animação própria de corpo humano e o visual de cada classe por cima. Nada é baixado enquanto a opção estiver desligada. Veja `modelos/LEIA-ME.md`.
+- **Personagens VRoid (opcional, desligado por padrão):** em *Configurações → Boneco 3D (VRoid)* o jogador pode carregar o próprio modelo VRM (o jogo não traz nenhum modelo 3D pronto), com animação própria de corpo humano e o visual de cada classe por cima. O modelo fica salvo só no aparelho. Veja `modelos/LEIA-ME.md`.
 - **Mira dos projéteis:** facas, magias, martelo arremessado, rajada de flechas, soco à distância e orbe sombrio miram primeiro no inimigo sob o mouse. Com o mouse capturado, no analógico, no controle ou no toque, vale o centro do olhar (a mira no meio da tela); na câmera de cima, a frente do personagem. Sem ninguém na mira, vão no mais forte (boss, depois os grandes) e, se forem todos iguais, no mais perto. Um anel vermelho marca o inimigo na mira.
 - **Celular:** botões no padrão do PPSSPP e editor de layout (posição, tamanho e transparência de cada botão), analógico de câmera, tela cheia na horizontal e aviso para girar o aparelho.
 - **Opções para deixar leve:** Sombras, Contorno, Efeitos de golpe, Grama e flores e Visual PS1 podem ser desligados. No celular as sombras já começam desligadas.
@@ -141,7 +188,7 @@ index.html             o jogo inteiro (HTML + CSS + JS, three.js r128 e PeerJS v
 manifest.webmanifest   dados do app instalável
 icon.svg               ícone
 ohmygame.json          tipo do projeto para o OhMyGame
-modelos/               personagens VRoid (.vrm) e instruções
+modelos/               instruções para usar o seu próprio boneco VRoid (.vrm)
 docs/design.md         documento de design do jogo
 AGENTS.md              regras para agentes de código (OhMyGame, Claude Code, Codex…)
 ```
