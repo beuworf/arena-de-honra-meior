@@ -527,7 +527,7 @@ function mkE(k,sx,sz){const K=EK[k],m=L(K.cl),g=new THREE.Group();m.map=ESK;
   if(g.cb)e.cq=g.cb;return e}
 let NID=0;
 function spawnAnchor(){const c=[];if(!NET.gh)c.push(p);for(const r of NET.rp)if(r.alive)c.push(r);return c.length?c[Math.floor(Math.random()*c.length)]:p}
-function spawn(k='n',nr){const an0=spawnAnchor(),a=rnd(0,PI2),r=rnd(20,32),e=mkE(k,an0.x+Math.cos(a)*r,an0.z+Math.sin(a)*r);e.id=++NID;e.hp*=1+.25*(NET.n-1);e.mx=e.hp;if(k=='B')sfx('boss');if(k=='B'||k=='H'||k=='I')e.bT=LT;bound(e);E.push(e);if(!nr&&!NET.c&&(k=='n'||k=='r'||k=='c')){const c=zRoll();for(let i=0;i<c;i++)zSpawn()}return e}
+function spawn(k='n',nr){const an0=spawnAnchor(),a=rnd(0,PI2),r=rnd(20,32),e=mkE(k,an0.x+Math.cos(a)*r,an0.z+Math.sin(a)*r);e.id=++NID;e.hp*=1+.25*(NET.n-1);if(e.boss)e.hp*=1.4;e.mx=e.hp;if(k=='B')sfx('boss');if(k=='B'||k=='H'||k=='I')e.bT=LT;bound(e);E.push(e);if(!nr&&!NET.c&&(k=='n'||k=='r'||k=='c')){const c=zRoll();for(let i=0;i<c;i++)zSpawn()}return e}
 
 // ---- Combate
 function atk(k){let q=null,bd=7;
@@ -612,7 +612,7 @@ function upd(dt){{const dh=p.hp-p.lhp;if(dh>.001&&RC.heal>1)p.hp=Math.min(PMX,p.
     if(e.vul>0){e.vul-=dt;if(e.lh!==undefined&&e.hp<e.lh)e.hp-=(e.lh-e.hp)*.5}
     if(e.toss>0){e.toss-=dt;e.th=e.th||new Set();for(const o of E)if(o!==e&&!e.th.has(o)&&Math.hypot(o.x-e.x,o.z-e.z)<1.6){e.th.add(o);o.hp-=2.5;o.kx=(o.x-e.x)*7;o.kz=(o.z-e.z)*7;o.fl=.12;shake=.2}if(e.toss<=0)e.th=null}
     e.fl-=dt;e.cd-=dt;e.stun-=dt;e.brk-=dt;e.lf-=dt;e.slow-=dt;e.psn-=dt;e.kd-=dt;e.cht-=dt;if(e.psn>0)e.hp-=.8*dt;e.burn-=dt;e.ice-=dt;e.weak-=dt;e.fear-=dt;if(e.burn>0)e.hp-=.7*dt*(1+RC.mag);e.y+=((e.lf>0?2.2:0)-e.y)*Math.min(1,10*dt);if(e.bleed>0){e.bleed-=dt;e.hp-=.6*dt}
-    if(e.boss){e.stun=e.kd=e.lf=e.slow=e.ice=e.fear=0;e.kx=e.kz=0;if(MD.e===e)MD.t=0;if(e.k=='B')e.eat-=dt;if(e.eat<=0&&e.k=='B'){let v=null,bd=14;for(const o of E)if(!o.boss&&o.hp>0){const dd=Math.hypot(o.x-e.x,o.z-e.z);if(dd<bd){bd=dd;v=o}}if(v){v.hp=0;v.nk=1;e.hp=Math.min(e.mx,e.hp+e.mx*(NET.on?.07:.04));e.fl=.2;e.eat=LV<=1?14:7;toast('O boss devorou um aliado!');ring(v.x,v.z,2,0xff4040)}else e.eat=2}}
+    if(e.boss){e.stun=e.kd=e.lf=e.slow=e.ice=e.fear=0;e.kx=e.kz=0;if(MD.e===e)MD.t=0;if(e.k=='B')e.eat-=dt;if(e.eat<=0&&e.k=='B'){let v=null,bd=14;for(const o of E)if(!o.boss&&o.hp>0){const dd=Math.hypot(o.x-e.x,o.z-e.z);if(dd<bd){bd=dd;v=o}}if(v){v.hp=0;v.nk=1;e.hp=Math.min(e.mx,e.hp+e.mx*(NET.on?.035:.02));e.fl=.2;e.eat=LV<=1?18:10;toast('O boss devorou um aliado!');ring(v.x,v.z,2,0xff4040)}else e.eat=2}}
     let tg=wi==4&&an.alive&&an.mode==1&&Math.hypot(e.x-an.x,e.z-an.z)<Math.hypot(e.x-p.x,e.z-p.z)?an:p;
     if(CL.length){let bd=Math.hypot(e.x-tg.x,e.z-tg.z);for(const c of CL)if(c.hp>0){const dd=Math.hypot(e.x-c.x,e.z-c.z);if(dd<bd){bd=dd;tg=c}}}
     if(wi==9){let bd=Math.hypot(e.x-tg.x,e.z-tg.z);for(const m of MN)if(m.alive){const dd=Math.hypot(e.x-m.x,e.z-m.z)*(m.k=='s'?.5:1);if(dd<bd){bd=dd;tg=m}}if(!al.dead){const dd=Math.hypot(e.x-al.x,e.z-al.z);if(dd<bd){bd=dd;tg=NET.on&&NET.ally?NET.ally:al}}}
