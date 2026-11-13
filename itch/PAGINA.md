@@ -25,6 +25,7 @@ Arquivos desta pasta:
    - marque **Mobile friendly** e escolha **Landscape** (deitado)
    - marque **Fullscreen button**
    - deixe **Click to launch in fullscreen** desmarcado (o jogo já tem botão de tela cheia)
+   - se o celular estiver em pé ou com a rotação travada, o próprio jogo gira a imagem para a horizontal: é só deitar o celular (topo para a esquerda) e jogar
 7. **Description:** cole a descrição abaixo (português e inglês).
 8. **Genre:** Action. **Tags:** as tags abaixo.
 9. **Pricing:** escolha **$0 or donate** (grátis com doação) e uma sugestão, por exemplo **US$ 2**.
