@@ -202,7 +202,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · espinhento e cores</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · novos kits</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="bst"><div id="mt3">📖 Bestiário</div><div id="bfl"></div><div id="bgr"></div><div class="bk" id="bbk" style="display:block">◀ Voltar</div></div>
 <div id="lob"><div id="lh">Lobby · código <b id="lc">----</b></div><input id="lnm" maxlength="10" placeholder="Seu nome" autocomplete="off"><div id="lp"></div><div id="lsel"></div><div id="lm"></div></div>
 <div id="jn"><div id="mt3">Entrar com código</div><input id="jc" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"><div class="row"><span class="btn" id="jgo">Entrar</span><span class="btn" id="jbk">Voltar</span></div><div id="jm"></div></div>
@@ -555,13 +555,29 @@ function strike(){const c=p.c,fx=Math.sin(p.f),fz=Math.cos(p.f);let any=0;const 
     if(d<c.r&&(c.a||d<1||(dx*fx+dz*fz)/d>.1))hit.push([e,d,dx,dz])}
   for(const [e,d,dx,dz] of c.one?hit.sort((a,b)=>a[1]-b[1]).slice(0,1):hit){const air0=e.lf>0,hb=e.hp;e.hp-=c.m*(e.stun>0?2:1)*(e.brk>0?1.5:1)*(p.y>.5&&e.lf>0?1.5:1)*(wi==4&&air0?2:1)*(1+RC.phy);e.hp-=RC.mg0;if(wi==4&&air0){if(!e.boss&&e.hp<=e.mx*.3)e.hp=0;p.hp=Math.min(PMX,p.hp+Math.max(0,hb-Math.max(e.hp,0))*.7);ring(e.x,e.z,1.5,0x66ff88)}dmgNum(e,hb-e.hp,c.m>=2);hitFx(e,dx/d,dz/d,c.m);e.kx=dx/d*c.b;e.kz=dz/d*c.b;e.fl=.12;any=1;if(c.st)e.stun=c.st;if(c.brk)e.brk=6;if(c.bl)e.bleed=4;if(c.bc&&Math.random()<c.bc){e.bleed=4;p.reg=4}if(c.an&&wi==4&&an.alive&&an.mode==0){if(!an.atk&&Math.hypot(e.x-an.x,e.z-an.z)<12)anAtk('bite',e,{mv:1,dm:.6});else{e.hp-=.6;if(AN[an.type][3]=='t')e.bleed=4}}if(wi==5)e.psn=Math.max(e.psn>0?e.psn:0,4);if(c.toss)e.toss=1.2;if(c.lf){e.lf=c.lf;e.wind=0}else if(e.lf>0)e.lf=Math.max(e.lf,.9)}
   if(any&&wi==10){const n=c.one?1:hit.length;p.ev=Math.min(.25,(p.ev||0)+.06*n);p.evT=2.5;pst=Math.min(100,pst+(p.gi>0?.5*Math.min(n,3):1.5*n))}if(any){sfx(c.m>=2?'heavy':'hit');if(p.zmb)p.hp=Math.min(PMX,p.hp+1.5);hs=.03+c.m*.015;shake=.15+c.m*.1;if(wi==8){p.hp=Math.min(PMX,p.hp+1.5);healAllies(p.x,p.z,9,1.5)}}}
-function dodge(){if(wi==10&&!dead&&!NET.gh&&!(p.stn>0)&&corrDash())return;if(dead||NET.gh||p.dg>0||p.dcd>0||p.stn>0)return;sfx('dash');if(wi==5){if(pst<30)return toast('Sem estamina para esquivar');pst-=30}if(wi==9)dogSummon();
+function dodge(){if(wi==0&&!dead&&!NET.gh&&!(p.stn>0)&&(K.KeyL||G.b||tb)){shieldBash();return}if(wi==10&&!dead&&!NET.gh&&!(p.stn>0)&&corrDash())return;if(dead||NET.gh||p.dg>0||p.dcd>0||p.stn>0)return;sfx('dash');if(wi==5){if(pst<30)return toast('Sem estamina para esquivar');pst-=30}if(wi==9)dogSummon();
   p.dg=W[wi].dg.d;p.dcd=W[wi].dg.c;p.inv=W[wi].dg.i;p.dv=W[wi].dg.v;p.att=0;sl.material.opacity=0;
   p.dir=Math.hypot(mx,mz)>.2?Math.atan2(mx,mz):p.f;p.f=p.dir;puff(p.x,.1,p.z,7,0xcdb58a,2,1.2,.45,.15,.4,-Math.sin(p.dir)*2,-Math.cos(p.dir)*2)}
-function jump(){if(dead||NET.gh||p.stn>0)return;if(wi==11){if(p.wf){wolfOff();return}if(p.y>.3){wolfOn();return}}if(wi==10&&p.y>.3&&!(p.gi>0)&&pst>=100){pst=0;p.vy=-22;p.gsl=1;p.inv=.6;return}if(wi==9&&p.y>.3&&!p.vg){p.vg=1;if(CD.vu>0){toast('Demônio voador em recarga: '+Math.ceil(CD.vu)+' s');return}vultSummon();return}
+function jump(){if(dead||NET.gh||p.stn>0)return;if(wi==2&&p.y>.3&&!p.hlv){if(CD.hl>0){toast('Salto heroico em recarga: '+Math.ceil(CD.hl)+' s');return}heroLeap();return}if(wi==11){if(p.wf){wolfOff();return}if(p.y>.3){wolfOn();return}}if(wi==10&&p.y>.3&&!(p.gi>0)&&pst>=100){pst=0;p.vy=-22;p.gsl=1;p.inv=.6;return}if(wi==9&&p.y>.3&&!p.vg){p.vg=1;if(CD.vu>0){toast('Demônio voador em recarga: '+Math.ceil(CD.vu)+' s');return}vultSummon();return}
   if(wi==5&&p.y>.3&&!p.tp){const q=nearest(30),a=q?Math.atan2(p.x-q.x,p.z-q.z):p.f+Math.PI;p.x+=Math.sin(a)*9;p.z+=Math.cos(a)*9;bound(p);p.tp=1;return}
   if(p.y>0||p.att>0||p.dg>0)return;sfx('jump');
   p.vy=wi==3?6.5:9.5;if(wi==3)boom(p.x,p.z,2.4,1,6)}
+// voo até um ponto (pulo a partir do ar), com ação ao pousar
+function leapTo(x,z,vy,cb){const g=26,T=(vy+Math.sqrt(vy*vy+2*g*Math.max(0,p.y)))/g,dx=x-p.x,dz=z-p.z;p.vy=vy;p.f=p.dir=Math.atan2(dx,dz);p.hlv={vx:dx/T,vz:dz/T,cb};p.inv=Math.max(p.inv,T+.2);sfx('jump')}
+// Guerreiro dos machados: segundo pulo = salto heroico no meio dos inimigos, dano em área ao pousar
+function heroLeap(){let bx=null,bz=null,bn=0;for(const e of E){if(e.hp<=0||e.dorm||Math.hypot(e.x-p.x,e.z-p.z)>16)continue;let n=0;for(const o of E)if(o.hp>0&&Math.hypot(o.x-e.x,o.z-e.z)<3.5)n++;if(n>bn){bn=n;bx=e.x;bz=e.z}}
+  if(bx===null){bx=p.x+Math.sin(p.f)*8;bz=p.z+Math.cos(p.f)*8}CD.hl=7;toast('Salto heroico!');
+  leapTo(bx,bz,11,()=>{const r=4,a=3.2*W[wi].dm*(1+(RC.phy||0));for(const e of E)if(e.hp>0&&Math.hypot(e.x-p.x,e.z-p.z)<r){dmgNum(e,a,1);e.kd=Math.max(e.kd>0?e.kd:0,1)}boom(p.x,p.z,r,a,14);ring(p.x,p.z,r,0xffb050);ring(p.x,p.z,r*.55,0xffffff);puff(p.x,.3,p.z,26,0xcdb58a,7,4,.6,.2);shake=Math.max(shake,.8);hs=.08;sfx('hit')})}
+// Paladino: pulo + △ = salta até o aliado, afasta os inimigos e dá escudo aos dois (sozinho: salta à frente e protege só a si)
+function palLeap(){if(CD.pv>0){toast('Salto protetor em recarga: '+Math.ceil(CD.pv)+' s');return}let a=null,bd=30;if(NET.on)for(const r of NET.rp)if(r.alive){const d=Math.hypot(r.x-p.x,r.z-p.z);if(d<bd){bd=d;a=r}}
+  const tx=a?a.x-Math.sin(p.f)*1.2:p.x+Math.sin(p.f)*7,tz=a?a.z-Math.cos(p.f)*1.2:p.z+Math.cos(p.f)*7;CD.pv=12;
+  leapTo(tx,tz,10,()=>{const r=5;for(const e of E){if(e.hp<=0)continue;const dx=e.x-p.x,dz=e.z-p.z,d=Math.hypot(dx,dz)||.01;if(d<r){if(!e.boss){e.kx=dx/d*20;e.kz=dz/d*20;e.stun=Math.max(e.stun>0?e.stun:0,.6)}e.hp-=.8;e.fl=.12}}
+    const sh=30;p.shd=Math.max(p.shd||0,sh);p.shdT=10;ring(p.x,p.z,r,0xffe27a);ring(p.x,p.z,3,0x8fd3ff);puff(p.x,1,p.z,22,0xffe27a,6,5,.6,.16);shake=Math.max(shake,.5);sfx('heal');
+    if(a){nemit('ev',{t:'psh',to:a.peer,sh});xSup(sh*.6,a);toast('Salto protetor! Escudo +'+sh+' para vocês dois')}else toast('Salto protetor! Escudo +'+sh)})}
+// Guerreiro do escudo: segurar □ e apertar R1 = avanço com escudada que atordoa (sem alvo, vai no inimigo mais perto)
+function shieldBash(){if(CD.sb>0){toast('Escudada em recarga: '+Math.ceil(CD.sb)+' s');return}const q=ptarget(9)||nearest(12);if(!q)return toast('Sem alvo');CD.sb=4;
+  const a=aim(q),d=Math.hypot(q.x-p.x,q.z-p.z);p.f=p.dir=a;p.dg=.2;p.dv=Math.max(0,d-1.1)/.2;p.inv=.35;p.dcd=.4;sfx('dash');
+  setTimeout(()=>{if(q.hp<=0)return;dmgE(q,1.6*W[wi].dm,12,p.x,p.z);q.stun=Math.max(q.stun>0?q.stun:0,q.boss?0:2);q.wind=0;dmgNum(q,1.6*W[wi].dm,1);hitFx(q,Math.sin(a),Math.cos(a),2);ring(q.x,q.z,1.6,0xd4dbe2);puff(q.x,1.2,q.z,12,0xffffff,5,3,.35,.1);shake=Math.max(shake,.45);hs=.07;sfx('hit');toast('Escudada! Atordoado')},190)}
 function foe(e,dx,dz,d){const nx=dx/d,nz=dz/d;if(e.rng==1&&Math.random()<.2){ring(p.x,p.z,1.2,0xffffff);dmgNum({x:p.x,z:p.z,sz:1.1},0);return}
   if(Math.random()<RC.ev+sbOf()[2]+(wi==5?.15:0)+(wi==11&&p.wf?.25:0)+(wi==10?(p.ev||0)+(p.gi>0?.25:0):0)){toast('Esquivou!');ring(p.x,p.z,1.5,0xffffff);return}
   if(p.rh>0){e.hp-=e.dm;e.fl=.2;e.kx=-nx*3;e.kz=-nz*3;shake=.35;hs=.06;ring(p.x,p.z,3,0xffe27a);toast('Dano devolvido!');return}
@@ -584,8 +600,8 @@ function upd(dt){{const dh=p.hp-p.lhp;if(dh>.001&&RC.heal>1)p.hp=Math.min(PMX,p.
   const wb=(wi<3||(wi==8&&p.y<=.2))&&!!(K.KeyL||tb||G.b);
   if(wb&&!p.blk&&p.att<=0&&p.dg<=0){p.blk=1;p.pw=W[wi].par?.25:0}
   if(!wb||p.att>0||p.dg>0)p.blk=0;
-  hold(dt);for(const k in CD)CD[k]-=dt*(1+XL.cd);if(XL.rg&&!dead&&!NET.gh&&p.hp>0)p.hp=Math.min(PMX,p.hp+XL.rg*dt);pst=Math.min(100,pst+(wi==10?0:14)*dt);p.bs-=dt;p.br-=dt;p.knT-=dt;if(p.reg>0){p.reg-=dt;p.hp=Math.min(PMX,p.hp+3*dt)}anUpd(dt);projUpd(dt);holyUpd(dt);orbUpd(dt);p.rh-=dt;p.act-=dt;aqUpd(dt);mnUpd(dt);tmUpd(dt);nHold(dt);allyUpd(dt);epUpd(dt);drUpd(dt);fxUpd(dt);corrUpd(dt);xamUpd(dt);if(p.glide>0){p.glide-=dt;p.vy=Math.max(p.vy-2*dt,-1)}else p.vy-=26*dt;p.y+=p.vy*dt;
-  if(p.y<=0){if(p.vy<-5)puff(p.x,.1,p.z,9,0xcdb58a,2.6,1.6,.5,.16,.4);p.y=0;p.vy=0;p.tp=0;p.vg=0;if(p.gsl){p.gsl=0;giantOn()}if(p.pl){p.pl=0;strike();hs=.08;shake=.7}}
+  hold(dt);for(const k in CD)CD[k]-=dt*(1+XL.cd);if(XL.rg&&!dead&&!NET.gh&&p.hp>0)p.hp=Math.min(PMX,p.hp+XL.rg*dt);pst=Math.min(100,pst+(wi==10?0:14)*dt);p.bs-=dt;p.br-=dt;p.knT-=dt;if(p.reg>0){p.reg-=dt;p.hp=Math.min(PMX,p.hp+3*dt)}anUpd(dt);projUpd(dt);holyUpd(dt);orbUpd(dt);p.rh-=dt;p.act-=dt;aqUpd(dt);mnUpd(dt);tmUpd(dt);nHold(dt);allyUpd(dt);epUpd(dt);drUpd(dt);fxUpd(dt);corrUpd(dt);xamUpd(dt);if(p.glide>0){p.glide-=dt;p.vy=Math.max(p.vy-2*dt,-1)}else p.vy-=26*dt;p.y+=p.vy*dt;if(p.hlv){p.x+=p.hlv.vx*dt;p.z+=p.hlv.vz*dt;bound(p)}
+  if(p.y<=0){if(p.hlv){const h=p.hlv;p.hlv=null;h.cb()}if(p.vy<-5)puff(p.x,.1,p.z,9,0xcdb58a,2.6,1.6,.5,.16,.4);p.y=0;p.vy=0;p.tp=0;p.vg=0;if(p.gsl){p.gsl=0;giantOn()}if(p.pl){p.pl=0;strike();hs=.08;shake=.7}}
   if(p.dg>0){p.dg-=dt;p.x+=Math.sin(p.dir)*p.dv*dt;p.z+=Math.cos(p.dir)*p.dv*dt}
   else if(p.att>0){
     p.att-=dt;const pr=1-Math.max(p.att,0)/p.dur;
@@ -610,6 +626,7 @@ function upd(dt){{const dh=p.hp-p.lhp;if(dh>.001&&RC.heal>1)p.hp=Math.min(PMX,p.
     if(d<.9&&pjT.k=='a'){pj.visible=false;armDefl(pjT,pj.position.x,pj.position.z)}else if(d<.9){pj.visible=false;pjT.hp-=1;pjT.bleed=5;pjT.axe=1;pjT.fl=.12;hs=.04;shake=.2}
     else{pj.position.x+=dx/d*26*dt;pj.position.z+=dz/d*26*dt;pj.rotation.x+=22*dt}}
   else{pj.visible=false;p.ax=0;gear()}}
+  if(p.ax&&!pj.visible){p.axT=(p.axT||0)+dt;if(p.axT>6){p.axT=0;p.ax=0;for(const e of E)e.axe=0;gear();puff(p.x,1.2,p.z,10,0xd8d0c0,4,3,.4,.1);toast('O machado voltou para a mão')}}else p.axT=0;
   portUpd(dt);onlUpd(dt);ninUpd(dt);if(NET.c)bxUpd(dt);if(!NET.c){bossAI(dt);LT+=dt;sp-=dt;bsp-=dt;
   {const nN=E.filter(o=>o.k!='b'&&o.k!='B').length,nB=E.filter(o=>o.k=='b').length,wn=Math.min(Math.round((5+Math.floor(LT/10)+2*(LV-1))*(1+.5*(NET.n-1))),16+8*(NET.n-1));
   if(!PGT&&nN<wn&&sp<=0){spawnK(pickK());sp=Math.max(.5,1.1-LT/200)}
@@ -875,7 +892,7 @@ function anAnim(dt){qdAn(dt);const A=an.alive?an.atk:null,g=an.g,ez=u=>u*u*(3-2*
 function abite(t,dt){if(wi!=4||!an.alive||!t){hB=0;return}
   if(hB>=0&&p.k=='H'&&p.ct>0){hB+=dt;if(hB>.3&&an.bcd<=0&&an.en>=30){hB=-9;let q=null,b=-1;for(const e of E)if(Math.hypot(e.x-an.x,e.z-an.z)<14&&e.hp>b){b=e.hp;q=e}
     if(q){an.en-=30;an.bcd=4;anAtk('pounce',q,{big:1})}}}}
-function bars(){if(NET.on&&NET.ph=='p')netBars();const a=wi>=3,n=wi==4;$('mn').style.display=wi==9||wi==10||wi==11?'block':'none';if(wi==11)$('mn').textContent=(p.wf?'🐺 Lobo espiritual · evasão +25% · □ avanço'+(CD.wd>0?' '+Math.ceil(CD.wd)+'s':''):'🗿 Totens '+TOT.length+'/3 · 💧 '+(CD.wh>0?Math.ceil(CD.wh)+' s':'pronta')+(p.zw>0?' · ○ de novo: prender!':p.zc?' · ⚡ canalizando':''));if(wi==10)$('mn').textContent='👁 Evasão '+Math.round(100*((p.ev||0)+(p.gi>0?.25:0)))+'%'+(p.gi>0?' · 👹 Gigante: energia '+Math.ceil(pst)+'%':pst>=100?' · Poder cheio: pule e aperte ✕':'');if(wi==9)$('mn').textContent=[['z','🧟'],['m','💀'],['s','🛡️']].map(([k,i])=>{const m=NM[k];return i+' '+(m?(m.alive?Math.round(100*m.hp/m.max)+'%':'✖'):'–')}).join('   ')+(NET.on?'   👥 '+(al.dead?'✖':Math.round(100*al.hp/al.max)+'%')+(al.zombie?' 🧟':al.mk?' ☠':''):'');{const nx=!bigOn?'Grandes em '+Math.max(0,Math.ceil(TB-LT))+'s':!bossOn?'Boss em '+Math.max(0,Math.ceil(TBOSS-LT))+'s':'';$('lv').textContent='Nível '+LV+' · '+Math.floor(LT/60)+':'+String(Math.floor(LT%60)).padStart(2,'0')+(nx?' · '+nx:'');const bo=E.find(o=>o.boss);$('bb').style.display=bo?'block':'none';if(bo){let h=0,mx=0;for(const o of E)if(o.boss&&o.hp>0){h+=o.hp;mx+=o.mx}$('bbi').style.width=100*Math.max(0,h)/Math.max(1,mx)+'%'}}$('bW').style.display=cls==2?'':'none';$('bR').style.display=wi==3?'':'none';$('sb').style.display=a?'block':'none';$('ab').style.display=$('eb').style.display=n?'block':'none';
+function bars(){if(NET.on&&NET.ph=='p')netBars();const a=wi>=3,n=wi==4;$('mn').style.display=wi==9||wi==10||wi==11?'block':'none';if(wi==11)$('mn').textContent=(p.wf?'🐺 Lobo espiritual · evasão +25% · □ avanço'+(CD.wd>0?' '+Math.ceil(CD.wd)+'s':''):'🗿 Totens '+TOT.length+'/3 · 💧 '+(CD.wh>0?Math.ceil(CD.wh)+' s':'pronta')+(p.zw>0?' · ○ de novo: prender!':p.zc?' · ⚡ canalizando':''));if(wi==10)$('mn').textContent='👁 Evasão '+Math.round(100*((p.ev||0)+(p.gi>0?.25:0)))+'%'+(p.gi>0?' · 👹 Gigante: energia '+Math.ceil(pst)+'%':pst>=100?' · Poder cheio: pule e aperte ✕':'');if(wi==9)$('mn').textContent=[['z','🧟'],['m','💀'],['s','🛡️']].map(([k,i])=>{const m=NM[k];return i+' '+(m?(m.alive?Math.round(100*m.hp/m.max)+'%':'✖'):'–')}).join('   ')+(NET.on?'   👥 '+(al.dead?'✖':Math.round(100*al.hp/al.max)+'%')+(al.zombie?' 🧟':al.mk?' ☠':''):'');{const nx=!bigOn?'Grandes em '+Math.max(0,Math.ceil(TB-LT))+'s':!bossOn?'Boss em '+Math.max(0,Math.ceil(TBOSS-LT))+'s':'';$('lv').textContent='Nível '+LV+' · '+Math.floor(LT/60)+':'+String(Math.floor(LT%60)).padStart(2,'0')+(nx?' · '+nx:'');const bo=E.find(o=>o.boss);$('bb').style.display=bo?'block':'none';if(bo){let h=0,mx=0;for(const o of E)if(o.boss&&o.hp>0){h+=o.hp;mx+=o.mx}$('bbi').style.width=100*Math.max(0,h)/Math.max(1,mx)+'%'}}$('bW').style.display=cls==2?'':'none';$('bR').style.display=wi==3||wi==7?'':'none';{const lb=wi==7?'R2<small>Puxar</small>':'R2<small>Cone</small>';if($('bR').innerHTML!==lb)$('bR').innerHTML=lb}$('sb').style.display=a?'block':'none';$('ab').style.display=$('eb').style.display=n?'block':'none';
   $('hp').style.width=Math.max(0,p.hp)/PMX*100+'%';if(a)$('st').style.width=pst+'%';$('els').style.display=cls==2?'flex':'none';if(cls==2){orb.material.color.setHex(ELC[el]);document.querySelectorAll('#els button').forEach(b=>b.classList.toggle('on',+b.dataset.e==el))}if(n){$('ah').style.width=100*an.hp/an.max+'%';$('ae').style.width=an.en+'%'}}
 
 // ---- Mago (4 elementos x 3 magias; a barra amarela é a mana)
@@ -943,7 +960,7 @@ addEventListener('error',e=>toast('Erro: '+e.message+' (linha '+e.lineno+')'));
 const hmH=add(new THREE.BoxGeometry(.1,.1,1.6),L(0x6b4a2b),0,0,1,sw),hmB=add(new THREE.BoxGeometry(.55,.42,.42),L(0xbfc6d0),0,0,1.9,sw),halo=add(new THREE.TorusGeometry(.26,.03,4,10),L(0xffe27a),0,.42,0,hd),
   alS=add(new THREE.SphereGeometry(1.4,10,8),new THREE.MeshBasicMaterial({color:0x8fd3ff,transparent:true,opacity:.28,depthWrite:false}),0,1,0,al.g),
   HMG=new THREE.BoxGeometry(.5,.4,.4),HMM=new THREE.MeshBasicMaterial({color:0xffe27a}),HG=[];
-halo.rotation.x=Math.PI/2;alS.visible=false;CD.mh=CD.pl=CD.rh=0;
+halo.rotation.x=Math.PI/2;alS.visible=false;CD.mh=CD.pl=CD.rh=0;CD.hl=CD.sb=CD.pv=0;
 function holy(x,z){const m=new THREE.Mesh(RG,new THREE.MeshBasicMaterial({color:0xffe27a,transparent:true,opacity:.3,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x,.12,z);m.scale.setScalar(5);S.add(m);HG.push({x,z,r:5,t:7,tk:0,m})}
 // online: curas de apoio valem para todos os jogadores aliados no alcance (o aliado NPC só existe como espelho do mais próximo)
 function healAllies(x,z,r,a){if(!NET.on||NET.ph!='p')return 0;let n=0;for(const q of NET.rp)if(q.alive&&Math.hypot(q.x-x,q.z-z)<r){nemit('ev',{t:'heal',to:q.peer,a:+(a*(RC.ally||1)).toFixed(1)});xSup(a*(RC.ally||1),q);n++}return n}
@@ -960,7 +977,8 @@ function hamSlam(){p.bl=0;const c={d:.45,h:9,r:4.6,m:2,b:6,a:1,lf:1.6};p.c=c;p.d
 function pala(){const air=p.y>.2;
   if(p.bl>0){if(air)hamSlam();else atk('L')}
   else if(p.bs>0){p.bs=0;if(CD.mh<=0)hamThrow(air)}
-  else if(p.bh>0){p.bh=0;if(air){if(CD.pl<=0)pull()}else if(CD.rh<=0)raise()}}
+  else if(p.bh>0){p.bh=0;if(air)palLeap();else if(CD.rh<=0)raise()}
+  else if(p.br>0){p.br=0;if(CD.pl<=0)pull();else toast('Puxar aliado em recarga: '+Math.ceil(CD.pl)+' s')}}
 // ---- Arco em combo (3+3+3) e Monge
 const AQ=[];let ob=0,orbT=0;
 function volley(){const q=ptarget(22);if(!q)return toast('Sem alvo');p.bl=0;const n=p.act>0?(p.ac%3)+1:1;p.ac=n;p.act=1.1;p.f=aim(q);CD.sh=.34;for(let i=0;i<3;i++)AQ.push({t:i*.07,q,last:n==3&&i==2})}
@@ -1519,6 +1537,7 @@ function onEv(m){const d=m.data;if(!d||m.isMe)return;
   else if(d.t=='ck'){const c=CL.find(c=>c.el==d.el);if(c)c.hp=0}
   else if(d.t=='xp'){xGain(+d.a||0)}
   else if(d.t=='heal'){if(!NET.gh&&NET.ph=='p'){p.hp=Math.min(PMX,p.hp+(+d.a||0));NET.hfT=NET.hfT||0;const n=performance.now();if(n-NET.hfT>400){NET.hfT=n;puff(p.x,1,p.z,8,0x66ff88,2.5,3,.6,.12)}hud()}}
+  else if(d.t=='psh'){if(NET.ph=='p'&&!NET.gh){p.shd=Math.max(p.shd||0,+d.sh||0);p.shdT=10;ring(p.x,p.z,3,0xffe27a);toast('O Paladino te protegeu! Escudo +'+Math.round(d.sh))}}
   else if(d.t=='tp'){if(NET.ph=='p'&&!NET.gh){p.x=+d.x;p.z=+d.z;p.shd=+d.sh||0;p.shdT=10;ring(p.x,p.z,3,0x8fd3ff);toast('Você foi puxado! Escudo +'+Math.round(d.sh))}}
   else if(d.t=='mk'){p.mk=d.on?1:0;if(d.on){p.mkBy=m.peer;toast('Você foi marcado: voltará como zumbi se cair')}}}
 function onCmd(m){const d=m.data;if(!d||m.isMe||!isHost(m.peer))return;
