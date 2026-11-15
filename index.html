@@ -1051,7 +1051,7 @@ function mnUpd(dt){const mh=(m,f)=>{if(!NET.on&&m.hp<m.max){m.hp=Math.min(m.max,
       else{if(dp>3)mvTo(m,p.x,p.z,6,dt);
       if(m.cd<=0){const rr=m.cmd>0?5:3.2,kb=m.cmd>0?16:9;let n=0;for(const e of E){const dx=e.x-m.x,dz=e.z-m.z,d=Math.hypot(dx,dz)||.01;if(d<rr){e.kx=dx/d*kb;e.kz=dz/d*kb;e.stun=Math.max(e.stun>0?e.stun:0,m.cmd>0?1:.3);n++}}if(n){ring(m.x,m.z,rr,0x8fb3ff);mh(m,.02*Math.min(n,4));m.cd=m.cmd>0?3:1}else m.cd=.3}}}
     push(m,.5);bound(m)}
-  m.g.position.set(m.x,0,m.z);m.g.rotation.y=m.f;m.g.scale.y=m.alive?1:.25}}
+  m.g.position.set(m.x,0,m.z);m.g.rotation.y=m.f;m.g.scale.y=m.alive?1:.25;minion3d(m,dt)}}
 function dogSummon(){const g=mkDog();TM.push({k:'d',x:p.x,z:p.z,t:8,cd:0,g,f:0});boost=Math.max(boost,3.5);toast('Cão invocado!')}
 function vultSummon(){const g=mkVult();TM.push({k:'v',x:p.x,z:p.z,t:9,cd:0,g,f:0});CD.vu=10;p.glide=1;p.vy=Math.max(p.vy,.8);toast('Abutre invocado!')}
 function tmUpd(dt){for(let i=TM.length-1;i>=0;i--){const m=TM[i];m.t-=dt;m.cd-=dt;const tgt=nearest(16,p.x,p.z);let y=0;
@@ -1424,12 +1424,13 @@ function avUpd(r,dt){const g=r.av,R=g.R;if(!R)return;const Vx=r.vx??r.x,Vy=r.vy?
   let tw=0,ln=0;if(a){if(k=='L'||k=='S'){tw=d*.38*sv;ln=.1*as}else if(k=='H'||k=='G')ln=sv<0?.14*sv:.3*sv;else if(k=='T')ln=sv<0?.1*sv:.24*sv;else ln=.12*as}else if(r.dg)ln=.45;
   r.tw=(r.tw||0)+(tw-(r.tw||0))*.45;r.ln=(r.ln||0)+(ln-(r.ln||0))*.35;g.rotation.y=Vf+(a&&k=='S'?eio(pr)*PI2:0);g.rotation.x=r.ln;R.body.rotation.y=r.tw*(g.w==7?2.6:1.4);r.sh7=(r.sh7||0)+((g.w==7&&!a?.06:0)-(r.sh7||0))*.15;R.body.rotation.z=g.w==7?-r.tw*.55+r.sh7:0;R.hd.rotation.z=g.w==7?-r.sh7:0;R.hd.rotation.y=-r.tw*.8;
   R.body.position.y=BY+(m>.1&&!a?Math.abs(Math.sin(ph))*.08:Math.sin(t*2.4)*.015)+g.dy-(a&&(k=='H'||k=='G')&&sv>0?.14*sv:0);
-  R.rc=g.rc;armPose(R,{wi:g.w,att:!!a,sv,k,d,pr,n:r.ak?r.ak.n:0,blk:r.blk,m,ph,y:Vy,dg:r.dg},dt||.016);R.pSh.visible=!!r.shd}
+  R.rc=g.rc;armPose(R,{wi:g.w,att:!!a,sv,k,d,pr,n:r.ak?r.ak.n:0,blk:r.blk,m,ph,y:Vy,dg:r.dg},dt||.016);R.pSh.visible=!!r.shd;
+  if(VRV&&!g.hv&&(g.hvN=(g.hvN||0)-(dt||.016))<=0){g.hvN=1;avHero(g,{sx:g.rc>=8})}if(g.hv){const on=!!VRV;g.hv.scene.visible=on;R.body.visible=R.legL.visible=R.legR.visible=!on;if(on)avHeroAnim(r,g.hv,dt||.016,sp)}}
 // invocações e animal dos outros jogadores (só visual; o dano chega pela rede)
 function rpMinions(r,pr,dt){r.mns=r.mns||{};const seen={};const list=(pr.mn||'').split(';').filter(Boolean);list.forEach((s2,i)=>{const [k,x,z]=s2.split(','),cl=k[0]=='c',key=cl?k:k+i;seen[key]=1;let o=r.mns[key];
-    if(!o){let g;if(cl){g=r.av.clone(true);const mk=new THREE.Mesh(BLG,new THREE.MeshBasicMaterial({color:ELC[+k[1]]||0xffffff,transparent:true,opacity:.7,depthWrite:false}));mk.rotation.x=-Math.PI/2;mk.position.y=.09;mk.scale.setScalar(1.3);g.add(mk);S.add(g);ring(+x,+z,1.2,ELC[+k[1]])}else if(k=='z'||k=='m'||k=='s')g=mkMin(k);else g=k=='t'?mkTot():k=='v'?mkVult():mkDog();o=r.mns[key]={g,x:+x,z:+z,k};if(cl)Object.assign(o,{cl:1,el:+k[1],hp:2,mn:1,fl:0})}
+    if(!o){let g;if(cl){g=r.av.clone(true);if(r.av.hv&&THREE.SkeletonUtils){const i=r.av.children.indexOf(r.av.hv.scene);if(i>=0){g.remove(g.children[i]);g.add(THREE.SkeletonUtils.clone(r.av.hv.scene))}}const mk=new THREE.Mesh(BLG,new THREE.MeshBasicMaterial({color:ELC[+k[1]]||0xffffff,transparent:true,opacity:.7,depthWrite:false}));mk.rotation.x=-Math.PI/2;mk.position.y=.09;mk.scale.setScalar(1.3);g.add(mk);S.add(g);ring(+x,+z,1.2,ELC[+k[1]])}else if(k=='z'||k=='m'||k=='s')g=mkMin(k);else g=k=='t'?mkTot():k=='v'?mkVult():mkDog();o=r.mns[key]={g,x:+x,z:+z,k};if(cl)Object.assign(o,{cl:1,el:+k[1],hp:2,mn:1,fl:0})}
     if(o.cl&&NET.h&&o.hp<=0&&!o.kd){o.kd=1;o.g.visible=false;nemit('ev',{t:'ck',to:r.peer,el:o.el});puff(o.x,1.1,o.z,14,ELC[o.el],5,5,.6,.15)}
-    const kk=Math.min(1,10*dt),dx=+x-o.x,dz=+z-o.z;o.x+=dx*kk;o.z+=dz*kk;o.g.position.set(o.x,o.k=='v'?2.2+Math.sin(t*5)*.2:0,o.z);if(o.g.wL){const fl=Math.sin(t*9)*.55-.1;o.g.wL.rotation.z=-fl;o.g.wR.rotation.z=fl}if(Math.abs(dx)+Math.abs(dz)>.02)o.g.rotation.y=Math.atan2(dx,dz)});
+    const kk=Math.min(1,10*dt),dx=+x-o.x,dz=+z-o.z;o.x+=dx*kk;o.z+=dz*kk;o.g.position.set(o.x,o.k=='v'?2.2+Math.sin(t*5)*.2:0,o.z);minion3d(o,dt,1);if(o.g.wL){const fl=Math.sin(t*9)*.55-.1;o.g.wL.rotation.z=-fl;o.g.wR.rotation.z=fl}if(Math.abs(dx)+Math.abs(dz)>.02)o.g.rotation.y=Math.atan2(dx,dz)});
   for(const key in r.mns)if(!seen[key]){const o=r.mns[key];if(o.cl&&!o.kd)puff(o.x,1.1,o.z,14,ELC[o.el],5,5,.6,.15);S.remove(o.g);delete r.mns[key]}
   if(pr.an){const [ty,x,z]=pr.an.split(',');if(!r.anG||r.anT!=ty){if(r.anG)S.remove(r.anG);anLook(+ty);const g=an.g.clone(true),mt=AM2.clone();anLook(an.type);mt.color.setHex(AN[+ty][1]);mt.map=+ty==1?TSTR:TFUR;g.traverse(o=>{if(o.isMesh&&o.material===AM2)o.material=mt});g.scale.setScalar(AN[+ty][2]);g.visible=true;S.add(g);r.anG=g;r.anT=ty;r.ax=+x;r.az=+z}
     const kk=Math.min(1,10*dt),dx=+x-r.ax,dz=+z-r.az;r.ax+=dx*kk;r.az+=dz*kk;r.anG.position.set(r.ax,0,r.az);if(Math.abs(dx)+Math.abs(dz)>.02)r.anG.rotation.y=Math.atan2(dx,dz)}
@@ -1932,7 +1933,7 @@ function hBuild(g){g.children.forEach(c=>{if(c.geometry!==BLG)c.visible=false});
   const ar=sg(rd,-.22,.55,0);C2(.035,.03,.35,ar,0,-.17,0,bn);ar.rotation.x=-1.25;const lc=sg(ar,0,-.34,0);C2(.035,.02,2.6,lc,0,0,0,ir);add(new THREE.ConeGeometry(.08,.32,5),L(0xb0b8c0),0,1.4,0,lc);add(new THREE.ConeGeometry(.12,.18,8),ir,0,-.2,0,lc);lc.rotation.x=0;
   const al=sg(rd,.22,.55,0);C2(.035,.03,.35,al,0,-.17,0,bn);al.rotation.x=-.6;add(new THREE.CylinderGeometry(.24,.24,.05,10),ir,.08,-.36,.05,al).rotation.z=PI/2;S2(.07,al,.12,-.36,.05,bn);
   g.hb={bd,nk,hd,jw,lg,tl,ar,rd}}
-function hAnim(e,dt){const h=e.g.hb;if(!h)return;const m=Math.max(e.mv||0,e.chg?1:0),sp=e.chg?16:6+5*m;e.hph=(e.hph||0)+dt*sp;const ph=e.hph,S=Math.sin;e.hrr=(e.hrr||0)-dt;
+function hAnim(e,dt){const h=e.g.hb;if(!h)return;rider3d(e,h,dt);const m=Math.max(e.mv||0,e.chg?1:0),sp=e.chg?16:6+5*m;e.hph=(e.hph||0)+dt*sp;const ph=e.hph,S=Math.sin;e.hrr=(e.hrr||0)-dt;
   const P=[0,PI2*.5,PI2*.12,PI2*.62].map(o=>S(ph+o));h.lg.forEach((l,i)=>{l.u.rotation.x=P[i]*.75*m;l.lo.rotation.x=(i<2?Math.max(0,S(ph+(i?3.4:.3)+1.3)):-Math.max(0,S(ph+(i==2?.8:3.9)+1.3))*.6)*m*1.1});
   let bx=S(ph*2)*.05*m,by=1.05+Math.abs(S(ph))*.07*m,nx=-.75+S(ph)*.12*m,jaw=.05;
   if(e.hrr>0){const u=1-e.hrr/.9,s=u<.55?Math.sin(u/.55*Math.PI/2):Math.cos((u-.55)/.45*Math.PI/2);bx=-.6*s;by=1.05+.35*s;nx=-1.1*s-.75*(1-s);jaw=.5*s;h.lg[0].u.rotation.x=h.lg[1].u.rotation.x=-1.3*s;h.lg[0].lo.rotation.x=h.lg[1].lo.rotation.x=1.2*s}
@@ -2571,6 +2572,47 @@ if(location.hash=='#dbg')window.__dbg={ptarget,MP,NET,E,p,hurt,get LV(){return L
 (async()=>{try{if(!THREE.GLTFLoader)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js');const r=await mget('armas');if(!r.ok)return;
   const g=await new Promise(async(ok,no)=>{try{new THREE.GLTFLoader().parse(await r.arrayBuffer(),'',ok,no)}catch(e){no(e)}});
   g.scene.traverse(o=>{const k=(o.userData&&o.userData.name)||o.name;if(o.isMesh&&WG[k]){WG[k].copy(o.geometry);WG[k].computeBoundingSphere();WG[k].computeBoundingBox()}})}catch(e){console.warn('armas 3D',e)}})();
+// ---- Modelos 3D também nas invocações humanoides do Necromante, no cavaleiro do Cavaleiro Esqueleto e nos outros jogadores do online
+Object.assign(EMT,{Nz:[['orc_m','orc_f'],0x9ab088],Nm:[['elf_m'],0,1],Ns:[['orc_m'],0xffffff],Hr:[['elf_m','orc_m'],0,1]});
+Object.assign(EOUT,{Nz:[ELG,0x4a3a2a,1],Nm:[ERH,0x4a2a6a,1],Ns:[ERP,0x3a4a8a,1],Hr:[['R_Legs','P_Feet','R_Pauldrons'],0x3a3a42,1]});
+const MNK={z:'Nz',m:'Nm',s:'Ns'},MNW={z:['sword','shield'],m:['staff',null],s:['sword','shield']};
+// monta o modelo com as armas nas mãos (mesmo caminho dos inimigos); devolve o "inimigo de mentira" que o emAnim anima
+function m3dMake(g,kind,wR,wL){if(g.md3!==undefined||!EMD.ok)return g.md3||null;const aL=new THREE.Group(),aR=new THREE.Group(),lL=new THREE.Group(),lR=new THREE.Group(),
+    W=(geo,arm)=>{if(!geo)return;const w=new THREE.Mesh(geo,WPM);w.position.set(0,-.7,.05);w.rotation.x=-.6;arm.add(w)};
+  W(wR&&WG[wR],aR);W(wL&&WG[wL],aL);const e={g,k:kind,aL,aR,lL,lR};try{emAttach(e)}catch(er){console.warn('modelo 3D',er)}
+  if(!e.md){g.md3=null;return null}Object.assign(e,{m:{color:new THREE.Color(0)},cl:0,sz:1,wind:0,fl:0,mv:0});g.md3=e;return e}
+function m3dTick(g,kind,dt,atk,hurt,wR,wL){const e=g.md3||m3dMake(g,kind,wR,wL);if(!e)return;const x=g.position.x,z=g.position.z,sp=dt>0&&e.px!==undefined?Math.hypot(x-e.px,z-e.pz)/dt:0;e.px=x;e.pz=z;
+  e.mv+=(Math.min(1,sp/5)-e.mv)*Math.min(1,dt*8);e.wind=atk?.3:Math.max(0,e.wind-dt);e.fl=hurt?.12:Math.max(0,e.fl-dt);emAnim(e,dt)}
+function minion3d(m,dt,remote){const k=m.k;if(!MNK[k]||!m.g)return;const w=MNW[k];if(remote){m3dTick(m.g,MNK[k],dt,0,0,w[0],w[1]);return}
+  m3dTick(m.g,MNK[k],dt,m.cd>(m.pcd??m.cd)+.05,m.hp<(m.php??m.hp)-.01,w[0],w[1]);m.pcd=m.cd;m.php=m.hp}
+// cavaleiro esqueleto montado: modelo com pintura de ossos, sentado na sela, lança e escudo
+function rider3d(e,h,dt){if(!h.r3&&EMD.ok&&!h.r3f){h.r3f=1;const r2=new THREE.Group();r2.position.set(0,-.2,.02);r2.scale.setScalar(.62);h.rd.add(r2);const m=m3dMake(r2,'Hr','spear','shield');
+    if(m){h.r3=m;h.rd.children.forEach(c=>{if(c!==r2)c.visible=false});const B=m.md.B;m.md.A.idle.play()}}
+  if(!h.r3)return;const d=h.r3.md,B=d.B;d.mx.update(dt);
+  for(const s of['Left','Right']){const sg=s=='Left'?1:-1;if(B[s+'UpperLeg'])B[s+'UpperLeg'].rotation.set(-1.35,0,sg*.55);if(B[s+'LowerLeg'])B[s+'LowerLeg'].rotation.set(1.55,0,0)}
+  if(B.LeftUpperArm)B.LeftUpperArm.rotation.set(-.2,0,1.0+(e.chg?.25:0));if(B.LeftLowerArm)B.LeftLowerArm.rotation.set(0,0,-.2)}
+// outros jogadores: cópia do herói 3D com a raça, o sexo e a classe de cada um
+function heroClone(v0){const sc=THREE.SkeletonUtils.clone(v0.scene),B={},hair={},parts={},v={scene:sc,hero:1,sx:v0.sx,B,hair,parts,acc:[],dy:0,lean:0,ks:HKS,kk:HKIT,tint:{value:new THREE.Vector3(1,1,1)},h:v0.h,k:v0.k,hipY:v0.hipY,ftY:v0.ftY},mc={};
+  sc.traverse(o=>{const nm=(o.userData&&o.userData.name)||o.name;if(o.isBone)B[nm]=o;const pk=nm.replace(/_\d+$/,'');if(/^[RP]_/.test(pk))(parts[pk]=parts[pk]||[]).push(o);if(!o.isMesh)return;o.frustumCulled=false;if(/^Hair_/.test(nm))hair[nm]=o;
+    const m=o.material,k=m.name;if(!mc[k])mc[k]=k=='Corpo'||k=='Pele'?heroSkinMat(m,v):k=='RoupaR'||k=='RoupaP'?heroClothMat(m,v,k=='RoupaR'):(()=>{const n=new THREE.MeshLambertMaterial({map:m.map,side:m.side,skinning:!!o.isSkinnedMesh});n.name=k;if(/Cabelo|Sobrancelha/.test(k))(v.hm=v.hm||[]).push(n);return n})();o.material=mc[k]});
+  v.mats=mc;v.skm=new THREE.MeshLambertMaterial({color:0xf0c8a0});
+  if(v0.A){const mx=new THREE.AnimationMixer(sc),A={};for(const k in v0.A){const s=v0.A[k],a=mx.clipAction(s.getClip());a.setLoop(s.loop,s.repetitions);a.clampWhenFinished=s.clampWhenFinished;A[k]=a}v.mx=mx;v.A=A;v.bw={};v.ow=0}
+  return v}
+function avHero(g,pr){const sx=pr.sx?1:0,v0=HERO.g[sx];if(!v0){if(VRV&&!HERO.p[sx]&&typeof heroGet=='function')heroGet(sx).catch(()=>{});return}if(!THREE.SkeletonUtils)return;
+  const v=heroClone(v0),w=g.w,c=w>=6?w-4:Math.floor(w/3),sv={race,sex};race=g.rc%8;sex=sx;try{heroRace(v);heroCloth(v,c)}finally{race=sv.race;sex=sv.sex}
+  v.w=w;g.add(v.scene);v.scene.position.y=v.dy||0;g.hv=v;const R=g.R;R.body.visible=R.legL.visible=R.legR.visible=false}
+function avHeroAnim(r,v,dt,spd){const A=v.A;if(!A)return;const w=v.w,air=(r.vy??r.y)>.2,melee=[0,1,2,4,5,7,10].includes(w),cast=[6,9,11].includes(w),dead=!r.alive,
+    sW=(a,x)=>{if(x>.002){if(!a.isScheduled())a.play();a.setEffectiveWeight(x)}else if(a.isScheduled())a.stop()},shot=k=>{const a=A[k];if(!a)return;if(v.one&&v.one!==a)v.one.stop();a.reset();a.play();v.one=a};
+  if(r.ak&&r.atT>(v.pat||0)+.001&&!dead){const k=w==8?(v.alt?'cross':'jab'):cast||w==3?'spell':r.ak.k=='H'||r.ak.k=='G'?'heavy':r.ak.k=='S'?'atkC':r.ak.k=='T'?'dash':(v.alt?'atkB':'atkA');v.alt=!v.alt;
+    if(A[k]){A[k].timeScale=Math.max(.8,Math.min(4,A[k].getClip().duration/Math.max(.2,(r.ak.dur||.4)+.15)));shot(k)}}
+  v.pat=r.atT||0;if(r.hp<(v.php??r.hp)-1&&A.hit&&!(v.one&&v.one!==A.hit&&!v.one.paused)){A.hit.timeScale=1.3;shot('hit')}v.php=r.hp;
+  const bk=dead?'death':r.dg?'roll':air?'jump':r.blk?'shield':spd>8.5?'sprint':spd>3?'jog':spd>.4?'walk':melee?'idleM':cast?'idleC':'idle';
+  if(bk!=v.pb){if(bk=='roll'&&A.roll)A.roll.reset();if(bk=='death'&&A.death)A.death.reset();if(bk=='death'||bk=='roll')v.one=null}v.pb=bk;
+  if(bk=='walk')A.walk.timeScale=Math.max(.6,Math.min(1.6,spd/2));else if(bk=='jog')A.jog.timeScale=Math.max(.7,Math.min(1.5,spd/5.5));else if(bk=='sprint')A.sprint.timeScale=Math.max(.8,Math.min(1.5,spd/9));
+  const o=v.one,on=!!(o&&!o.paused&&o.enabled&&(o.getClip().duration-o.time)/Math.max(.01,o.timeScale)>.07);if(!on&&o&&v.ow<.01){sW(o,0);v.one=null}
+  v.ow+=((on?1:0)-v.ow)*Math.min(1,dt*(on?25:12));const kb=Math.min(1,dt*10);
+  for(const k of['idle','idleM','idleC','walk','jog','sprint','jump','roll','death','shield']){if(!A[k])continue;const x=v.bw[k]=(v.bw[k]||0)+((k==bk?1:0)-(v.bw[k]||0))*(k==bk&&(bk=='roll'||bk=='death')?1:kb);sW(A[k],x*(1-v.ow))}
+  if(v.one)sW(v.one,v.ow);v.mx.update(dt);const lz=v.lean||0,B=v.B;if(lz){B.Spine.rotateX(-lz*.6);B.Chest.rotateX(-lz*.4);B.Head.rotateX(lz*.9)}}
 emLoad();
 camApply();skyCol();shApply();
 gear();requestAnimationFrame(loop);
