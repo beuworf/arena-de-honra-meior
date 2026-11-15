@@ -95,6 +95,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 #crd{position:fixed;inset:0;z-index:8;display:none;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(10,18,28,.96);gap:8px;overflow:auto;padding:16px;box-sizing:border-box;color:#eef;text-align:center}.cr{max-width:560px;font-size:15px;line-height:1.45}.cr p{margin:8px 0}.cr a{color:#ffd34d}
 #mt3{font-size:22px;font-weight:800;letter-spacing:1px;margin-top:4px}#bfl{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.bf{padding:6px 12px;border-radius:14px;background:rgba(255,255,255,.1);cursor:pointer;font-size:13px}.bf.on{background:#d8b040;color:#1a1408;font-weight:700}
 #bgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;width:100%;max-width:980px}.bc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 11px;font-size:12.5px;line-height:1.35}.bc p{margin:5px 0 0}.bc i{opacity:.7;font-style:normal}.bh{display:flex;gap:9px;align-items:center}.be{font-size:26px}.bh b{display:block;font-size:14px}.bh small{font-size:11px}.bw{color:#bfe8a8}
+#mnm{font-size:16px;text-align:center;padding:6px 10px;border-radius:10px;border:2px solid rgba(255,211,77,.7);background:rgba(255,255,255,.08);color:#fff;width:min(240px,calc(var(--vw,1vw)*60));margin:-2px 0 6px}
 #mt,#mt2{font-size:28px;font-weight:800;letter-spacing:2px;margin-bottom:8px}
 #mb{display:flex;flex-direction:column;gap:10px;width:min(320px,calc(var(--vw,1vw)*80))}
 .mi{padding:12px;border-radius:12px;background:rgba(255,255,255,.12);text-align:center;font-size:18px;cursor:pointer}
@@ -106,7 +107,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 .btn.on{outline:2px solid #ffd34d}
 #cls{overflow:auto;justify-content:flex-start;padding:10px;box-sizing:border-box;background:rgba(10,18,28,.97)}
 #cls>#ct{margin-top:auto}#cls>#bk{margin-bottom:auto}
-@media (max-height:500px){#menu .mi{padding:6px 10px;font-size:15px}#mb{gap:5px}#mt{font-size:22px;margin-bottom:2px}#mf{min-height:0;font-size:12px}}
+@media (max-height:500px){#menu{gap:4px;justify-content:flex-start;padding-top:6px}#mnm{font-size:13px;padding:3px 8px;margin:0}#ver{margin:0!important}#menu .mi{padding:5px 10px;font-size:14px}#mb{gap:4px}#mt{font-size:20px;margin-bottom:0}#mf{min-height:0;font-size:12px}}
 @media (max-height:500px){.cb{padding:8px 4px;font-size:24px;width:calc(var(--vw,1vw)*19)}.cb b{font-size:15px;margin-top:2px}.cb small{font-size:10px;margin-top:3px}#ct{margin-bottom:6px;font-size:16px}.bk{margin-top:8px}}
 #lob,#jn{position:fixed;inset:0;z-index:8;display:none;flex-direction:column;align-items:center;background:rgba(10,18,28,.97);gap:8px;overflow:auto;padding:12px;box-sizing:border-box}
 #jn{justify-content:center}
@@ -207,7 +208,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · espírito e possessão</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · nickname no menu</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
@@ -1294,7 +1295,7 @@ function drUpd(dt){for(let i=DR.length-1;i>=0;i--){const d=DR[i];d.t-=dt;d.m.pos
   if(Math.hypot(p.x-d.x,p.z-d.z)<1.5){if(d.k=='p'){p.hp=Math.min(PMX,p.hp+15);toast('+Poção de vida')}else{xGain(5);toast('+XP')}sfx('pick');S.remove(d.m);DR.splice(i,1);hud();continue}
   if(d.t<=0){S.remove(d.m);DR.splice(i,1)}}}
 // ================= ONLINE (sala do artefato, com host) =================
-const NET={on:0,h:0,c:0,ph:'',R:null,code:'',rp:[],rpm:{},em:{},n:1,gh:0,sp:null,ally:null,idx:0,starting:0,hostT:0,sT:0,pT:0,dT:0,aT:0,vT:0,atk:0,roster:[],pend:[],me:{nm:'',rc:0,c:0,b:0,a:0,rd:0}};
+const NET={on:0,h:0,c:0,ph:'',R:null,code:'',rp:[],rpm:{},em:{},n:1,gh:0,sp:null,ally:null,idx:0,starting:0,hostT:0,sT:0,pT:0,dT:0,aT:0,vT:0,atk:0,roster:[],pend:[],me:{nm:(()=>{try{return localStorage.getItem('arena_nm')||''}catch(e){return ''}})(),rc:0,c:0,b:0,a:0,rd:0}};
 const NSF=['stun','kd','lf','slow','ice','fear','burn','bleed','psn','brk','vul','weak','toss'],PCOL=[0x58a6ff,0xff7b72,0x7ee787,0xffd866,0xd2a8ff,0xffa657],CCOL=[0x3b6fd4,0x3f8f4a,0x7a4ac0,0xd8b04a,0xe07b1a,0x4a3a6a,0x5a1f52,0x2a7f7a],CLN=['Guerreiro','Arqueiro','Mago','Paladino','Monge','Necromante','Corrompido','Xamã'],CLE=['⚔️','🏹','🔮','🔨','🧘','💀','😈','🪶'];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const nemit=(t,d)=>{if(NET.R)try{NET.R.emit(t,d).catch(()=>{})}catch(e){}},npres=o=>{if(NET.R)try{NET.R.presence(o).catch(()=>{})}catch(e){}};
@@ -1423,7 +1424,8 @@ $('lob').addEventListener('pointerdown',e=>{const t=e.target.closest('[data-ns],
   if(d.cp!==undefined){const tx=NETMODE()=='relay'?location.href.split('#')[0]+'#join='+NET.code:'Código do lobby: '+NET.code;try{navigator.clipboard.writeText(tx).then(()=>toast('Convite copiado!'),()=>toast(tx))}catch(e){toast(tx)}return}
   if(d.rd!==undefined)m.rd=m.rd?0:1;else{if(d.ns!==undefined)m.sx=+d.ns;if(d.nr!==undefined)m.rc=+d.nr;if(d.nc!==undefined){m.c=+d.nc;m.b=0}if(d.nb!==undefined)m.b=+d.nb;if(d.na!==undefined)m.a=+d.na;m.rd=0}
   npres({sx:m.sx?1:0,rc:m.rc,w:meW(),a:m.a,rd:m.rd});lobUI()});
-$('lnm').addEventListener('input',()=>{NET.me.nm=$('lnm').value.slice(0,10);npres({nm:NET.me.nm})});
+$('lnm').addEventListener('input',()=>{NET.me.nm=$('lnm').value.slice(0,10);try{localStorage.setItem('arena_nm',NET.me.nm)}catch(e){}if($('mnm'))$('mnm').value=NET.me.nm;npres({nm:NET.me.nm})});
+$('mnm').value=NET.me.nm;$('mnm').addEventListener('input',()=>{NET.me.nm=$('mnm').value.slice(0,10);try{localStorage.setItem('arena_nm',NET.me.nm)}catch(e){}});$('mnm').addEventListener('pointerdown',e=>e.stopPropagation());$('mnm').addEventListener('keydown',e=>e.stopPropagation());
 $('jgo').addEventListener('pointerdown',()=>netJoin($('jc').value));$('jbk').addEventListener('pointerdown',()=>showScr('menu'));
 $('jc').addEventListener('keydown',e=>{if(e.key=='Enter')netJoin($('jc').value)});
 function hostCheck(){if(!NET.h||NET.ph!='l'||NET.starting||!NET.R)return;const ps=NET.R.peers().filter(q=>q.presence&&q.presence.ph=='l');
