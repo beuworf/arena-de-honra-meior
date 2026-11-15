@@ -146,6 +146,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 #led{position:fixed;inset:0;z-index:30;display:none;background:rgba(10,18,28,.4);background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:calc(var(--vw,1vw)*5) calc(var(--vh,1vh)*5)}
 body.led .pb,body.led #cjoy,body.led #mvg{display:block!important;z-index:31;pointer-events:auto}body.led #els{display:flex!important;z-index:31}
 body.led .sel{outline:3px solid #ffd34d;outline-offset:3px}
+body.led #xup{display:flex!important;z-index:31;pointer-events:auto}
 #mvg::after{content:'mover';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:12px;opacity:.7}
 #ltb{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:32;display:none;flex-wrap:wrap;gap:5px;justify-content:center;align-items:center;max-width:calc(var(--vw,1vw)*94);background:rgba(10,18,28,.92);padding:6px 8px;border-radius:12px;font-size:13px}
 #ltb.bot{top:auto;bottom:6px}body.cjoff #cjoy{display:none!important}#ltb .btn{padding:5px 9px;min-width:0}
@@ -712,7 +713,8 @@ function xPick(n){if(!XL.opts||!XUP[XL.opts[n]])return;const u=XUP[XL.opts[n]];u
 function xDown(){if(XL.opts)XL.kd=performance.now()}
 function xUp(){if(!XL.opts||!XL.kd)return;const h=performance.now()-XL.kd;XL.kd=0;if(h<420){XL.sel=(XL.sel+1)%3;xUI()}}
 function xTick(){if(XL.opts&&XL.kd&&performance.now()-XL.kd>=420)xPick(XL.sel)}
-function xUI(){const n=xNeed();$('xi').style.width=Math.min(100,XL.xp/n*100)+'%';$('xl').textContent='Nv '+XL.lv+(NET.on&&XL.sup>=1?' · 💚 '+Math.round(XL.sup):'');const u=$('xup');
+function xupDemo(){const u=$('xup');u.innerHTML='<b>⬆ Nv 2</b><span class="xo on">⚔️ Dano +8%</span><span class="xo">❤️ Vida máx. +12</span><span class="xo">👟 Velocidade +6%</span><small>exemplo do painel de bônus</small>';u.style.display='flex'}
+function xUI(){const n=xNeed();$('xi').style.width=Math.min(100,XL.xp/n*100)+'%';$('xl').textContent='Nv '+XL.lv+(NET.on&&XL.sup>=1?' · 💚 '+Math.round(XL.sup):'');const u=$('xup');if(document.body.classList.contains('led')){xupDemo();return}
   if(!XL.opts||scr!='play'){u.style.display='none';return}const pc=matchMedia('(pointer:fine)').matches,keys='ZXV';
   u.innerHTML='<b>⬆ Nv '+XL.lv+(XL.pend>1?' (+'+(XL.pend-1)+')':'')+'</b>'+XL.opts.map((k,i)=>'<span class="xo'+(i==XL.sel?' on':'')+'" data-x="'+i+'">'+XUP[k][0]+' '+XUP[k][1]+(pc?' <small>'+keys[i]+'</small>':'')+'</span>').join('')+'<small>'+(pc?'Q: trocar · segure: escolher':'L1: trocar · segure: escolher')+'</small>';u.style.display='flex'}
 $('xup').addEventListener('pointerdown',e=>{const t=e.target.closest('[data-x]');e.stopPropagation();e.preventDefault();if(t)xPick(+t.dataset.x)});
@@ -2247,24 +2249,24 @@ const POST=(()=>{const rt=new THREE.WebGLRenderTarget(4,4,{minFilter:THREE.Neare
   const sc=new THREE.Scene(),q=new THREE.Mesh(new THREE.PlaneGeometry(2,2),mat);q.frustumCulled=false;sc.add(q);return{rt,mat,sc,cam:new THREE.OrthographicCamera(-1,1,1,-1,0,1)}})();
 function renderFrame(){if(OLV){POST.mat.uniforms.cn.value=C.near;POST.mat.uniforms.cf.value=C.far;R.setRenderTarget(POST.rt);R.render(S,C);R.setRenderTarget(null);R.render(POST.sc,POST.cam)}else R.render(S,C)}
 // ---- Layout dos botões de toque: cada um pode ser arrastado e redimensionado (salvo em % da tela)
-const LCT=[['bH','△'],['bL','○'],['bJ','✕'],['bB','□'],['bK','L1'],['bD','R1'],['bW','SELECT'],['bR','R2 (cone do arco)'],['bC','START'],['cjoy','Analógico da câmera'],['mvg','Analógico de movimento'],['els','Elementos do Mago']],LAYD=()=>({c:{},g:1,o:1,mf:0});
+const LCT=[['bH','△'],['bL','○'],['bJ','✕'],['bB','□'],['bK','L1'],['bD','R1'],['bW','SELECT'],['bR','R2 (cone do arco)'],['bC','START'],['cjoy','Analógico da câmera'],['mvg','Analógico de movimento'],['els','Elementos do Mago'],['xup','Painel de bônus de nível']],LAYD=()=>({c:{},g:1,o:1,mf:0});
 let LAY=(()=>{try{const o=JSON.parse(localStorage.getItem('arena_lay')||'null');return o&&o.c?o:LAYD()}catch(e){return LAYD()}})(),LSEL=null,LDR=null;
 const lsave=()=>{try{localStorage.setItem('arena_lay',JSON.stringify(LAY))}catch(e){}},JR=()=>48*((LAY.c.mvg&&LAY.c.mvg.s)||1)*LAY.g*autoG();
 function autoG(){if(!window.IOS||!matchMedia('(pointer:coarse)').matches)return 1;const sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches;return sa?1.22:Math.max(.72,Math.min(1,innerHeight/400))}
 function layApply(){const AG=autoG();document.documentElement.style.setProperty('--bs',AG);for(const [id] of LCT){const el=$(id),c=LAY.c[id]||{},sc=(c.s||1)*LAY.g*(id=='cjoy'?Math.min(AG,1):AG);
     if(c.x!==undefined){el.style.left=c.x*100+'%';el.style.top=c.y*100+'%';el.style.right=el.style.bottom='auto';el.style.transform='translate(-50%,-50%) scale('+sc+')'}
-    else{el.style.left=el.style.top=el.style.right=el.style.bottom='';el.style.transform=(id=='els'?'translateX(-50%) ':'')+'scale('+sc+')'}el.style.opacity=LAY.o}
+    else{el.style.left=el.style.top=el.style.right=el.style.bottom='';el.style.transform=(id=='els'||id=='xup'?'translateX(-50%) ':'')+'scale('+sc+')'}el.style.opacity=LAY.o}
   $('joy').classList.toggle('fix',!!LAY.mf);document.body.classList.toggle('mfix',!!LAY.mf)}
 window.layApply=layApply;addEventListener('resize',()=>setTimeout(layApply,0));
-function ledOpen(){document.body.classList.add('led');$('led').style.display='block';$('ltb').style.display='flex';$('set').style.display='none';LSEL=null;ledUI()}
-function ledClose(){document.body.classList.remove('led');$('led').style.display=$('ltb').style.display='none';LCT.forEach(([id])=>$(id).classList.remove('sel'));lsave();layApply();showScr('set')}
+function ledOpen(){document.body.classList.add('led');xupDemo();$('ltb').classList.add('bot');$('led').style.display='block';$('ltb').style.display='flex';$('set').style.display='none';LSEL=null;ledUI()}
+function ledClose(){document.body.classList.remove('led');$('xup').style.display='none';xUI();$('led').style.display=$('ltb').style.display='none';LCT.forEach(([id])=>$(id).classList.remove('sel'));lsave();layApply();showScr('set')}
 function ledUI(){const c=LSEL&&(LAY.c[LSEL]||{}),pc=v=>Math.round(v*100)+'%';
-  $('ltb').innerHTML='<b>'+(LSEL?LCT.find(x=>x[0]==LSEL)[1]:'Arraste um botão')+'</b>'+(LSEL?'<span class="btn" data-l="s-">−</span>'+pc(c.s||1)+'<span class="btn" data-l="s+">+</span>':'')
+  $('ltb').innerHTML='<b>'+(LSEL?LCT.find(x=>x[0]==LSEL)[1]:'Toque em um botão ou no painel de bônus para mover e mudar o tamanho dele')+'</b>'+(LSEL?' Tamanho <span class="btn" data-l="s-">−</span>'+pc(c.s||1)+'<span class="btn" data-l="s+">+</span><span class="btn" data-l="s0">↺</span>':'')
     +' · Todos <span class="btn" data-l="g-">−</span>'+pc(LAY.g)+'<span class="btn" data-l="g+">+</span> · Opacidade <span class="btn" data-l="o-">−</span>'+pc(LAY.o)+'<span class="btn" data-l="o+">+</span>'
     +'<span class="btn" data-l="mf">Movimento: '+(LAY.mf?'fixo':'flutuante')+'</span><span class="btn" data-l="bar">⇅ barra</span><span class="btn" data-l="def">Padrão</span><span class="btn on" data-l="ok">✓ Salvar</span>';
   LCT.forEach(([id])=>$(id).classList.toggle('sel',id==LSEL))}
 $('ltb').addEventListener('pointerdown',e=>{const t=e.target.closest('[data-l]');if(!t)return;e.preventDefault();const a=t.dataset.l,cl=(v,x,y)=>Math.round(Math.max(x,Math.min(y,v))*100)/100;
-  if((a=='s+'||a=='s-')&&LSEL){const c=LAY.c[LSEL]=LAY.c[LSEL]||{};c.s=cl((c.s||1)+(a=='s+'?.1:-.1),.5,2.2)}else if(a=='g+'||a=='g-')LAY.g=cl(LAY.g+(a=='g+'?.1:-.1),.5,2);else if(a=='o+'||a=='o-')LAY.o=cl(LAY.o+(a=='o+'?.1:-.1),.2,1);
+  if(a=='s0'&&LSEL){const c=LAY.c[LSEL]=LAY.c[LSEL]||{};delete c.s;delete c.x;delete c.y}else if((a=='s+'||a=='s-')&&LSEL){const c=LAY.c[LSEL]=LAY.c[LSEL]||{};c.s=cl((c.s||1)+(a=='s+'?.1:-.1),.5,2.2)}else if(a=='g+'||a=='g-')LAY.g=cl(LAY.g+(a=='g+'?.1:-.1),.5,2);else if(a=='o+'||a=='o-')LAY.o=cl(LAY.o+(a=='o+'?.1:-.1),.2,1);
   else if(a=='mf')LAY.mf=LAY.mf?0:1;else if(a=='bar')$('ltb').classList.toggle('bot');else if(a=='def'){LAY=LAYD();LSEL=null}else if(a=='ok'){ledClose();return}layApply();ledUI()});
 addEventListener('pointerdown',e=>{if(!document.body.classList.contains('led')||e.target.closest('#ltb'))return;e.preventDefault();e.stopImmediatePropagation();
   const el=e.target.closest(LCT.map(c=>'#'+c[0]).join(','));if(!el)return;LSEL=el.id;const r=el.getBoundingClientRect();LDR={id:el.id,dx:e.clientX-(r.left+r.width/2),dy:e.clientY-(r.top+r.height/2),pid:e.pointerId};ledUI()},true);
