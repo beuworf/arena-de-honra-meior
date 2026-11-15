@@ -55,6 +55,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 .sl.on{outline:3px solid #ffd34d}
 .sl.hd{background:rgba(90,180,255,.35)}
 #bW{right:auto;bottom:auto;left:calc(var(--sal,env(safe-area-inset-left,0px)) + 14px);top:calc(var(--sat,env(safe-area-inset-top,0px)) + 118px);width:70px;height:40px;border-radius:14px;background:rgba(40,50,70,.75);font-size:14px}
+#cdn{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;background:rgba(10,18,28,.45);text-align:center}#cdn b{display:block;font:900 clamp(70px,22vw,170px)/1 system-ui,sans-serif;color:#fff;text-shadow:0 0 8px #000,0 6px 0 #0006}#cdn small{font-size:16px;opacity:.85;margin-top:6px}@keyframes cdIn{0%{transform:scale(1.8);opacity:0}30%{transform:scale(1);opacity:1}100%{transform:scale(.92);opacity:.95}}
 #toast{position:fixed;left:50%;top:38%;transform:translateX(-50%);font-size:18px;background:var(--glass);padding:6px 14px;border-radius:10px;display:none}
 .sm{display:none;height:8px}
 .sm i{display:block;height:100%;width:100%}
@@ -206,7 +207,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <div id="lob"><div id="lh">Lobby · código <b id="lc">----</b></div><input id="lnm" maxlength="10" placeholder="Seu nome" autocomplete="off"><div id="lp"></div><div id="lsel"></div><div id="lm"></div></div>
 <div id="jn"><div id="mt3">Entrar com código</div><input id="jc" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"><div class="row"><span class="btn" id="jgo">Entrar</span><span class="btn" id="jbk">Voltar</span></div><div id="jm"></div></div>
 <div id="rank"><h2>🏆 Ranking da partida</h2><div id="rsum"></div><div id="rtb" style="overflow:auto;max-width:100%"></div><div class="mi" id="rcl" style="padding:10px 26px">Voltar ao lobby</div></div><div id="xup"></div><div id="tm"></div><input type="file" id="vfile" accept=".vrm,.glb" style="display:none"><div id="xh"></div><div id="mvg"></div><div id="led"></div><div id="ltb"></div><div id="cjoy" class="cjoy"><i id="cknob"></i></div><div id="rot"><b>📱</b>Gire o celular para a horizontal<small style="font-size:13px;opacity:.8">O jogo funciona deitado</small></div>
-<div id="pfd" style="position:fixed;inset:0;z-index:60;display:none;flex-direction:column;align-items:center;justify-content:center;background:#000;color:#ffe9b0;font-family:inherit;text-align:center;opacity:0;transition:opacity .8s;pointer-events:none"></div><div id="toast"></div><div id="bag"><div id="slots"></div></div>
+<div id="pfd" style="position:fixed;inset:0;z-index:60;display:none;flex-direction:column;align-items:center;justify-content:center;background:#000;color:#ffe9b0;font-family:inherit;text-align:center;opacity:0;transition:opacity .8s;pointer-events:none"></div><div id="cdn"></div><div id="toast"></div><div id="bag"><div id="slots"></div></div>
 <div id="dmsg"><b>VOCÊ MORREU</b><small></small></div><div id="over"><div><span id="ovt">Você caiu</span><small id="rec"></small><small>Toque ou clique para recomeçar</small></div></div>
 <div id="dn"></div>
 <div id="pause"><b>PAUSADO</b><small id="phelp"></small><div class="mi" id="pgo">▶ Continuar</div><div class="mi" id="prs">↺ Reiniciar fase (trocar classe)</div><div class="mi" id="pgu">🏳 Desistir da run</div><small>Esc ou P também continuam</small></div>
@@ -1391,8 +1392,11 @@ $('lnm').addEventListener('input',()=>{NET.me.nm=$('lnm').value.slice(0,10);npre
 $('jgo').addEventListener('pointerdown',()=>netJoin($('jc').value));$('jbk').addEventListener('pointerdown',()=>showScr('menu'));
 $('jc').addEventListener('keydown',e=>{if(e.key=='Enter')netJoin($('jc').value)});
 function hostCheck(){if(!NET.h||NET.ph!='l'||NET.starting||!NET.R)return;const ps=NET.R.peers().filter(q=>q.presence&&q.presence.ph=='l');
-  if(ps.length&&ps.every(q=>q.presence.rd==1)){NET.starting=1;$('lm').textContent='Todos prontos! Começando...';
-    setTimeout(()=>{NET.starting=0;if(!NET.R||NET.ph!='l')return;const p2=NET.R.peers().filter(q=>q.presence&&q.presence.ph=='l'&&q.presence.rd==1);if(!p2.length)return;const ro=p2.map(q=>q.peer).sort();nemit('cmd',{t:'start',r:ro});npres({ro});netStart(ro)},2000)}}
+  if(ps.length&&ps.every(q=>q.presence.rd==1)){NET.starting=1;$('lm').textContent='Todos prontos!';nemit('cmd',{t:'cd'});cdShow();
+    setTimeout(()=>{NET.starting=0;if(!NET.R||NET.ph!='l')return;const p3=NET.R.peers().filter(q=>q.presence&&q.presence.ph=='l');if(!p3.every(q=>q.presence.rd==1)){nemit('cmd',{t:'cdx'});cdStop();$('lm').textContent='Contagem cancelada: alguém tirou o pronto';return}const p2=NET.R.peers().filter(q=>q.presence&&q.presence.ph=='l'&&q.presence.rd==1);if(!p2.length)return;const ro=p2.map(q=>q.peer).sort();nemit('cmd',{t:'start',r:ro});npres({ro});netStart(ro)},3000)}}
+// contagem 3, 2, 1 antes da partida online (todos veem ao mesmo tempo)
+function cdShow(){cdStop();const el=$('cdn');el.style.display='flex';let n=3;const st=()=>{el.innerHTML=n>0?'<b>'+n+'</b><small>A partida vai começar</small>':'<b style="color:#ffd34d">LUTEM!</b>';el.firstChild.style.animation='none';void el.offsetWidth;el.firstChild.style.animation='cdIn .9s ease-out';sfx(n>0?'pick':'boss');n--;if(n>=-1)cdShow.t=setTimeout(n<0?cdStop:st,n<0?700:1000)};st()}
+function cdStop(){clearTimeout(cdShow.t);const el=$('cdn');if(el)el.style.display='none'}
 function netStart(ro){if(NET.ph=='p')return;NET.ph='p';NET.hck={};NET.stT=performance.now();NET.roster=ro;NET.idx=Math.max(0,ro.indexOf(meP()));NET.n=ro.length;NET.starting=0;
   restart();sex=NET.me.sx?1:0;NET.st={};NET.mid=meP();setRace(NET.me.rc);const w=meW();if(w==4){an.type=NET.me.a;an.max=[110,70,60][an.type];an.hp=an.max;AM2.color.setHex(AN[an.type][1]);AM2.map=an.type==1?TSTR:TFUR;anLook(an.type)}
   start(w);p.x=(NET.idx-(NET.n-1)/2)*2.6;p.z=0;cx=p.x;cz=0;NET.gh=0;NET.em={};NET.lk='';$('lob').style.display='none';$('tm').style.display='block';scr='play';
@@ -1518,7 +1522,7 @@ function onEv(m){const d=m.data;if(!d||m.isMe)return;
   else if(d.t=='tp'){if(NET.ph=='p'&&!NET.gh){p.x=+d.x;p.z=+d.z;p.shd=+d.sh||0;p.shdT=10;ring(p.x,p.z,3,0x8fd3ff);toast('Você foi puxado! Escudo +'+Math.round(d.sh))}}
   else if(d.t=='mk'){p.mk=d.on?1:0;if(d.on){p.mkBy=m.peer;toast('Você foi marcado: voltará como zumbi se cair')}}}
 function onCmd(m){const d=m.data;if(!d||m.isMe||!isHost(m.peer))return;
-  if(d.t=='start'&&NET.ph=='l'&&d.r&&d.r.includes(meP()))netStart(d.r);else if(d.t=='lobby'&&NET.ph=='p'){netToLobby('Todos caíram! Voltando ao lobby');if(d.rk)showRank(d.rk)}else if(d.t=='lv'&&NET.c&&NET.ph=='p'&&d.lv!==LV)netLvl(d.lv)}
+  if(d.t=='start'&&NET.ph=='l'&&d.r&&d.r.includes(meP()))netStart(d.r);else if(d.t=='cd'&&NET.ph=='l')cdShow();else if(d.t=='cdx'){cdStop();$('lm').textContent='Contagem cancelada: alguém tirou o pronto'}else if(d.t=='lobby'&&NET.ph=='p'){netToLobby('Todos caíram! Voltando ao lobby');if(d.rk)showRank(d.rk)}else if(d.t=='lv'&&NET.c&&NET.ph=='p'&&d.lv!==LV)netLvl(d.lv)}
 // -- morte, revive e níveis
 function netDie(){if(NET.gh)return;NET.gh=1;p.hp=0;RC.spd=0;pg.visible=false;npres({d:1,hp:0});toast('Você caiu! Aguarde o time...');if(p.mk)NET.zmT=2}
 function netRevive(f=1){NET.gh=0;pg.visible=true;RC.spd=RACES[race].m.spd||1;p.inv=0;p.hp=PMX*f;npres({d:0,hp:Math.round(p.hp)})}
