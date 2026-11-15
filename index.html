@@ -82,6 +82,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 #splash svg{animation:spIn 1s ease-out both;filter:drop-shadow(0 0 18px rgba(155,10,10,.45))}
 #splash b{font:800 30px/1 system-ui,sans-serif;letter-spacing:.5em;margin-right:-.5em;color:#9b0a0a;animation:spIn 1s .35s ease-out both;text-shadow:0 0 12px rgba(155,10,10,.5)}
 #splash.out{opacity:0;pointer-events:none}
+#spq{margin-top:18px;font:500 15px/1.4 system-ui,sans-serif;color:#c9b8a8;text-align:center;animation:spIn 1s 1s ease-out both}#spq a{color:#e0b060;font-weight:800;text-decoration:none}#spq small{display:block;font-size:12px;opacity:.6}
 @keyframes spIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#splash svg,#splash b{animation:none}}
 #xpw{display:flex;align-items:center;gap:6px;margin:1px 0 3px;font-size:11px;font-weight:700;color:#d8c2ff;text-shadow:0 1px 2px #000}#xb{flex:1;height:5px;background:rgba(0,0,0,.45);border-radius:3px;overflow:hidden}#xi{display:block;height:100%;width:0;background:linear-gradient(90deg,#8a5cff,#d2b6ff);transition:width .2s}
@@ -105,6 +106,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 .btn.on{outline:2px solid #ffd34d}
 #cls{overflow:auto;justify-content:flex-start;padding:10px;box-sizing:border-box;background:rgba(10,18,28,.97)}
 #cls>#ct{margin-top:auto}#cls>#bk{margin-bottom:auto}
+@media (max-height:500px){#menu .mi{padding:6px 10px;font-size:15px}#mb{gap:5px}#mt{font-size:22px;margin-bottom:2px}#mf{min-height:0;font-size:12px}}
 @media (max-height:500px){.cb{padding:8px 4px;font-size:24px;width:calc(var(--vw,1vw)*19)}.cb b{font-size:15px;margin-top:2px}.cb small{font-size:10px;margin-top:3px}#ct{margin-bottom:6px;font-size:16px}.bk{margin-top:8px}}
 #lob,#jn{position:fixed;inset:0;z-index:8;display:none;flex-direction:column;align-items:center;background:rgba(10,18,28,.97);gap:8px;overflow:auto;padding:12px;box-sizing:border-box}
 #jn{justify-content:center}
@@ -175,7 +177,7 @@ html.frot body{position:fixed;left:0;top:0;width:var(--fw,100vh);height:var(--fh
 <path d="M105 56L93 78H102L95 98L113 72H104L111 56Z"/><ellipse cx="100" cy="134" rx="27" ry="21"/></g>
 <ellipse cx="100" cy="134" rx="22" ry="16" fill="#9b0a0a"/>
 <g fill="#050505"><path d="M88 122Q100 118 112 122L100 134Z"/><path d="M84 141Q100 150 116 141L114 146Q100 154 86 146Z"/></g>
-<g fill="#9b0a0a"><path d="M90 143L94 152L97 144Z"/><path d="M110 143L106 152L103 144Z"/></g></svg><b>BEUWORF</b></div>
+<g fill="#9b0a0a"><path d="M90 143L94 152L97 144Z"/><path d="M110 143L106 152L103 144Z"/></g></svg><b>BEUWORF</b><div id="spq">modelos 3D por <a href="https://itch.io/profile/quaternius" target="_blank" rel="noopener">Quaternius</a><small>itch.io/profile/quaternius</small></div></div>
 <script>
 // Tela deitada à força: se o celular estiver em pé (ex.: dentro do itch.io ou com a rotação travada),
 // o jogo gira a própria imagem 90° e converte toques, medidas e media queries para a horizontal.
@@ -197,7 +199,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
   window.FROT=0;addEventListener('resize',chk);addEventListener('orientationchange',later);chk();
   document.addEventListener('DOMContentLoaded',function(){on=0;lw=0;de.classList.remove('frot');mq();chk()})})();
 </script>
-<script>(()=>{const s=document.getElementById('splash');let d=0;const end=()=>{if(d)return;d=1;s.classList.add('out');setTimeout(()=>s.remove(),650)};setTimeout(end,2700);s.addEventListener('pointerdown',end);addEventListener('keydown',end,{once:true})})()</script>
+<script>(()=>{const s=document.getElementById('splash');let d=0;const end=()=>{if(d)return;d=1;s.classList.add('out');setTimeout(()=>s.remove(),650)};setTimeout(end,3600);s.addEventListener('pointerdown',e=>{if(e.target.closest('a'))return;end()});addEventListener('keydown',end,{once:true})})()</script>
 <div id="lv"></div><div id="bb"><i id="bbi"></i></div>
 <div id="hud"><div class="bar"><i id="hp"></i></div><div id="xpw"><span id="xl">Nv 1</span><div id="xb"><i id="xi"></i></div></div><div class="bar sm" id="sb"><i id="st"></i></div><div class="bar sm" id="ab"><i id="ah"></i></div><div class="bar sm" id="eb"><i id="ae"></i></div><div id="mn"></div><div id="info">Abates: <b id="k">0</b> &nbsp; <span id="fps"></span> <span id="hand"></span></div></div>
 <div id="help">WASD mover, J golpe rápido, K golpe forte, L bloqueio, Espaço pular, Shift esquivar, 1-4 elemento do Mago, C reinicia a fase (troca classe e build), E cone do arco, Q melhoria de nível (toque troca, segure escolhe; Z X V escolhem direto). Mouse: botão esquerdo e direito mudam com a classe (projéteis primeiro; no corpo a corpo, o esquerdo faz o combo mais longo). Aceita controle de PlayStation. Câmera: clique na tela e mova o mouse, ou analógico direito</div>
@@ -205,11 +207,11 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · créditos</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · créditos na abertura</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
-<p><b>Quaternius</b> · <a href="https://quaternius.com" target="_blank" rel="noopener">quaternius.com</a><br><small>Universal Base Characters · Modular Character Outfits – Fantasy · Characters – Fantasy Races · Bestiary – Dungeon Monsters · Ultimate Animated Animals · Ultimate Monsters · Universal Animation Library 1 e 2</small></p>
+<p><b>Quaternius</b> · <a href="https://itch.io/profile/quaternius" target="_blank" rel="noopener">itch.io/profile/quaternius</a> · <a href="https://quaternius.com" target="_blank" rel="noopener">quaternius.com</a><br><small>Universal Base Characters · Modular Character Outfits – Fantasy · Characters – Fantasy Races · Bestiary – Dungeon Monsters · Ultimate Animated Animals · Ultimate Monsters · Universal Animation Library 1 e 2</small></p>
 <p><b>Kay Lousberg</b> · <a href="https://kaylousberg.com" target="_blank" rel="noopener">kaylousberg.com</a><br><small>KayKit – Fantasy Weapons Bits</small></p>
 <p><small>Obrigado aos artistas por disponibilizarem esses modelos gratuitamente. Se gostou do visual, visite e apoie o trabalho deles.</small></p>
 <p><small>Sons, música, cenários e efeitos feitos pelo próprio jogo. Motor gráfico: three.js.</small></p>
