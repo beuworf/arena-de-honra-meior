@@ -202,7 +202,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · boi e burro</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · espinhento e cores</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="bst"><div id="mt3">📖 Bestiário</div><div id="bfl"></div><div id="bgr"></div><div class="bk" id="bbk" style="display:block">◀ Voltar</div></div>
 <div id="lob"><div id="lh">Lobby · código <b id="lc">----</b></div><input id="lnm" maxlength="10" placeholder="Seu nome" autocomplete="off"><div id="lp"></div><div id="lsel"></div><div id="lm"></div></div>
 <div id="jn"><div id="mt3">Entrar com código</div><input id="jc" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"><div class="row"><span class="btn" id="jgo">Entrar</span><span class="btn" id="jbk">Voltar</span></div><div id="jm"></div></div>
@@ -531,7 +531,7 @@ function mkE(k,sx,sz){const K=EK[k],m=L(K.cl),g=new THREE.Group();m.map=ESK;
   if(k=='k'||k=='K'||k=='I'||k[0]=='X')skelDeco(g,aR,k=='K'||k=='I');if(k=='I')infDeco(g,aR);if(k=='Q')cerbBuild(g);if(k=='H')hBuild(g);if(k[0]=='X')zDeco(g,aL,aR,+k.slice(1));if('exhvmaf'.includes(k))nDeco(g,k,aL,aR);if(ONK.includes(k))oBuild(g,k,aL,aR);
   S.add(g);const hp=K.hp*(1+.5*(LV-1));
   const e={g,m,k,sz:K.sz,boss:k=='B'||k=='K'||k=='Q'||k=='I'||k=='H',rng:K.rng||0,cl:K.cl,sp:K.sp,rr:1.5*(.5+.5*K.sz),dm:K.dm*(1+.3*(LV-1)),mx:hp,hp,x:sx,z:sz,kx:0,kz:0,cd:rnd(.3,1),wind:0,fl:0,stun:0,brk:0,bleed:0,lf:0,y:0,axe:0,eat:8,aL,aR,lL,lR,ph:rnd(0,6.28),cht:rnd(2,5),sw:0,chw:0,ch:0};
-  if(g.cb)e.cq=g.cb;emAttach(e);if(k=='I'&&e.md)g.children.forEach(c=>{if(IFM.includes(c.material)||c===g.iau)c.visible=true});return e}
+  if(g.cb)e.cq=g.cb;emAttach(e);if(k=='I'&&e.md)g.children.forEach(c=>{if(IFM.includes(c.material)||c===g.iau)c.visible=true});if(e.md){g.children.forEach(c=>{if(c.userData.old)c.visible=false});if(k=='j')jSpikes(e)}return e}
 let NID=0;
 function spawnAnchor(){const c=[];if(!NET.gh)c.push(p);for(const r of NET.rp)if(r.alive)c.push(r);return c.length?c[Math.floor(Math.random()*c.length)]:p}
 function spawn(k='n',nr){const an0=spawnAnchor(),a=rnd(0,PI2),r=rnd(20,32),e=mkE(k,an0.x+Math.cos(a)*r,an0.z+Math.sin(a)*r);e.id=++NID;e.hp*=1+.25*(NET.n-1);if(e.boss)e.hp*=1.4;e.mx=e.hp;if(k=='B')sfx('boss');if(k=='B'||k=='H'||k=='I')e.bT=LT;bound(e);E.push(e);if(!nr&&!NET.c&&(k=='n'||k=='r'||k=='c')){const c=zRoll();for(let i=0;i<c;i++)zSpawn()}return e}
@@ -1778,7 +1778,7 @@ function zUpd(f,dt){f.t+=dt;const pd=Math.hypot(p.x-f.x,p.z-f.z);
 // ---- Inimigos novos: escudeiro (bloqueia de frente), kamikaze (corre e explode), curandeiro (cura os outros), invocador (chama diabinhos)
 function nDeco(g,k,aL,aR){const PI=Math.PI,gl=c=>new THREE.MeshBasicMaterial({color:c}),W2=(geo,arm,rx=-.6)=>{const w=add(geo,WPM,0,-.7,.05,arm);w.rotation.x=rx;return w};
   if(k=='e'){const st=L(0x9aa3b0),bl=L(0x2a3a6a);const sh=add(new THREE.BoxGeometry(.78,1.05,.1),bl,-.32,1.0,.5,g);sh.rotation.y=.12;add(new THREE.BoxGeometry(.5,.08,.12),st,-.32,1.25,.56,g).rotation.y=.12;add(new THREE.BoxGeometry(.08,.7,.12),st,-.32,1,.56,g).rotation.y=.12;
-    add(new THREE.SphereGeometry(.27,8,6,0,PI*2,0,PI/2),st,0,1.5,.08,g);add(new THREE.BoxGeometry(.06,.18,.06),st,0,1.6,.36,g);W2(WG.sword,aR)}
+    add(new THREE.SphereGeometry(.27,8,6,0,PI*2,0,PI/2),st,0,1.5,.08,g);add(new THREE.BoxGeometry(.06,.18,.06),st,0,1.6,.36,g);W2(WG.sword,aR);{const s3=add(WG.shield,WPM,0,-.72,.12,aL);s3.rotation.set(0,PI/2,0);s3.scale.setScalar(1.25)}}
   else if(k=='a'){// armadura de placas: elmo fechado com viseira, ombreiras, peitoral, saiote de placas e espadão
     const st=L(0xa8b0bc),dk=L(0x3a3e48),gd=L(0xc8a040),ey=gl(0xff5a2a);add(new THREE.BoxGeometry(.62,.62,.46),st,0,1.08,0,g);add(new THREE.BoxGeometry(.5,.08,.48),gd,0,1.32,0,g);add(new THREE.BoxGeometry(.66,.3,.5),dk,0,.68,0,g);
     for(let i=0;i<4;i++)add(new THREE.BoxGeometry(.18,.32,.08),st,-.27+i*.18,.45,.24,g).rotation.x=-.12;
@@ -1822,7 +1822,7 @@ function oBuild(g,k,aL,aR){const PI=Math.PI,gl=c=>new THREE.MeshBasicMaterial({c
   if(k=='u'){add(new THREE.ConeGeometry(.62,1.15,7),L(0x1a1424),0,.62,0,g);add(new THREE.ConeGeometry(.3,.55,7),L(0x221a30),0,1.78,-.04,g);for(const sx of[-1,1])add(new THREE.SphereGeometry(.05,6,5),gl(0xb070ff),sx*.08,1.6,.22,g);W2(WG.dagger,aR);W2(WG.dagger,aL);
     g.aur=add(RG,ga(0x5a2a8a,.3),0,.05,0,g);g.aur.rotation.x=-PI/2;g.aur.scale.setScalar(.9)}
   else if(k=='t'){add(new THREE.BoxGeometry(.7,.95,.1),L(0x5a3a22),-.34,1.0,.48,g).rotation.y=.15;add(new THREE.BoxGeometry(.5,.07,.12),L(0x9aa3b0),-.34,1.2,.54,g).rotation.y=.15;add(new THREE.SphereGeometry(.26,8,6,0,PI*2,0,PI/2),L(0x6a5a3a),0,1.5,.06,g);
-    const cb=add(new THREE.BoxGeometry(.6,.07,.1),L(0x4a3020),0,-.75,.25,aR);add(new THREE.BoxGeometry(.08,.08,.55),L(0x6a4a2a),0,-.72,.05,aR)}
+    {const s3=add(WG.shield,WPM,0,-.72,.12,aL);s3.rotation.set(0,PI/2,0);s3.scale.setScalar(1.1)}const cb=add(new THREE.BoxGeometry(.6,.07,.1),L(0x4a3020),0,-.75,.25,aR);add(new THREE.BoxGeometry(.08,.08,.55),L(0x6a4a2a),0,-.72,.05,aR)}
   else if(k=='j'){const sp=L(0x8a7a5a),bd=L(0x4a5a3a);add(new THREE.SphereGeometry(.5,9,7),bd,0,1.05,-.05,g).scale.set(1,1.1,.9);for(let i=0;i<16;i++){const a=i/16*PI*2,y=.7+(i%4)*.25,c=add(new THREE.ConeGeometry(.07,.45,4),sp,Math.sin(a)*.48,y,Math.cos(a)*.45,g);c.rotation.z=-Math.sin(a)*1.4;c.rotation.x=Math.cos(a)*1.4}
     for(let i=0;i<5;i++)add(new THREE.ConeGeometry(.06,.35,4),sp,(i-2)*.12,1.85,0,g);add(new THREE.SphereGeometry(.06,6,5),gl(0xffd040),-.1,1.55,.3,g);add(new THREE.SphereGeometry(.06,6,5),gl(0xffd040),.1,1.55,.3,g)}
   else if(k[0]=='g'){hide();const m=new THREE.MeshLambertMaterial({color:0x5ac83a,transparent:true,opacity:.82});const b=add(new THREE.SphereGeometry(.75,12,9),m,0,.55,0,g);b.scale.set(1,.75,1);g.blob=b;add(new THREE.SphereGeometry(.45,10,8),new THREE.MeshLambertMaterial({color:0x8af06a,transparent:true,opacity:.6}),.15,.75,.1,g);
@@ -1833,7 +1833,7 @@ function oBuild(g,k,aL,aR){const PI=Math.PI,gl=c=>new THREE.MeshBasicMaterial({c
     W2(WG.dagger,aR);g.orb=add(new THREE.SphereGeometry(.14,8,6),ga(0xfff04a,.85),0,-.9,.1,aL)}
   else if(k=='o'){add(new THREE.TorusGeometry(.25,.05,5,10),L(0x8a8a90),0,1.1,0,g).rotation.x=PI/2;for(let i=0;i<4;i++)add(new THREE.TorusGeometry(.09,.03,4,8),L(0x8a8a90),0,-.4-i*.15,.12,aR).rotation.y=i%2?PI/2:0;W2(WG.axe,aL)}
   else if(k=='p'){const pole=add(new THREE.CylinderGeometry(.04,.04,3.2,6),L(0x5a3a22),.42,1.6,-.15,g),fl=add(new THREE.PlaneGeometry(.9,1.2),new THREE.MeshLambertMaterial({color:0x9a1a1a,side:THREE.DoubleSide}),.42+.45,2.55,-.15,g);g.flag=fl;
-    add(new THREE.SphereGeometry(.09,6,5),L(0xc8a040),.42,3.25,-.15,g);add(new THREE.SphereGeometry(.27,8,6,0,PI*2,0,PI/2),L(0x8a8a90),0,1.5,.04,g);g.aur=add(RG,ga(0xff3a3a,.08),0,.05,0,g);g.aur.rotation.x=-PI/2;g.aur.scale.setScalar(8/(EK.p.sz))}
+    add(new THREE.SphereGeometry(.09,6,5),L(0xc8a040),.42,3.25,-.15,g);add(new THREE.SphereGeometry(.27,8,6,0,PI*2,0,PI/2),L(0x8a8a90),0,1.5,.04,g).userData.old=1;g.aur=add(RG,ga(0xff3a3a,.08),0,.05,0,g);g.aur.rotation.x=-PI/2;g.aur.scale.setScalar(8/(EK.p.sz))}
   else if(k=='y'){add(new THREE.ConeGeometry(.3,.35,8),L(0x3a2a1a),0,1.86,0,g);add(new THREE.CylinderGeometry(.42,.42,.04,10),L(0x3a2a1a),0,1.72,0,g);const s=add(new THREE.CylinderGeometry(.035,.035,1.4,5),L(0x6b4a2b),0,-.6,.15,aR);add(new THREE.BoxGeometry(.32,.38,.05),L(0x8a8a90),0,-1.35,.15,aR)}
   else if(k=='z'){hide();const bn=L(0xe2dac4);for(let i=0;i<6;i++)add(new THREE.CylinderGeometry(.24-i*.015,.26-i*.015,.35,7),i%2?bn:L(0x3a2a3a),0,.18+i*.36,0,g);add(new THREE.SphereGeometry(.32,9,7),bn,0,2.45,0,g);for(const sx of[-1,1]){add(new THREE.SphereGeometry(.08,6,5),gl(0xb05aff),sx*.12,2.48,.26,g);add(new THREE.ConeGeometry(.07,.5,4),bn,sx*.32,2.6,0,g).rotation.z=-sx*.6}
     g.fire=add(new THREE.ConeGeometry(.22,.8,6),ga(0xb05aff,.8),0,3.0,0,g);g.aur=add(RG,ga(0x9a3aff,.1),0,.05,0,g);g.aur.rotation.x=-PI/2;g.aur.scale.setScalar(9/(EK.z.sz))}
@@ -2340,8 +2340,8 @@ const HUM=new THREE.Color(0xf0c8a0),HKS={Head:.68,Hips:1.2},
     [['Hair_Buzzed'],['Hair_Long']],[['Hair_Buzzed'],['Hair_BuzzedFemale']],[['Hair_Beard'],['Hair_Long']],[[],['Hair_Buns']]],
   // roupa por classe: peças, cor do tecido, quanto tinge; kits antigos (índices de OUT[c].k) que continuam por cima
   HR5=['R_Body','R_Arms','R_Pauldrons','R_Legs','R_Feet'],HRH=['R_Body','R_Arms','R_Legs','R_Feet','R_Hood'],HP4=['P_Body','P_Arms','P_Legs','P_Feet'],HPB=['P_Body','P_Arms','P_Legs','R_Feet'],
-  HOUT=[[HR5,0x3b6fd4,1],[HRH,0x3f8f4a,0],[HP4,0x7a4ac0,1],[HR5,0xe8dcc0,1],[HPB,0xe07b1a,1],[HRH,0x4a3a6a,1],[HR5,0x8a1f6a,1],[HPB,0x2a9f9a,1]],HOUTN=[HP4,0xffffff,0],
-  HKIT=[[0,2],[1,2],[0,1],[0,2,3],[0,1,2],[1,2]];
+  HOUT=[[HR5,0x3b6fd4,1],[HRH,0x3f8f4a,1],[HP4,0x7a4ac0,1],[HR5,0xe8dcc0,1],[HPB,0xe07b1a,1],[HRH,0x4a3a6a,1],[HR5,0x8a1f6a,1],[HPB,0x2a9f9a,1]],HOUTN=[HP4,0xffffff,0],
+  HKIT=[[],[],[],[],[],[],[],[]];
 // pele: textura × (cor da raça / cor humana); roupa: o tecido (verde no Ranger, claro no Camponês) troca de cor pela classe, couro e metal ficam
 function heroSkinMat(m,v){const n=new THREE.MeshLambertMaterial({map:m.map,skinning:true});n.name=m.name;const base=THREE.Material.prototype.onBeforeCompile;
   n.onBeforeCompile=function(sh){sh.uniforms.uSkin=v.tint;sh.fragmentShader='uniform vec3 uSkin;\n'+sh.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\ndiffuseColor.rgb*=uSkin;');base.call(this,sh)};
@@ -2420,7 +2420,7 @@ const EMH={orc_m:1.85,orc_f:1.8,elf_m:1.85,elf_f:1.8,puglin:1.3,imp:1.75},
     k:[['elf_m','orc_m','elf_f'],0,1],K:[['orc_m'],0,2],o:[['elf_m','orc_m'],0,1],X:[['orc_m','elf_m','orc_f','elf_f'],0,1],
     m:[['imp'],0xffffff],x:[['puglin'],0xffd8b0],l:[['puglin'],0xa8b0ff],u:[['elf_m'],0x8a7aa0],f:[['elf_m'],0x6a6070],h:[['elf_f'],0xffffff],
     v:[['orc_f','elf_f'],0xd0b0ff,0,1],e:[['orc_m'],0xc8d8ff],a:[['orc_m'],0xb8b8c8],w:[['elf_f'],0xb0c8ff,0,1],y:[['orc_f'],0xffffff],t:[['elf_m'],0xe8d8b0],p:[['orc_m'],0xffffff]},
-  EMKEEP='pxe',
+  EMKEEP='px',
   // roupas dos inimigos: [peças, cor do tecido, quanto tinge]; esqueletos só de calça para a pintura aparecer
   EPF=['P_Body','P_Arms','P_Legs','P_Feet'],ERF=['R_Body','R_Arms','R_Legs','P_Feet'],ERP=ERF.concat('R_Pauldrons'),ERH=ERF.concat('R_Hood'),ELG=['P_Legs','P_Feet'],
   EOUT={n:[EPF,0x8a3a2a,1],r:[ERH,0x3f6f3a,0],c:[EPF,0x6a3ab0,1],b:[ELG,0x5a3a22,1],B:[['R_Legs','P_Feet','R_Pauldrons'],0x6a1a1a,1],k:[ELG,0x3a3040,1],K:[['R_Legs','P_Feet','R_Pauldrons'],0x4a1a6a,1],o:[ELG,0x3a3040,1],X:[ELG,0x2a2a32,1],
@@ -2493,7 +2493,7 @@ function emAttach(e){if(!EMD.ok)return;const k=e.k[0]=='X'?'X':e.k,T=EMT[k];if(!
   // armas e cajados das mãos do boneco antigo passam para as mãos do modelo (o braço do jogo à direita = mão esquerda do modelo)
   for(const [arm,side,zr] of [[e.aR,'Left',-1],[e.aL,'Right',1]]){const hb=B[side+'Hand'];if(!hb)continue;const ho=new THREE.Group();ho.position.set(side=='Left'?-.08:.08,0,0);
     ho.quaternion.setFromAxisAngle(new THREE.Vector3(0,0,1),zr*Math.PI/2).multiply(EMQY);ho.scale.setScalar(1/src.s);hb.add(ho);
-    arm.children.slice().forEach(c=>{if(c.geometry===EGR){c.visible=false;return}ho.add(c);c.position.y+=.72;c.position.z-=.04})}
+    arm.children.slice().forEach(c=>{if(c.geometry===EGR){c.visible=false;return}ho.add(c);c.position.y+=.72;c.position.z-=.04;if(c.material===WPM){if(!window.WPMR){window.WPMR=WPM.clone();WPMR.color.setHex(0xb87a52)}c.material=WPMR}})}
   if(skel){const gl=new THREE.MeshBasicMaterial({color:skel==2?0xb05aff:0x7fe8ff}),H=src.lm.top-src.lm.hd;for(const s of[-1,1]){const o=new THREE.Mesh(new THREE.SphereGeometry(.013,6,5),gl);o.position.set(s*.033,.46*H,-.09);B.Head.add(o)}}
   if(skel==2){const gd=L(0xd8b040),cr=new THREE.Group(),H=src.lm.top-src.lm.hd;cr.position.set(0,.88*H,.01);B.Head.add(cr);cr.add(new THREE.Mesh(new THREE.CylinderGeometry(.1,.095,.04,10,1,true),gd));for(let i=0;i<6;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(.018,.07,4),gd),a=i/6*Math.PI*2;c.position.set(Math.sin(a)*.097,.05,Math.cos(a)*.097);cr.add(c)}}
   const mx=new THREE.AnimationMixer(sc),A={};for(const c in src.C){const a=mx.clipAction(src.C[c]);if(!/idle|walk|jog|shield/.test(c)){a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true}A[c]=a}
@@ -2581,8 +2581,8 @@ if(location.hash=='#dbg')window.__dbg={ptarget,MP,NET,E,p,hurt,get LV(){return L
   const g=await new Promise(async(ok,no)=>{try{new THREE.GLTFLoader().parse(await r.arrayBuffer(),'',ok,no)}catch(e){no(e)}});
   g.scene.traverse(o=>{const k=(o.userData&&o.userData.name)||o.name;if(o.isMesh&&WG[k]){WG[k].copy(o.geometry);{const f={hammer:.5,axe:.78,dagger:.8}[k];if(f)WG[k].scale(f,f,f)}WG[k].computeBoundingSphere();WG[k].computeBoundingBox()}})}catch(e){console.warn('armas 3D',e)}})();
 // ---- Modelos 3D também nas invocações humanoides do Necromante, no cavaleiro do Cavaleiro Esqueleto e nos outros jogadores do online
-Object.assign(EMT,{I:[['orc_m'],0,2],Nz:[['orc_m','orc_f'],0x9ab088],Nm:[['elf_m'],0,1],Ns:[['orc_m'],0xffffff],Hr:[['elf_m','orc_m'],0,1]});
-Object.assign(EOUT,{I:[['R_Legs','P_Feet','R_Pauldrons'],0x2a103a,1],Nz:[ELG,0x4a3a2a,1],Nm:[ERH,0x4a2a6a,1],Ns:[ERP,0x3a4a8a,1],Hr:[['R_Legs','P_Feet','R_Pauldrons'],0x3a3a42,1]});
+Object.assign(EMT,{j:[['orc_m','orc_f'],0x9aa070],I:[['orc_m'],0,2],Nz:[['orc_m','orc_f'],0x9ab088],Nm:[['elf_m'],0,1],Ns:[['orc_m'],0xffffff],Hr:[['elf_m','orc_m'],0,1]});
+Object.assign(EOUT,{j:[ELG,0x4a3a22,1],I:[['R_Legs','P_Feet','R_Pauldrons'],0x2a103a,1],Nz:[ELG,0x4a3a2a,1],Nm:[ERH,0x4a2a6a,1],Ns:[ERP,0x3a4a8a,1],Hr:[['R_Legs','P_Feet','R_Pauldrons'],0x3a3a42,1]});
 const MNK={z:'Nz',m:'Nm',s:'Ns'},MNW={z:['sword','shield'],m:['staff',null],s:['sword','shield']};
 // monta o modelo com as armas nas mãos (mesmo caminho dos inimigos); devolve o "inimigo de mentira" que o emAnim anima
 function m3dMake(g,kind,wR,wL){if(g.md3!==undefined||!EMD.ok)return g.md3||null;const aL=new THREE.Group(),aR=new THREE.Group(),lL=new THREE.Group(),lR=new THREE.Group(),
@@ -2675,6 +2675,9 @@ function qdCerb(e,dt){const g=e.g;if(!g.qc&&!QDM.ok)return false;if(!g.qc){if(g.
     const o={len:2.3,cor:0xffffff,emi:0x5a5448,eye:0xb05aff};const q0=qdAttach(g,'lobo',o);if(!q0)return false;const L=[q0];
     for(const s of[-1,1]){const sg=new THREE.Group();sg.position.set(s*.2,.04,-.08);sg.rotation.y=s*.34;g.add(sg);const q=qdAttach(sg,'lobo',{...o,hide:false,k:.92});if(q){L.push(q);q.mx.update(s>0?.2:.45)}}g.qc=L}
   const at=e.wind>0&&!(g.pwd>0);g.pwd=e.wind;const mv=Math.min(1,(e.mv||0)*1.2);g.qc.forEach((q,i)=>qdTick(q,dt,{mv,atk:at&&(i==0||Math.random()<.7),run:e.chg>0||e.qch>0,hit:e.fl>.1&&!(g.pfl>.1)}));g.pfl=e.fl;return true}
+// espinhos longos e rígidos nas costas do Espinhento (presos ao tronco do modelo; costas = +z no osso)
+var JSPM=null;function jSpikes(e){const B=e.md.B,ch=B.Chest||B.Spine,sp=B.Spine||ch;if(!ch)return;JSPM=JSPM||new THREE.MeshLambertMaterial({color:0xd8c89a,flatShading:true});const G=new THREE.ConeGeometry(.035,.42,5),G2=new THREE.ConeGeometry(.055,.8,5);
+  [[ch,-.09,.12],[ch,.09,.12],[ch,0,.2],[ch,-.12,.02],[ch,.12,.02],[ch,0,.04],[sp,-.08,.05],[sp,.08,.05],[sp,0,.12]].forEach(([b,x,y],i)=>{const m=new THREE.Mesh(G,JSPM);m.position.set(x,y,.11);m.rotation.set(Math.PI/2-.45,0,-x*2.2);m.scale.setScalar(.9+((i*37)%5)*.08);b.add(m);const k=new THREE.Mesh(G2,JSPM);k.position.set(x*1.1,y+.04,-.16);k.rotation.set(-(Math.PI/2-.55),0,x*2.2);k.scale.setScalar(.9+((i*53)%5)*.08);b.add(k)})}
 // cavalo zumbi do Cavaleiro Esqueleto: o cavalo do pacote apodrecido (cinza-esverdeado, olhos verdes) com o cavaleiro sentado na sela
 var QV=new THREE.Vector3();
 function qdHorse(e,h,dt){const g=e.g,c=h.bd.parent;if(!c)return;if(!c.qd&&!QDM.ok)return;
