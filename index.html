@@ -860,7 +860,7 @@ function anUpd(dt){if(wi!=4)return;an.t-=dt;an.bcd-=dt;an.pcd=(an.pcd||0)-dt;an.
   push(an,.5);{const mx=an.x-x0,mz=an.z-z0;if(face===null&&Math.hypot(mx,mz)>.004)face=Math.atan2(mx,mz);if(face!==null){let df=face-(an.f||0);df=Math.atan2(Math.sin(df),Math.cos(df));an.f=(an.f||0)+df*Math.min(1,dt*12)}}
   an.g.scale.setScalar(AN[an.type][2]);anLegs(dt);anAnim(dt)}
 // Pose do animal: patas, cabeça, mandíbula, cauda, inclinação do corpo e salto
-function anAnim(dt){const A=an.alive?an.atk:null,g=an.g,ez=u=>u*u*(3-2*u);let pitch=0,y=0,yaw=0,roll=0,jaw=0,hz=0,hx=0,hy=Math.sin(t*.9)*.18,tail=Math.sin(t*5)*.35;
+function anAnim(dt){qdAn(dt);const A=an.alive?an.atk:null,g=an.g,ez=u=>u*u*(3-2*u);let pitch=0,y=0,yaw=0,roll=0,jaw=0,hz=0,hx=0,hy=Math.sin(t*.9)*.18,tail=Math.sin(t*5)*.35;
   if(!an.alive){roll=1.45;y=.25;jaw=.3;hy=0;tail=0;ANLG.forEach(q=>q.rotation.set(.3,0,0))}
   else if(A){const u=Math.min(1,A.t/A.T);hy=0;tail=Math.sin(t*16)*.5;
     if(A.k=='paw'){const L=ANLG[A.s>0?1:0];L.rotation.x=u<.45?-2.0*ez(u/.45):u<.65?-2.0+2.6*((u-.45)/.2):.6*(1-(u-.65)/.35);L.rotation.z=A.s*(u<.45?-.5*ez(u/.45):u<.65?-.5+1.1*((u-.45)/.2):.6*(1-(u-.65)/.35));
@@ -1058,7 +1058,7 @@ function vultSummon(){const g=mkVult();TM.push({k:'v',x:p.x,z:p.z,t:9,cd:0,g,f:0
 function tmUpd(dt){for(let i=TM.length-1;i>=0;i--){const m=TM[i];m.t-=dt;m.cd-=dt;const tgt=nearest(16,p.x,p.z);let y=0;
   if(m.k=='d'){if(m.t>5||!tgt){if(Math.hypot(p.x-m.x,p.z-m.z)>2)mvTo(m,p.x,p.z,10,dt)}else{const d=Math.hypot(tgt.x-m.x,tgt.z-m.z);m.pc=(m.pc||0)-dt;if(d>3.5&&d<8&&m.pc<=0){m.pc=4;m.f=Math.atan2(tgt.x-m.x,tgt.z-m.z);m.x=tgt.x-Math.sin(m.f)*1;m.z=tgt.z-Math.cos(m.f)*1;dmgE(tgt,1.2,6,m.x,m.z);tgt.kd=Math.max(tgt.kd>0?tgt.kd:0,.6);puff(m.x,.3,m.z,6,0x6a5a4a,3,2,.4,.12)}else if(d>1.3)mvTo(m,tgt.x,tgt.z,11,dt);else if(m.cd<=0){m.n=(m.n||0)%3+1;m.cd=m.n==3?.8:.45;if(m.n<3)dmgE(tgt,.9,3,m.x,m.z);else{dmgE(tgt,1.4,7,m.x,m.z);tgt.bleed=Math.max(tgt.bleed>0?tgt.bleed:0,4);tgt.kd=Math.max(tgt.kd>0?tgt.kd:0,.5);ring(tgt.x,tgt.z,1,0xc0392b)}}}}
   else{y=m.t>6.5||!tgt?3:1.8;if(m.t>6.5||!tgt){mvTo(m,p.x,p.z,12,dt)}else{const d=Math.hypot(tgt.x-m.x,tgt.z-m.z);mvTo(m,tgt.x,tgt.z,12,dt);if(d<1.5&&m.cd<=0){m.n=(m.n||0)%3+1;if(m.n<3){m.cd=.7;dmgE(tgt,1,4,m.x,m.z)}else{m.cd=1.4;m.dv=.35;for(const e of E)if(Math.hypot(e.x-m.x,e.z-m.z)<2.3){dmgE(e,1.8,9,m.x,m.z);e.kd=Math.max(e.kd>0?e.kd:0,.8)}ring(m.x,m.z,2.3,0x6a5a7a);puff(m.x,.3,m.z,10,0x2e2a34,4,2,.5,.16);shake=.25}}}if(m.dv>0){m.dv-=dt;y=Math.max(.3,y-1.6*(m.dv/.35))}y+=Math.sin(t*5)*.2}
-  m.g.position.set(m.x,y,m.z);m.g.rotation.y=m.f;if(m.g.wL){const fl=Math.sin(t*9+i)*.55-.1;m.g.wL.rotation.z=-fl;m.g.wR.rotation.z=fl}if(m.t<=0){S.remove(m.g);TM.splice(i,1)}}}
+  m.g.position.set(m.x,y,m.z);m.g.rotation.y=m.f;if(m.k=='d')qdDog(m,dt);if(m.g.wL){const fl=Math.sin(t*9+i)*.55-.1;m.g.wL.rotation.z=-fl;m.g.wR.rotation.z=fl}if(m.t<=0){S.remove(m.g);TM.splice(i,1)}}}
 function darkOrb(){const q=ptarget(30);if(!q)return toast('Sem alvo');CD.dk=5;p.f=aim(q);shot(p.f,{dmg:1,tg:q,sp:18,t:2.2,dk:1,g:DKG,m:DKM})}
 function darkBoom(x,z){for(const e of E)if(Math.hypot(e.x-x,e.z-z)<3.5){e.hp-=2*(1+RC.mag);e.fear=2.5;e.wind=0;e.fl=.12}ring(x,z,3.5,0x6a2aa0);shake=.35}
 function absorb(dt){let tot=0;for(const m of MN)if(m.alive&&m.hp>m.max*.15){const d=Math.min(12*dt,m.hp-m.max*.15);m.hp-=d;tot+=d}if(tot>0)p.hp=Math.min(PMX,p.hp+tot*.9)}
@@ -1429,15 +1429,15 @@ function avUpd(r,dt){const g=r.av,R=g.R;if(!R)return;const Vx=r.vx??r.x,Vy=r.vy?
   r.tw=(r.tw||0)+(tw-(r.tw||0))*.45;r.ln=(r.ln||0)+(ln-(r.ln||0))*.35;g.rotation.y=Vf+(a&&k=='S'?eio(pr)*PI2:0);g.rotation.x=r.ln;R.body.rotation.y=r.tw*(g.w==7?2.6:1.4);r.sh7=(r.sh7||0)+((g.w==7&&!a?.06:0)-(r.sh7||0))*.15;R.body.rotation.z=g.w==7?-r.tw*.55+r.sh7:0;R.hd.rotation.z=g.w==7?-r.sh7:0;R.hd.rotation.y=-r.tw*.8;
   R.body.position.y=BY+(m>.1&&!a?Math.abs(Math.sin(ph))*.08:Math.sin(t*2.4)*.015)+g.dy-(a&&(k=='H'||k=='G')&&sv>0?.14*sv:0);
   R.rc=g.rc;armPose(R,{wi:g.w,att:!!a,sv,k,d,pr,n:r.ak?r.ak.n:0,blk:r.blk,m,ph,y:Vy,dg:r.dg},dt||.016);R.pSh.visible=!!r.shd;
-  if(VRV&&!g.hv&&(g.hvN=(g.hvN||0)-(dt||.016))<=0){g.hvN=1;avHero(g,{sx:g.rc>=8})}if(g.hv){const on=!!VRV;g.hv.scene.visible=on;R.body.visible=R.legL.visible=R.legR.visible=!on;if(on)avHeroAnim(r,g.hv,dt||.016,sp)}}
+  if(VRV&&!g.hv&&(g.hvN=(g.hvN||0)-(dt||.016))<=0){g.hvN=1;avHero(g,{sx:g.rc>=8})}if(g.hv){const on=!!VRV;g.hv.scene.visible=on;R.body.visible=R.legL.visible=R.legR.visible=!on;if(on){avHeroAnim(r,g.hv,dt||.016,sp);avGrip(g,R)}}}
 // invocações e animal dos outros jogadores (só visual; o dano chega pela rede)
 function rpMinions(r,pr,dt){r.mns=r.mns||{};const seen={};const list=(pr.mn||'').split(';').filter(Boolean);list.forEach((s2,i)=>{const [k,x,z]=s2.split(','),cl=k[0]=='c',key=cl?k:k+i;seen[key]=1;let o=r.mns[key];
     if(!o){let g;if(cl){g=r.av.clone(true);if(r.av.hv&&THREE.SkeletonUtils){const i=r.av.children.indexOf(r.av.hv.scene);if(i>=0){g.remove(g.children[i]);g.add(THREE.SkeletonUtils.clone(r.av.hv.scene))}}const mk=new THREE.Mesh(BLG,new THREE.MeshBasicMaterial({color:ELC[+k[1]]||0xffffff,transparent:true,opacity:.7,depthWrite:false}));mk.rotation.x=-Math.PI/2;mk.position.y=.09;mk.scale.setScalar(1.3);g.add(mk);S.add(g);ring(+x,+z,1.2,ELC[+k[1]])}else if(k=='z'||k=='m'||k=='s')g=mkMin(k);else g=k=='t'?mkTot():k=='v'?mkVult():mkDog();o=r.mns[key]={g,x:+x,z:+z,k};if(cl)Object.assign(o,{cl:1,el:+k[1],hp:2,mn:1,fl:0})}
     if(o.cl&&NET.h&&o.hp<=0&&!o.kd){o.kd=1;o.g.visible=false;nemit('ev',{t:'ck',to:r.peer,el:o.el});puff(o.x,1.1,o.z,14,ELC[o.el],5,5,.6,.15)}
-    const kk=Math.min(1,10*dt),dx=+x-o.x,dz=+z-o.z;o.x+=dx*kk;o.z+=dz*kk;o.g.position.set(o.x,o.k=='v'?2.2+Math.sin(t*5)*.2:0,o.z);minion3d(o,dt,1);if(o.g.wL){const fl=Math.sin(t*9)*.55-.1;o.g.wL.rotation.z=-fl;o.g.wR.rotation.z=fl}if(Math.abs(dx)+Math.abs(dz)>.02)o.g.rotation.y=Math.atan2(dx,dz)});
+    const kk=Math.min(1,10*dt),dx=+x-o.x,dz=+z-o.z;o.x+=dx*kk;o.z+=dz*kk;o.g.position.set(o.x,o.k=='v'?2.2+Math.sin(t*5)*.2:0,o.z);minion3d(o,dt,1);if(o.k=='d')qdDog(o,dt);if(o.g.wL){const fl=Math.sin(t*9)*.55-.1;o.g.wL.rotation.z=-fl;o.g.wR.rotation.z=fl}if(Math.abs(dx)+Math.abs(dz)>.02)o.g.rotation.y=Math.atan2(dx,dz)});
   for(const key in r.mns)if(!seen[key]){const o=r.mns[key];if(o.cl&&!o.kd)puff(o.x,1.1,o.z,14,ELC[o.el],5,5,.6,.15);S.remove(o.g);delete r.mns[key]}
-  if(pr.an){const [ty,x,z]=pr.an.split(',');if(!r.anG||r.anT!=ty){if(r.anG)S.remove(r.anG);anLook(+ty);const g=an.g.clone(true),mt=AM2.clone();anLook(an.type);mt.color.setHex(AN[+ty][1]);mt.map=+ty==1?TSTR:TFUR;g.traverse(o=>{if(o.isMesh&&o.material===AM2)o.material=mt});g.scale.setScalar(AN[+ty][2]);g.visible=true;S.add(g);r.anG=g;r.anT=ty;r.ax=+x;r.az=+z}
-    const kk=Math.min(1,10*dt),dx=+x-r.ax,dz=+z-r.az;r.ax+=dx*kk;r.az+=dz*kk;r.anG.position.set(r.ax,0,r.az);if(Math.abs(dx)+Math.abs(dz)>.02)r.anG.rotation.y=Math.atan2(dx,dz)}
+  if(pr.an){const [ty,x,z]=pr.an.split(',');if(!r.anG||r.anT!=ty){if(r.anG)S.remove(r.anG);anLook(+ty);const g=an.g.clone(true),mt=AM2.clone();if(an.g.qd){const i=an.g.children.indexOf(an.g.qd.sc);if(i>=0)g.remove(g.children[i]);an.g.qd.hid.forEach(h=>{const j=an.g.children.indexOf(h);if(j>=0&&g.children[j])g.children[j].visible=true})}anLook(an.type);mt.color.setHex(AN[+ty][1]);mt.map=+ty==1?TSTR:TFUR;g.traverse(o=>{if(o.isMesh&&o.material===AM2)o.material=mt});g.scale.setScalar(AN[+ty][2]);g.visible=true;S.add(g);g.qd=null;if(+ty==2&&QDM.ok)qdAttach(g,'lobo',{len:1.6/AN[2][2],eye:0xffd040});r.anG=g;r.anT=ty;r.ax=+x;r.az=+z}
+    const kk=Math.min(1,10*dt),dx=+x-r.ax,dz=+z-r.az;r.ax+=dx*kk;r.az+=dz*kk;r.anG.position.set(r.ax,0,r.az);if(Math.abs(dx)+Math.abs(dz)>.02)r.anG.rotation.y=Math.atan2(dx,dz);if(r.anG.qd)qdTick(r.anG.qd,dt,{mv:qdMv(r.anG.qd,r.anG,dt,11)})}
   else if(r.anG){S.remove(r.anG);r.anG=null}}
 function rpDrop(r){S.remove(r.av);if(r.wG)S.remove(r.wG);for(const k in r.mns||{})S.remove(r.mns[k].g);if(r.anG)S.remove(r.anG)}
 // projéteis dos outros jogadores (só visual)
@@ -1937,7 +1937,7 @@ function hBuild(g){g.children.forEach(c=>{if(c.geometry!==BLG)c.visible=false});
   const ar=sg(rd,-.22,.55,0);C2(.035,.03,.35,ar,0,-.17,0,bn);ar.rotation.x=-1.25;const lc=sg(ar,0,-.34,0);C2(.035,.02,2.6,lc,0,0,0,ir);add(new THREE.ConeGeometry(.08,.32,5),L(0xb0b8c0),0,1.4,0,lc);add(new THREE.ConeGeometry(.12,.18,8),ir,0,-.2,0,lc);lc.rotation.x=0;
   const al=sg(rd,.22,.55,0);C2(.035,.03,.35,al,0,-.17,0,bn);al.rotation.x=-.6;add(new THREE.CylinderGeometry(.24,.24,.05,10),ir,.08,-.36,.05,al).rotation.z=PI/2;S2(.07,al,.12,-.36,.05,bn);
   g.hb={bd,nk,hd,jw,lg,tl,ar,rd}}
-function hAnim(e,dt){const h=e.g.hb;if(!h)return;rider3d(e,h,dt);const m=Math.max(e.mv||0,e.chg?1:0),sp=e.chg?16:6+5*m;e.hph=(e.hph||0)+dt*sp;const ph=e.hph,S=Math.sin;e.hrr=(e.hrr||0)-dt;
+function hAnim(e,dt){const h=e.g.hb;if(!h)return;rider3d(e,h,dt);qdHorse(e,h,dt);const m=Math.max(e.mv||0,e.chg?1:0),sp=e.chg?16:6+5*m;e.hph=(e.hph||0)+dt*sp;const ph=e.hph,S=Math.sin;e.hrr=(e.hrr||0)-dt;
   const P=[0,PI2*.5,PI2*.12,PI2*.62].map(o=>S(ph+o));h.lg.forEach((l,i)=>{l.u.rotation.x=P[i]*.75*m;l.lo.rotation.x=(i<2?Math.max(0,S(ph+(i?3.4:.3)+1.3)):-Math.max(0,S(ph+(i==2?.8:3.9)+1.3))*.6)*m*1.1});
   let bx=S(ph*2)*.05*m,by=1.05+Math.abs(S(ph))*.07*m,nx=-.75+S(ph)*.12*m,jaw=.05;
   if(e.hrr>0){const u=1-e.hrr/.9,s=u<.55?Math.sin(u/.55*Math.PI/2):Math.cos((u-.55)/.45*Math.PI/2);bx=-.6*s;by=1.05+.35*s;nx=-1.1*s-.75*(1-s);jaw=.5*s;h.lg[0].u.rotation.x=h.lg[1].u.rotation.x=-1.3*s;h.lg[0].lo.rotation.x=h.lg[1].lo.rotation.x=1.2*s}
@@ -2116,7 +2116,7 @@ function mkWolf(){const {M,M2,F,N,T,D,G}=WFM,g=new THREE.Group(),sg=(pa,x,y,z)=>
   const fl=[[b,0,.24,-.05],[t2,0,.09,-.1],[t3,0,.08,-.14]].map(([pa,x,y,z])=>co(.035,.14,pa,x,y,z,0,0,0,G));
   Object.assign(g,{b,ch,hp,nk,h,jw,lg,tl:[t1,t2,t3],fl,ph:0,ty:0,lf:0,hw:0});g.scale.setScalar(1.12);return g}
 // estado: mv (0..1 corrida), k/pr (golpe e progresso, pr<0 sem golpe), dash, air
-function wolfAnim(g,mv,k,pr,dash,air,dt){dt=dt||.016;const PI=Math.PI,S=Math.sin,C=Math.cos,ez=u=>u*u*(3-2*u);
+function wolfAnim(g,mv,k,pr,dash,air,dt){if(qdWolf(g,mv,pr,dash,air,dt))return;dt=dt||.016;const PI=Math.PI,S=Math.sin,C=Math.cos,ez=u=>u*u*(3-2*u);
   const yaw=g.rotation.y,dy=Math.atan2(S(yaw-(g.ly??yaw)),C(yaw-(g.ly??yaw)))/Math.max(dt,.001);g.ly=yaw;g.ty+=(Math.max(-6,Math.min(6,dy))-g.ty)*Math.min(1,dt*6);
   g.ph+=dt*(7+7*mv);const ph=g.ph,L=g.lg;let by=.84,bz=0,bx=0,cx=0,hx=0,nx=-.55,hy=0,jaw=0,brz=0,byaw=0;
   // galope rotativo: dianteiras e traseiras alternam, com pequeno atraso entre esquerda e direita
@@ -2539,15 +2539,19 @@ function vrmUpd(dt){const v=VRMS.v;if(!v||!VRV||!v.scene.visible)return;const H=
   if(lu&&lo&&lh&&ru&&ro&&rh){const ext=sw.position.z-.1,le=b('LeftMiddleProximal')||lh,re=b('RightMiddleProximal')||rh,wL=[0,1,2,4,5,6,7,9,10,11].includes(wi),wR=[2,3,5,10].includes(wi),sh=wi==0;
     if(!v.mx){lu.rotation.set(Q.aL,0,1.2);ru.rotation.set(Q.aR,0,-1.2);lo.rotation.set(0,-Q.el,0);ro.rotation.set(0,Q.el,0)}pg.updateMatrixWorld(true);
     // mão que segura a arma: o braço aponta na direção da lâmina (o golpe sai do ombro); sem arma, segue a mão do esqueleto antigo
-    const fistA=wi==8&&a&&!v.mx,ikL=wL||fistA,ikR=wR||(sh&&!v.mx)||fistA;if(wL)wTgt(sw,.42,ext,VH1);else faR.localToWorld(VH1.set(0,-.36,0));
+    const hm=!!v.mx,fistA=wi==8&&a&&!hm,ikL=!hm&&(wL||fistA),ikR=!hm&&(wR||sh||fistA);if(wL)wTgt(sw,.42,ext,VH1);else faR.localToWorld(VH1.set(0,-.36,0));
     if(wR)wTgt(sw2,-.42,0,VH2);else if(sh)pg.localToWorld(VH2.copy(sh2.position).multiply(VS).add(VO));else faL.localToWorld(VH2.set(0,-.36,0));
     if(ikL)ccd([lo,lu],le,VH1);if(ikR)ccd([ro,ru],re,VH2);
-    const pl=pg.worldToLocal(le.getWorldPosition(VA)),pr=pg.worldToLocal(re.getWorldPosition(VB).clone());if(wL)sw.position.copy(pl);if(wR)sw2.position.copy(pr);
+    const pl=pg.worldToLocal(le.getWorldPosition(VA)),pr=pg.worldToLocal(re.getWorldPosition(VB).clone());if(wL)sw.position.copy(pl);if(wR)sw2.position.copy(pr);if(hm){if(wL)hGrip(sw,le,0);if(wR)hGrip(sw2,re,1)}
     // escudo do Guerreiro preso à mão (o braço vem da animação)
     if(sh&&v.mx){const ry=sh2.rotation.y;sh2.position.copy(pr);sh2.position.x-=Math.cos(ry)*.07;sh2.position.z+=Math.sin(ry)*.07}
     for(const [sd,on] of [['Left',wL],['Right',wR||sh]])for(const f of ['Index','Middle','Ring','Little'])for(const j of ['Proximal','Intermediate','Distal']){const n=b(sd+f+j);if(n&&(on||!v.mx))n.rotation.set(0,0,on?(sd=='Left'?1:-1)*(j=='Proximal'?1.2:1.0):0)}}
   if(v.blendShapeProxy){VRMS.bt-=dt;if(VRMS.bt<0){VRMS.bk=.14;VRMS.bt=rnd(2,5)}VRMS.bk-=dt;v.blendShapeProxy.setValue(THREE.VRMSchema.BlendShapePresetName.Blink,VRMS.bk>0?1:0)}
   v.update(dt)}
+// com as animações do herói 3D, a arma fica presa na mão e acompanha o movimento (sem puxar o braço até uma pose fixa)
+const HGQ=[new THREE.Quaternion(),new THREE.Quaternion()],HGT=new THREE.Quaternion(),HGP=new THREE.Quaternion();
+function hGripSet(e0,e1){HGQ[0].setFromEuler(new THREE.Euler(...e0));HGQ[1].setFromEuler(new THREE.Euler(...e1))}hGripSet([1.25,0,0],[1.25,0,0]);window.__hGripSet=hGripSet;
+function hGrip(o,bone,i){bone.getWorldQuaternion(HGT);o.parent.getWorldQuaternion(HGP).invert();o.quaternion.copy(HGP).multiply(HGT).multiply(HGQ[i])}
 if(VRV)vrmBoot();else VRMS.st='desligado';
 // ---- Loop
 const rs=()=>{const h=Math.min(RES,innerHeight),w=Math.round(h*innerWidth/innerHeight);R.setSize(w,h,false);PSU.uSnap.value.set(w/2,h/2);POST.rt.setSize(w,h);POST.mat.uniforms.rs.value.set(w,h);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()};
@@ -2575,7 +2579,7 @@ if(location.hash=='#dbg')window.__dbg={ptarget,MP,NET,E,p,hurt,get LV(){return L
 // ---- Armas 3D (KayKit Fantasy Weapons Bits, CC0): troca a malha de cada arma (WG) pela de modelos/armas.glb; jogador, aliados e inimigos passam a usar
 (async()=>{try{if(!THREE.GLTFLoader)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js');const r=await mget('armas');if(!r.ok)return;
   const g=await new Promise(async(ok,no)=>{try{new THREE.GLTFLoader().parse(await r.arrayBuffer(),'',ok,no)}catch(e){no(e)}});
-  g.scene.traverse(o=>{const k=(o.userData&&o.userData.name)||o.name;if(o.isMesh&&WG[k]){WG[k].copy(o.geometry);WG[k].computeBoundingSphere();WG[k].computeBoundingBox()}})}catch(e){console.warn('armas 3D',e)}})();
+  g.scene.traverse(o=>{const k=(o.userData&&o.userData.name)||o.name;if(o.isMesh&&WG[k]){WG[k].copy(o.geometry);{const f={hammer:.5,axe:.78,dagger:.8}[k];if(f)WG[k].scale(f,f,f)}WG[k].computeBoundingSphere();WG[k].computeBoundingBox()}})}catch(e){console.warn('armas 3D',e)}})();
 // ---- Modelos 3D também nas invocações humanoides do Necromante, no cavaleiro do Cavaleiro Esqueleto e nos outros jogadores do online
 Object.assign(EMT,{Nz:[['orc_m','orc_f'],0x9ab088],Nm:[['elf_m'],0,1],Ns:[['orc_m'],0xffffff],Hr:[['elf_m','orc_m'],0,1]});
 Object.assign(EOUT,{Nz:[ELG,0x4a3a2a,1],Nm:[ERH,0x4a2a6a,1],Ns:[ERP,0x3a4a8a,1],Hr:[['R_Legs','P_Feet','R_Pauldrons'],0x3a3a42,1]});
@@ -2590,7 +2594,7 @@ function m3dTick(g,kind,dt,atk,hurt,wR,wL){const e=g.md3||m3dMake(g,kind,wR,wL);
 function minion3d(m,dt,remote){const k=m.k;if(!MNK[k]||!m.g)return;const w=MNW[k];if(remote){m3dTick(m.g,MNK[k],dt,0,0,w[0],w[1]);return}
   m3dTick(m.g,MNK[k],dt,m.cd>(m.pcd??m.cd)+.05,m.hp<(m.php??m.hp)-.01,w[0],w[1]);m.pcd=m.cd;m.php=m.hp}
 // cavaleiro esqueleto montado: modelo com pintura de ossos, sentado na sela, lança e escudo
-function rider3d(e,h,dt){if(!h.r3&&EMD.ok&&!h.r3f){h.r3f=1;const r2=new THREE.Group();r2.position.set(0,-.2,.02);r2.scale.setScalar(.62);h.rd.add(r2);const m=m3dMake(r2,'Hr','spear','shield');
+function rider3d(e,h,dt){if(!h.r3&&EMD.ok&&!h.r3f){h.r3f=1;const r2=new THREE.Group();r2.position.set(0,-.25,.02);r2.scale.setScalar(.8);h.rd.add(r2);const m=m3dMake(r2,'Hr','spear','shield');
     if(m){h.r3=m;h.rd.children.forEach(c=>{if(c!==r2)c.visible=false});const B=m.md.B;m.md.A.idle.play()}}
   if(!h.r3)return;const d=h.r3.md,B=d.B;d.mx.update(dt);
   for(const s of['Left','Right']){const sg=s=='Left'?1:-1;if(B[s+'UpperLeg'])B[s+'UpperLeg'].rotation.set(-1.35,0,sg*.55);if(B[s+'LowerLeg'])B[s+'LowerLeg'].rotation.set(1.55,0,0)}
@@ -2602,6 +2606,10 @@ function heroClone(v0){const sc=THREE.SkeletonUtils.clone(v0.scene),B={},hair={}
   v.mats=mc;v.skm=new THREE.MeshLambertMaterial({color:0xf0c8a0});
   if(v0.A){const mx=new THREE.AnimationMixer(sc),A={};for(const k in v0.A){const s=v0.A[k],a=mx.clipAction(s.getClip());a.setLoop(s.loop,s.repetitions);a.clampWhenFinished=s.clampWhenFinished;A[k]=a}v.mx=mx;v.A=A;v.bw={};v.ow=0}
   return v}
+var AGV=new THREE.Vector3();
+// armas dos outros jogadores presas às mãos do herói 3D deles
+function avGrip(g,R){const B=g.hv.B,le=B.LeftMiddleProximal||B.LeftHand,re=B.RightMiddleProximal||B.RightHand,w=g.w,wL=[0,1,2,4,5,6,7,9,10,11].includes(w),wR=[2,3,5,10].includes(w);g.updateMatrixWorld(true);
+  if(wL&&le&&R.sw){R.sw.position.copy(g.worldToLocal(le.getWorldPosition(AGV)));hGrip(R.sw,le,0)}if(wR&&re&&R.sw2){R.sw2.position.copy(g.worldToLocal(re.getWorldPosition(AGV)));hGrip(R.sw2,re,1)}if(w==0&&re&&R.sh2)R.sh2.position.copy(g.worldToLocal(re.getWorldPosition(AGV)))}
 function avHero(g,pr){const sx=pr.sx?1:0,v0=HERO.g[sx];if(!v0){if(VRV&&!HERO.p[sx]&&typeof heroGet=='function')heroGet(sx).catch(()=>{});return}if(!THREE.SkeletonUtils)return;
   const v=heroClone(v0),w=g.w,c=w>=6?w-4:Math.floor(w/3),sv={race,sex};race=g.rc%8;sex=sx;try{heroRace(v);heroCloth(v,c)}finally{race=sv.race;sex=sv.sex}
   v.w=w;g.add(v.scene);v.scene.position.y=v.dy||0;g.hv=v;const R=g.R;R.body.visible=R.legL.visible=R.legR.visible=false}
@@ -2617,7 +2625,53 @@ function avHeroAnim(r,v,dt,spd){const A=v.A;if(!A)return;const w=v.w,air=(r.vy??
   v.ow+=((on?1:0)-v.ow)*Math.min(1,dt*(on?25:12));const kb=Math.min(1,dt*10);
   for(const k of['idle','idleM','idleC','walk','jog','sprint','jump','roll','death','shield']){if(!A[k])continue;const x=v.bw[k]=(v.bw[k]||0)+((k==bk?1:0)-(v.bw[k]||0))*(k==bk&&(bk=='roll'||bk=='death')?1:kb);sW(A[k],x*(1-v.ow))}
   if(v.one)sW(v.one,v.ow);v.mx.update(dt);const lz=v.lean||0,B=v.B;if(lz){B.Spine.rotateX(-lz*.6);B.Chest.rotateX(-lz*.4);B.Head.rotateX(lz*.9)}}
-emLoad();
+// ---- Animais 3D (Quaternius, "Ultimate Animated Animals", CC0): lobo, husky e cavalo com as animações do pacote
+var QDM={ok:0,m:{}};
+async function qdLoad(){try{if(!THREE.GLTFLoader)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js');if(!THREE.SkeletonUtils)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js');
+  await Promise.all(['lobo','husky','cavalo'].map(async nm=>{const r=await mget('ani_'+nm);if(!r.ok)return;const g=await new Promise(async(ok,no)=>{try{new THREE.GLTFLoader().parse(await r.arrayBuffer(),'',ok,no)}catch(e){no(e)}});
+    const sc=g.scene;sc.updateMatrixWorld(true);const bb=new THREE.Box3().setFromObject(sc),sz=bb.getSize(new THREE.Vector3());QDM.m[nm]={scene:sc,clips:g.animations,len:Math.max(sz.x,sz.z),minY:bb.min.y,alongX:sz.x>sz.z}}));QDM.ok=1}catch(e){console.warn('animais 3D',e)}}
+// o: {len: comprimento no jogo, cor: matiz por material, ghost: lobo espiritual translúcido, eye: cor dos olhos}
+function qdAttach(g,nm,o={}){const src=QDM.m[nm];if(!src||!THREE.SkeletonUtils)return null;const sc=THREE.SkeletonUtils.clone(src.scene),B={},mc={};
+  sc.traverse(c=>{const n=(c.userData&&c.userData.name)||c.name;if(c.isBone)B[n]=c;if(!c.isMesh)return;c.frustumCulled=false;const m=c.material,k=m.name;
+    if(!mc[k]){const col=m.color?m.color.clone():new THREE.Color(1,1,1);let n2;
+      if(/Eye/i.test(k)&&o.eye!==undefined&&!/White/i.test(k))n2=new THREE.MeshBasicMaterial({color:o.eye,skinning:true});
+      else if(o.ghost)n2=new THREE.MeshLambertMaterial({color:col.lerp(new THREE.Color(o.ghost),.75),emissive:new THREE.Color(o.ghost).multiplyScalar(.45),transparent:true,opacity:.82,skinning:true});
+      else{if(o.cor)col.multiply(new THREE.Color(o.cor));n2=new THREE.MeshLambertMaterial({color:col,skinning:true});if(o.emi)n2.emissive=new THREE.Color(o.emi)}
+      n2.name=k;mc[k]=n2}c.material=mc[k]});
+  const s=(o.len||1.4)/src.len;sc.scale.setScalar(s);sc.position.y=-src.minY*s+(o.dy||0);sc.rotation.y=(src.alongX?-Math.PI/2:0)+(o.ry||0);
+  const hid=[];if(o.hide!==false)g.children.forEach(c=>{if(c.geometry===BLG||c===o.keep)return;if(c.visible){hid.push(c);c.visible=false}});g.add(sc);
+  const mx=new THREE.AnimationMixer(sc),A={};for(const c of src.clips){const a=mx.clipAction(c);if(!/Idle$|Walk|Gallop$|Idle_2/.test(c.name)){a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true}A[c.name]=a}
+  const q={sc,B,mx,A,bw:{},ow:0,one:null,hid,mats:mc};(A.Idle||Object.values(A)[0]).play();mx.update(Math.random());g.qd=q;return q}
+function qdRemove(g){const q=g.qd;if(!q)return;g.remove(q.sc);q.hid.forEach(c=>c.visible=true);g.qd=null}
+// st: {mv 0..1, run, atk (início do ataque), kick, hit, dead, air, sp (velocidade da animação)}
+function qdTick(q,dt,st){const A=q.A,sW=(a,w)=>{if(!a)return;if(w>.002){if(!a.isScheduled())a.play();a.setEffectiveWeight(w)}else if(a.isScheduled())a.stop()},
+    shot=a=>{if(!a)return;if(q.one&&q.one!==a)q.one.stop();a.reset();a.play();q.one=a};
+  if(st.atk&&!st.dead)shot(st.kick&&A.Attack_Kick?A.Attack_Kick:A.Attack||A.Attack_Headbutt);if(st.hit&&!st.dead&&!(q.one&&!q.one.paused&&q.one!==A.Idle_HitReact1))shot(A.Idle_HitReact1);
+  const bk=st.dead?'Death':st.air&&A.Gallop_Jump?'Gallop_Jump':st.run||st.mv>.55?'Gallop':st.mv>.08?'Walk':'Idle';if(bk!=q.pb&&(bk=='Death'||bk=='Gallop_Jump')&&A[bk]){A[bk].reset();q.one=null}q.pb=bk;
+  if(A.Walk)A.Walk.timeScale=.6+st.mv*1.2;if(A.Gallop)A.Gallop.timeScale=st.sp||.9+st.mv*.4;
+  const o=q.one,on=!!(o&&!o.paused&&o.enabled&&(o.getClip().duration-o.time)/Math.max(.01,o.timeScale)>.06);if(!on&&o&&q.ow<.01){sW(o,0);q.one=null}
+  q.ow+=((on?1:0)-q.ow)*Math.min(1,dt*(on?20:10));const kb=Math.min(1,dt*8);
+  for(const k of['Idle','Walk','Gallop','Gallop_Jump','Death']){if(!A[k])continue;const w=q.bw[k]=(q.bw[k]||0)+((k==bk?1:0)-(q.bw[k]||0))*(k==bk&&(bk=='Death'||bk=='Gallop_Jump')?1:kb);sW(A[k],w*(1-q.ow))}
+  if(q.one)sW(q.one,q.ow);q.mx.update(dt)}
+// velocidade pelo deslocamento do grupo
+function qdMv(q,g,dt,full){const x=g.position.x,z=g.position.z,sp=dt>0&&q.px!==undefined?Math.hypot(x-q.px,z-q.pz)/dt:0;q.px=x;q.pz=z;q.mv=(q.mv||0)+(Math.min(1,sp/(full||8))-(q.mv||0))*Math.min(1,dt*8);return q.mv}
+// cão do Necromante (husky de ossos, olhos azuis) — o meu e o dos outros jogadores
+function qdDog(m,dt){const g=m.g;if(!g||(!g.qd&&!QDM.ok))return;const q=g.qd||(g.qdf?null:(g.qdf=1,qdAttach(g,'husky',{len:1.35,cor:0xb8b0a0,emi:0x101820,eye:0x7fe8ff})));if(!q)return;
+  const pc=m.pc||0,atk=pc>(m.ppc??pc)+.5;m.ppc=pc;qdTick(q,dt,{mv:qdMv(q,g,dt,10),atk})}
+// lobo espiritual do Xamã (translúcido azul) — chamado pelo wolfAnim, vale para mim e para os outros jogadores
+function qdWolf(g,mv,pr,dash,air,dt){if(!g.qd&&!QDM.ok)return false;const q=g.qd||(g.qdf?null:(g.qdf=1,qdAttach(g,'lobo',{len:1.75,ghost:0x8fdcff,eye:0xffffff})));if(!q)return false;
+  const atk=pr>=0&&!(g.qpr>=0);g.qpr=pr;qdTick(q,dt,{mv:Math.min(1,mv),run:dash,atk,air,sp:dash?1.6:1});return true}
+// lobo da Lança (o urso e o tigre continuam como eram)
+function qdAn(dt){const g=an.g;if(!g)return;if(an.type!=2){if(g.qd)qdRemove(g);g.qdf=0;return}if(!g.qd&&!QDM.ok)return;
+  const q=g.qd||(g.qdf?null:(g.qdf=1,qdAttach(g,'lobo',{len:1.6/(g.scale.x||1),eye:0xffd040})));if(!q)return;q.hid.forEach(c=>c.visible=false);const A=an.alive?an.atk:null,atk=!!A&&A!==an.patk;an.patk=A;
+  const hit=an.hp<(an.php??an.hp)-.5;an.php=an.hp;qdTick(q,dt,{mv:qdMv(q,g,dt,11),atk,hit,dead:!an.alive,run:an.dash>0})}
+// cavalo zumbi do Cavaleiro Esqueleto: o cavalo do pacote apodrecido (cinza-esverdeado, olhos verdes) com o cavaleiro sentado na sela
+var QV=new THREE.Vector3();
+function qdHorse(e,h,dt){const g=e.g,c=h.bd.parent;if(!c)return;if(!c.qd&&!QDM.ok)return;
+  if(!c.qd&&!c.qdf){c.qdf=1;const rd=h.rd;const q=qdAttach(c,'cavalo',{len:2.2,cor:0x8a9a80,emi:0x0a140a,eye:0x6aff8a,hide:false});if(!q)return;h.bd.visible=false;c.add(rd);rd.rotation.set(0,0,0);h.q3=q}
+  const q=c.qd;if(!q)return;qdTick(q,dt,{mv:e.chg?1:Math.min(1,(e.mv||0)*1.2),run:!!e.chg,atk:e.hrr>.85&&!(h.phr>.85),kick:1,hit:e.fl>.1&&!(h.pfl>.1),sp:e.chg?1.5:1});h.phr=e.hrr;h.pfl=e.fl;
+  const b=q.B.Torso2||q.B.Torso||q.B.Body;if(b){b.getWorldPosition(QV);c.worldToLocal(QV);h.rd.position.set(QV.x,QV.y-.02,QV.z)}}
+emLoad();qdLoad();
 camApply();skyCol();shApply();
 gear();requestAnimationFrame(loop);
 })();

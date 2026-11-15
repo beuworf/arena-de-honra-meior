@@ -2,5 +2,6 @@ Modelos 3D e animações (todos CC0, domínio público):
 - Heróis: "Universal Base Characters" e "Modular Character Outfits - Fantasy" de Quaternius (quaternius.com)
 - Inimigos: "Characters - Fantasy Races" e "Bestiary - Dungeon Monsters" de Quaternius
 - Animações: "Universal Animation Library" 1 e 2 de Quaternius
+- Animais (lobo, husky e cavalo): "Ultimate Animated Animals" de Quaternius
 - Armas: "KayKit Fantasy Weapons Bits" de Kay Lousberg (kaylousberg.com)
 Convertidos para o jogo: ossos no padrão VRM, texturas reduzidas, roupas por classe, armas no formato do jogo, animações ajustadas ao esqueleto (canhotas, como as armas do jogo) e pintura tribal de ossos feita no shader.
