@@ -133,14 +133,14 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 #rot b{font-size:56px;display:inline-block;animation:rr 1.6s ease-in-out infinite}@keyframes rr{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}
 @media (pointer:coarse) and (orientation:portrait){#rot{display:flex}}
 @media (pointer:coarse){
-#bH{--x:79px;--y:calc(calc(var(--vh,1vh)*46) + 35px)}#bL{--x:13px;--y:calc(calc(var(--vh,1vh)*46) - 31px)}#bJ{--x:79px;--y:calc(calc(var(--vh,1vh)*46) - 97px)}#bB{--x:145px;--y:calc(calc(var(--vh,1vh)*46) - 31px)}
+#bH{--x:calc(79px*var(--bs,1));--y:calc(calc(var(--vh,1vh)*46) + 35px*var(--bs,1))}#bL{--x:calc(13px*var(--bs,1));--y:calc(calc(var(--vh,1vh)*46) - 31px*var(--bs,1))}#bJ{--x:calc(79px*var(--bs,1));--y:calc(calc(var(--vh,1vh)*46) - 97px*var(--bs,1))}#bB{--x:calc(145px*var(--bs,1));--y:calc(calc(var(--vh,1vh)*46) - 31px*var(--bs,1))}
 #bK,#bD{top:calc(var(--sat,env(safe-area-inset-top,0px)) + 8px);width:92px;height:40px;border-radius:12px 12px 20px 20px;font-size:17px}
 #bW,#bC{top:auto;bottom:calc(var(--sab,env(safe-area-inset-bottom,0px)) + 8px);width:76px;height:34px;border-radius:17px;font-size:11px;font-weight:700;line-height:1;background:rgba(40,50,70,.75)}
 #bW small,#bC small{display:block;font-size:10px;font-weight:400;opacity:.85}
 #bW{left:calc(50% - 84px)}#bR{top:calc(var(--sat,env(safe-area-inset-top,0px)) + 54px);bottom:auto;right:calc(var(--sar,env(safe-area-inset-right,0px)) + 14px);width:92px;height:34px;border-radius:12px;font-size:13px;background:rgba(40,50,70,.75)}#bR small{display:block;font-size:9px;opacity:.85}#bC{left:calc(50% + 8px);right:auto}
 #hud{left:calc(var(--sal,env(safe-area-inset-left,0px)) + 116px);width:min(170px,calc(var(--vw,1vw)*24))}#info{font-size:11px}#tm{right:calc(var(--sar,env(safe-area-inset-right,0px)) + 116px)}
 #els{bottom:calc(var(--sab,env(safe-area-inset-bottom,0px)) + 50px)}
-#cjoy{right:calc(var(--sar,env(safe-area-inset-right,0px)) + 200px);bottom:calc(var(--sab,env(safe-area-inset-bottom,0px)) + 16px)}}
+#cjoy{right:calc(var(--sar,env(safe-area-inset-right,0px)) + 200px*var(--bs,1) + 8px*(var(--bs,1) - 1));bottom:calc(var(--sab,env(safe-area-inset-bottom,0px)) + 16px + 170px*(var(--bs,1) - 1))}}
 #mvg{display:none;position:fixed;left:calc(calc(var(--vw,1vw)*16) - 50px);top:calc(calc(var(--vh,1vh)*70) - 50px);width:96px;height:96px;border-radius:50%;border:2px dashed rgba(255,255,255,.6);background:rgba(255,255,255,.1);pointer-events:none}
 @media (pointer:coarse){body.mfix #mvg{display:block}#joy.fix{top:0;bottom:auto;width:50%;height:100%}}
 #led{position:fixed;inset:0;z-index:30;display:none;background:rgba(10,18,28,.4);background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:calc(var(--vw,1vw)*5) calc(var(--vh,1vh)*5)}
@@ -170,6 +170,7 @@ html.frot body{position:fixed;left:0;top:0;width:var(--fw,100vh);height:var(--fh
 <script>
 // Tela deitada à força: se o celular estiver em pé (ex.: dentro do itch.io ou com a rotação travada),
 // o jogo gira a própria imagem 90° e converte toques, medidas e media queries para a horizontal.
+window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='MacIntel'&&navigator.maxTouchPoints>1);
 (function(){var on=0,de=document.documentElement,co=matchMedia('(pointer:coarse)'),
   gd=function(o,k){for(var p=o;p;p=Object.getPrototypeOf(p)){var d=Object.getOwnPropertyDescriptor(p,k);if(d)return d}},
   dW=gd(window,'innerWidth'),dH=gd(window,'innerHeight'),RW=function(){return dW.get.call(window)},RH=function(){return dH.get.call(window)};
@@ -180,8 +181,8 @@ html.frot body{position:fixed;left:0;top:0;width:var(--fw,100vh);height:var(--fh
   var gb=Element.prototype.getBoundingClientRect;Element.prototype.getBoundingClientRect=function(){var r=gb.call(this);if(!on)return r;return new DOMRect(r.top,RW()-r.right,r.height,r.width)};
   var sw=function(t){return t.replace(/portrait/g,'§P').replace(/landscape/g,'portrait').replace(/§P/g,'landscape').replace(/-height/g,'-§H').replace(/-width/g,'-height').replace(/-§H/g,'-width')};
   function mq(){for(var i=0;i<document.styleSheets.length;i++){var rs;try{rs=document.styleSheets[i].cssRules}catch(e){continue}for(var j=0;j<rs.length;j++){var r=rs[j];if(!r.media||r.type!=4)continue;if(r.__m===undefined)r.__m=r.media.mediaText;r.media.mediaText=on?sw(r.__m):r.__m}}}
-  function fit(){var st=de.style;if(on){var w=RW(),h=RH();st.setProperty('--fw',h+'px');st.setProperty('--fh',w+'px');st.setProperty('--vh',w/100+'px');st.setProperty('--vw',h/100+'px')}else['--fw','--fh','--vh','--vw'].forEach(function(k){st.removeProperty(k)})}
-  var lw=0,lh=0;function chk(){var p=co.matches&&RH()>RW()*1.08?1:0,w=RW(),h=RH(),ch=p!==on||w!==lw||h!==lh;lw=w;lh=h;if(!ch)return;var tg=p!==on;on=p;de.classList.toggle('frot',!!on);fit();if(tg){mq();window.FROT=on}setTimeout(function(){dispatchEvent(new Event('resize'))},0)}
+  function fit(){var st=de.style;if(on){var w=RW(),h=RH();st.setProperty('--fw',h+'px');st.setProperty('--fh',w+'px');st.setProperty('--vh',w/100+'px');st.setProperty('--vw',h/100+'px')}else if(window.IOS&&co.matches){st.removeProperty('--fw');st.removeProperty('--fh');st.setProperty('--vh',RH()/100+'px');st.setProperty('--vw',RW()/100+'px')}else['--fw','--fh','--vh','--vw'].forEach(function(k){st.removeProperty(k)})}
+  var lw=0,lh=0;function chk(){var p=co.matches&&RH()>RW()*1.08?1:0,w=RW(),h=RH(),ch=p!==on||w!==lw||h!==lh;lw=w;lh=h;if(!ch)return;var tg=p!==on;on=p;de.classList.toggle('frot',!!on);fit();if(window.layApply)setTimeout(window.layApply,0);if(tg){mq();window.FROT=on}setTimeout(function(){dispatchEvent(new Event('resize'))},0)}
   // o iPhone demora a atualizar as medidas depois de girar ou mostrar/esconder as barras do Safari
   function later(){[120,350,800].forEach(function(t){setTimeout(chk,t)})}if(window.visualViewport)visualViewport.addEventListener('resize',function(){chk();later()});
   window.FROT=0;addEventListener('resize',chk);addEventListener('orientationchange',later);chk();
@@ -778,7 +779,7 @@ const PJM=1.25;function projUpd(dt){for(let i=PR.length-1;i>=0;i--){const a=PR[i
 // O dano causado é aplicado sobre toda a vida que o inimigo perde no quadro (golpes, projéteis, magias, invocações e dano contínuo).
 // valores achados pelo laboratório (bot jogando sozinho, vantagens de raça desligadas): fase média de cada build entre 2,0 e 2,9
 // ordem: Espada e Escudo, Espada Longa, Dois Machados, Arco, Lança e Animal, Adagas, Mago, Paladino, Monge, Necromante, Corrompido, Xamã
-const SB0=[[1.68,0.33,0],[1.98,0.69,0],[2.98,0.5,0],[1.72,0.84,0.11],[2.26,0.61,0.16],[2.25,0.88,0.15],[1.15,1,0],[1.25,0.7,0],[2.61,0.64,0.15],[4.1,0.46,0],[0.73,1.15,0],[1,1,0]];
+const SB0=[[1.68,0.33,0],[1.98,0.69,0],[2.98,0.5,0],[1.72,0.84,0.11],[2.26,0.61,0.16],[2.25,0.88,0.15],[1.15,1,0],[1.25,0.7,0],[2.61,0.64,0.15],[4.1,0.46,0],[1,1,0],[1,1,0]];
 var SB=window.ARENA_SB||SB0;
 function sbOf(){return SB[wi]||[1,1,0]}
 function sbTick(){const f=sbOf()[0];for(const e of E){if(e.dlh===undefined){e.dlh=e.hp;continue}const l=e.dlh-e.hp;if(l>0&&e.k=='j')thorn(e,l);if(l>0&&f!==1)e.hp-=l*(f-1);e.dlh=e.hp}}
@@ -2248,11 +2249,13 @@ function renderFrame(){if(OLV){POST.mat.uniforms.cn.value=C.near;POST.mat.unifor
 // ---- Layout dos botões de toque: cada um pode ser arrastado e redimensionado (salvo em % da tela)
 const LCT=[['bH','△'],['bL','○'],['bJ','✕'],['bB','□'],['bK','L1'],['bD','R1'],['bW','SELECT'],['bR','R2 (cone do arco)'],['bC','START'],['cjoy','Analógico da câmera'],['mvg','Analógico de movimento'],['els','Elementos do Mago']],LAYD=()=>({c:{},g:1,o:1,mf:0});
 let LAY=(()=>{try{const o=JSON.parse(localStorage.getItem('arena_lay')||'null');return o&&o.c?o:LAYD()}catch(e){return LAYD()}})(),LSEL=null,LDR=null;
-const lsave=()=>{try{localStorage.setItem('arena_lay',JSON.stringify(LAY))}catch(e){}},JR=()=>48*((LAY.c.mvg&&LAY.c.mvg.s)||1)*LAY.g;
-function layApply(){for(const [id] of LCT){const el=$(id),c=LAY.c[id]||{},sc=(c.s||1)*LAY.g;
+const lsave=()=>{try{localStorage.setItem('arena_lay',JSON.stringify(LAY))}catch(e){}},JR=()=>48*((LAY.c.mvg&&LAY.c.mvg.s)||1)*LAY.g*autoG();
+function autoG(){if(!window.IOS||!matchMedia('(pointer:coarse)').matches)return 1;const sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches;return sa?1.22:Math.max(.72,Math.min(1,innerHeight/400))}
+function layApply(){const AG=autoG();document.documentElement.style.setProperty('--bs',AG);for(const [id] of LCT){const el=$(id),c=LAY.c[id]||{},sc=(c.s||1)*LAY.g*(id=='cjoy'?Math.min(AG,1):AG);
     if(c.x!==undefined){el.style.left=c.x*100+'%';el.style.top=c.y*100+'%';el.style.right=el.style.bottom='auto';el.style.transform='translate(-50%,-50%) scale('+sc+')'}
     else{el.style.left=el.style.top=el.style.right=el.style.bottom='';el.style.transform=(id=='els'?'translateX(-50%) ':'')+'scale('+sc+')'}el.style.opacity=LAY.o}
   $('joy').classList.toggle('fix',!!LAY.mf);document.body.classList.toggle('mfix',!!LAY.mf)}
+window.layApply=layApply;addEventListener('resize',()=>setTimeout(layApply,0));
 function ledOpen(){document.body.classList.add('led');$('led').style.display='block';$('ltb').style.display='flex';$('set').style.display='none';LSEL=null;ledUI()}
 function ledClose(){document.body.classList.remove('led');$('led').style.display=$('ltb').style.display='none';LCT.forEach(([id])=>$(id).classList.remove('sel'));lsave();layApply();showScr('set')}
 function ledUI(){const c=LSEL&&(LAY.c[LSEL]||{}),pc=v=>Math.round(v*100)+'%';
