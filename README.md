@@ -225,3 +225,12 @@ modelos/               instruções para usar o seu próprio boneco VRoid (.vrm)
 docs/design.md         documento de design do jogo
 AGENTS.md              regras para agentes de código (OhMyGame, Claude Code, Codex…)
 ```
+
+## Créditos
+
+- **Jogo:** beuworf
+- **Modelos 3D e animações (CC0):** **Quaternius** — https://quaternius.com (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Universal Animation Library 1 e 2)
+- **Armas 3D (CC0):** **Kay Lousberg** — https://kaylousberg.com (KayKit – Fantasy Weapons Bits)
+- Sons, música, cenários e efeitos gerados pelo próprio jogo; motor gráfico three.js.
+
+Obrigado aos artistas por disponibilizarem esses modelos gratuitamente.
