@@ -202,7 +202,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 15/11 · animais 3D</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="bst"><div id="mt3">📖 Bestiário</div><div id="bfl"></div><div id="bgr"></div><div class="bk" id="bbk" style="display:block">◀ Voltar</div></div>
 <div id="lob"><div id="lh">Lobby · código <b id="lc">----</b></div><input id="lnm" maxlength="10" placeholder="Seu nome" autocomplete="off"><div id="lp"></div><div id="lsel"></div><div id="lm"></div></div>
 <div id="jn"><div id="mt3">Entrar com código</div><input id="jc" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"><div class="row"><span class="btn" id="jgo">Entrar</span><span class="btn" id="jbk">Voltar</span></div><div id="jm"></div></div>
@@ -2628,8 +2628,10 @@ function avHeroAnim(r,v,dt,spd){const A=v.A;if(!A)return;const w=v.w,air=(r.vy??
 // ---- Animais 3D (Quaternius, "Ultimate Animated Animals", CC0): lobo, husky e cavalo com as animações do pacote
 var QDM={ok:0,m:{}};
 async function qdLoad(){try{if(!THREE.GLTFLoader)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js');if(!THREE.SkeletonUtils)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js');
-  await Promise.all(['lobo','husky','cavalo'].map(async nm=>{const r=await mget('ani_'+nm);if(!r.ok)return;const g=await new Promise(async(ok,no)=>{try{new THREE.GLTFLoader().parse(await r.arrayBuffer(),'',ok,no)}catch(e){no(e)}});
-    const sc=g.scene;sc.updateMatrixWorld(true);const bb=new THREE.Box3().setFromObject(sc),sz=bb.getSize(new THREE.Vector3());QDM.m[nm]={scene:sc,clips:g.animations,len:Math.max(sz.x,sz.z),minY:bb.min.y,alongX:sz.x>sz.z}}));QDM.ok=1}catch(e){console.warn('animais 3D',e)}}
+  await Promise.all(['lobo','husky','cavalo'].filter(nm=>!QDM.m[nm]).map(async nm=>{const r=await mget('ani_'+nm);if(!r.ok)return;const g=await new Promise(async(ok,no)=>{try{new THREE.GLTFLoader().parse(await r.arrayBuffer(),'',ok,no)}catch(e){no(e)}});
+    const sc=g.scene;sc.updateMatrixWorld(true);const bb=new THREE.Box3().setFromObject(sc),sz=bb.getSize(new THREE.Vector3());QDM.m[nm]={scene:sc,clips:g.animations,len:Math.max(sz.x,sz.z),minY:bb.min.y,alongX:sz.x>sz.z}}));QDM.ok=1}catch(e){console.warn('animais 3D',e)}
+  // se algum modelo não veio (internet fraca), tenta de novo mais tarde
+  if(!['lobo','husky','cavalo'].every(n=>QDM.m[n])&&(QDM.try=(QDM.try||0)+1)<6)setTimeout(qdLoad,4000*QDM.try)}
 // o: {len: comprimento no jogo, cor: matiz por material, ghost: lobo espiritual translúcido, eye: cor dos olhos}
 function qdAttach(g,nm,o={}){const src=QDM.m[nm];if(!src||!THREE.SkeletonUtils)return null;const sc=THREE.SkeletonUtils.clone(src.scene),B={},mc={};
   sc.traverse(c=>{const n=(c.userData&&c.userData.name)||c.name;if(c.isBone)B[n]=c;if(!c.isMesh)return;c.frustumCulled=false;const m=c.material,k=m.name;
@@ -2656,19 +2658,19 @@ function qdTick(q,dt,st){const A=q.A,sW=(a,w)=>{if(!a)return;if(w>.002){if(!a.is
 // velocidade pelo deslocamento do grupo
 function qdMv(q,g,dt,full){const x=g.position.x,z=g.position.z,sp=dt>0&&q.px!==undefined?Math.hypot(x-q.px,z-q.pz)/dt:0;q.px=x;q.pz=z;q.mv=(q.mv||0)+(Math.min(1,sp/(full||8))-(q.mv||0))*Math.min(1,dt*8);return q.mv}
 // cão do Necromante (husky de ossos, olhos azuis) — o meu e o dos outros jogadores
-function qdDog(m,dt){const g=m.g;if(!g||(!g.qd&&!QDM.ok))return;const q=g.qd||(g.qdf?null:(g.qdf=1,qdAttach(g,'husky',{len:1.35,cor:0xb8b0a0,emi:0x101820,eye:0x7fe8ff})));if(!q)return;
+function qdDog(m,dt){const g=m.g;if(!g||(!g.qd&&!QDM.ok))return;const q=g.qd||((g.qdf>performance.now())?null:(g.qdf=performance.now()+2500,qdAttach(g,'husky',{len:1.35,cor:0xb8b0a0,emi:0x101820,eye:0x7fe8ff})));if(!q)return;
   const pc=m.pc||0,atk=pc>(m.ppc??pc)+.5;m.ppc=pc;qdTick(q,dt,{mv:qdMv(q,g,dt,10),atk})}
 // lobo espiritual do Xamã (translúcido azul) — chamado pelo wolfAnim, vale para mim e para os outros jogadores
-function qdWolf(g,mv,pr,dash,air,dt){if(!g.qd&&!QDM.ok)return false;const q=g.qd||(g.qdf?null:(g.qdf=1,qdAttach(g,'lobo',{len:1.75,ghost:0x8fdcff,eye:0xffffff})));if(!q)return false;
+function qdWolf(g,mv,pr,dash,air,dt){if(!g.qd&&!QDM.ok)return false;const q=g.qd||((g.qdf>performance.now())?null:(g.qdf=performance.now()+2500,qdAttach(g,'lobo',{len:1.75,ghost:0x8fdcff,eye:0xffffff})));if(!q)return false;
   const atk=pr>=0&&!(g.qpr>=0);g.qpr=pr;qdTick(q,dt,{mv:Math.min(1,mv),run:dash,atk,air,sp:dash?1.6:1});return true}
 // lobo da Lança (o urso e o tigre continuam como eram)
 function qdAn(dt){const g=an.g;if(!g)return;if(an.type!=2){if(g.qd)qdRemove(g);g.qdf=0;return}if(!g.qd&&!QDM.ok)return;
-  const q=g.qd||(g.qdf?null:(g.qdf=1,qdAttach(g,'lobo',{len:1.6/(g.scale.x||1),eye:0xffd040})));if(!q)return;q.hid.forEach(c=>c.visible=false);const A=an.alive?an.atk:null,atk=!!A&&A!==an.patk;an.patk=A;
+  const q=g.qd||((g.qdf>performance.now())?null:(g.qdf=performance.now()+2500,qdAttach(g,'lobo',{len:1.6/(g.scale.x||1),eye:0xffd040})));if(!q)return;q.hid.forEach(c=>c.visible=false);const A=an.alive?an.atk:null,atk=!!A&&A!==an.patk;an.patk=A;
   const hit=an.hp<(an.php??an.hp)-.5;an.php=an.hp;qdTick(q,dt,{mv:qdMv(q,g,dt,11),atk,hit,dead:!an.alive,run:an.dash>0})}
 // cavalo zumbi do Cavaleiro Esqueleto: o cavalo do pacote apodrecido (cinza-esverdeado, olhos verdes) com o cavaleiro sentado na sela
 var QV=new THREE.Vector3();
 function qdHorse(e,h,dt){const g=e.g,c=h.bd.parent;if(!c)return;if(!c.qd&&!QDM.ok)return;
-  if(!c.qd&&!c.qdf){c.qdf=1;const rd=h.rd;const q=qdAttach(c,'cavalo',{len:2.2,cor:0x8a9a80,emi:0x0a140a,eye:0x6aff8a,hide:false});if(!q)return;h.bd.visible=false;c.add(rd);rd.rotation.set(0,0,0);h.q3=q}
+  if(!c.qd&&!(c.qdf>performance.now())){c.qdf=performance.now()+2500;const rd=h.rd;const q=qdAttach(c,'cavalo',{len:2.2,cor:0x8a9a80,emi:0x0a140a,eye:0x6aff8a,hide:false});if(!q)return;h.bd.visible=false;c.add(rd);rd.rotation.set(0,0,0);h.q3=q}
   const q=c.qd;if(!q)return;qdTick(q,dt,{mv:e.chg?1:Math.min(1,(e.mv||0)*1.2),run:!!e.chg,atk:e.hrr>.85&&!(h.phr>.85),kick:1,hit:e.fl>.1&&!(h.pfl>.1),sp:e.chg?1.5:1});h.phr=e.hrr;h.pfl=e.fl;
   const b=q.B.Torso2||q.B.Torso||q.B.Body;if(b){b.getWorldPosition(QV);c.worldToLocal(QV);h.rd.position.set(QV.x,QV.y-.02,QV.z)}}
 emLoad();qdLoad();
