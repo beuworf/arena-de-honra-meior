@@ -209,7 +209,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 16/11 · avisos discretos</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 16/11 · ataques do possuído</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
@@ -811,7 +811,7 @@ const PJM=1.25;function projUpd(dt){for(let i=PR.length-1;i>=0;i--){const a=PR[i
   if(NB.length&&isMag(a)&&inNB(m.position.x,m.position.z)){puff(m.position.x,1.2,m.position.z,6,0x7ad8ff,3,2,.3,.1);S.remove(m);PR.splice(i,1);continue}
   const h=a.tg?(Math.hypot(a.tg.x-m.position.x,a.tg.z-m.position.z)<1.3?a.tg:null):E.find(e=>e.hp>0&&!(a.hl&&a.hl.includes(e))&&Math.hypot(e.x-m.position.x,e.z-m.position.z)<(a.hr||.9));
   if(h&&((h.k=='a'&&!isMag(a))||(h.k=='w'&&isMag(a)))){armDefl(h,m.position.x,m.position.z);S.remove(m);PR.splice(i,1);continue}if(h)h.pjT=performance.now();
-  if(h){const mgc=!!a.g&&a.g!==RBG;h.hp-=a.dmg*PJM*(h.k=='j'?1.6:1)*(h.lf>0?1.5:1)*(1+RC.shot)*(1+(mgc?RC.mag:RC.phy))+RC.mg0;h.fl=.1;if(a.weak&&a.slow&&(h.slow>0||h.weak>0)&&!h.boss){h.ice=3;ring(h.x,h.z,1.5,0xbfeaff)}if(a.slow)h.slow=a.slow;if(a.burn)h.burn=a.burn;if(a.weak)h.weak=a.weak;if(a.kn){h.bleed=6;p.kn=h;p.knT=5}if(a.hm)holy(h.x,h.z);if(a.psn)h.psn=5;if(a.bn)h.burn=Math.max(h.burn>0?h.burn:0,3);if(a.dk)darkBoom(h.x,h.z);
+  if(h){const mgc=!!a.g&&a.g!==RBG;h.hp-=a.dmg*PJM*(h.k=='j'?1.6:1)*(h.lf>0?1.5:1)*(1+RC.shot)*(1+(mgc?RC.mag:RC.phy))+RC.mg0;if(a.pz)stAdd(a.pz,h,a.dmg*PJM);h.fl=.1;if(a.weak&&a.slow&&(h.slow>0||h.weak>0)&&!h.boss){h.ice=3;ring(h.x,h.z,1.5,0xbfeaff)}if(a.slow)h.slow=a.slow;if(a.burn)h.burn=a.burn;if(a.weak)h.weak=a.weak;if(a.kn){h.bleed=6;p.kn=h;p.knT=5}if(a.hm)holy(h.x,h.z);if(a.psn)h.psn=5;if(a.bn)h.burn=Math.max(h.burn>0?h.burn:0,3);if(a.dk)darkBoom(h.x,h.z);
     if(a.aoe){for(const o of E)if(o!==h&&o.hp>0&&Math.hypot(o.x-h.x,o.z-h.z)<a.aoe){dmg(o,a.dmg*PJM*.5);if(a.burn)o.burn=Math.max(o.burn>0?o.burn:0,a.burn*.6)}ring(h.x,h.z,a.aoe,0xff6a2a);puff(h.x,1,h.z,8,0xff7a2a,5,4,.45,.15);shake=Math.max(shake,.2)}
     if(a.pc>1){a.pc--;(a.hl=a.hl||[]).push(h)}else a.pc=0}
   if((h&&!(a.pc>0))||a.t<=0){S.remove(m);PR.splice(i,1)}}}
@@ -2739,10 +2739,10 @@ function qdHorse(e,h,dt){const g=e.g,c=h.bd.parent;if(!c)return;if(!c.qd&&!QDM.o
   const q=c.qd;if(!q)return;qdTick(q,dt,{mv:e.chg?1:Math.min(1,(e.mv||0)*1.2),run:!!e.chg,atk:e.hrr>.85&&!(h.phr>.85),kick:1,hit:e.fl>.1&&!(h.pfl>.1),sp:e.chg?1.5:1});h.phr=e.hrr;h.pfl=e.fl;
   const b=q.B.Torso2||q.B.Torso||q.B.Body;if(b){b.getWorldPosition(QV);c.worldToLocal(QV);h.rd.position.set(QV.x,QV.y-.02,QV.z)}}
 // ---- Online: o que o jogador caído faz (o host escolhe no lobby): espírito de apoio ou possessão de um inimigo
-var GHC={h:0,b:0,f:0,p:0},SPO=null;NET.pin={};
+var GHC={h:0,b:0,f:0,p:0,s:0},SPO=null;NET.pin={};
 function ghMode(){if(!NET.me.dm){try{NET.me.dm=localStorage.getItem('arena_dm')||'esp'}catch(e){NET.me.dm='esp'}}return NET.me.dm}
-function ghDie(){const m=ghMode();NET.pzId=0;GHC.h=GHC.b=GHC.f=GHC.p=0;if(m=='esp'){RC.spd=1.3;npres({sp:1});toast('Você virou um ESPÍRITO: ○ cura · △ fúria no aliado · □ assusta um inimigo')}else{npres({sp:0});toast('Você caiu! △ possui um inimigo comum perto · ○/□ ataca com ele')}}
-function ghostAct(dt){if(!NET.gh||NET.ph!='p'){ghHide();return}if(ghMode()!='pos'||NET.pzId)ghHide();const m=ghMode();for(const k in GHC)GHC[k]-=dt;
+function ghDie(){const m=ghMode();NET.pzId=0;GHC.h=GHC.b=GHC.f=GHC.p=0;if(m=='esp'){RC.spd=1.3;npres({sp:1});toast('Você virou um ESPÍRITO: ○ cura · △ fúria no aliado · □ assusta um inimigo')}else{npres({sp:0});toast('Você caiu! Escolha um inimigo para possuir (○ troca · △ possui)')}}
+function ghostAct(dt){if(!NET.gh||NET.ph!='p'){ghHide();return}if(ghMode()!='pos')ghHide();else if(NET.pzId){PKM.forEach(m=>m.visible=false);if(PKA)PKA.visible=false}const m=ghMode();for(const k in GHC)GHC[k]-=dt;
   if(m=='esp'){RC.spd=1.3;if(!SPO){SPO=new THREE.Mesh(new THREE.SphereGeometry(.32,12,9),new THREE.MeshBasicMaterial({color:0xbfe8ff,transparent:true,opacity:.75,blending:THREE.AdditiveBlending,depthWrite:false}));S.add(SPO)}SPO.visible=true;SPO.position.set(p.x,1.4+Math.sin(t*3)*.15,p.z);if(Math.random()<dt*10)puff(p.x,1.3,p.z,1,0xbfe8ff,.6,1,.6,.1);
     const ally=(r)=>{let a=null,bd=r;for(const q of NET.rp)if(q.alive){const d=Math.hypot(q.x-p.x,q.z-p.z);if(d<bd){bd=d;a=q}}return a};
     if(p.bl>0){if(GHC.h>0)toast('Cura em recarga: '+Math.ceil(GHC.h)+' s');else{const a=ally(14);if(!a)toast('Nenhum aliado vivo perto');else{GHC.h=5;nemit('ev',{t:'heal',to:a.peer,a:14});xSup(14,a);ring(a.x,a.z,1.6,0x66ff88);toast('Cura enviada')}}}
@@ -2750,10 +2750,10 @@ function ghostAct(dt){if(!NET.gh||NET.ph!='p'){ghHide();return}if(ghMode()!='pos
     else if(p.bs>0){if(GHC.f>0)toast('Assustar em recarga: '+Math.ceil(GHC.f)+' s');else{const q=nearest(12);if(!q||q.boss)toast('Sem inimigo comum perto');else{GHC.f=6;q.fear=3;if(NET.c)nemit('ev',{t:'fr',id:q.id});ring(q.x,q.z,1.4,0xbfe8ff);toast('Inimigo assustado!')}}}}
   else{RC.spd=0;if(SPO)SPO.visible=false;const e=NET.pzId&&E.find(o=>o.id==NET.pzId);
     if(NET.pzId&&!e){NET.pzId=0;GHC.p=3}
-    if(e){if(e.pssf===false&&performance.now()-NET.pzT>1500){NET.pzId=0;GHC.p=2}else{p.x=e.x;p.z=e.z;NET.pa=(NET.pa||0)+((p.bl>0||p.bs>0)&&!(NET.paH)?1:0);NET.paH=p.bl>0||p.bs>0;NET.piT=(NET.piT||0)-dt;
-      if(NET.piT<=0){NET.piT=.08;const o={t:'pin',x:+mx.toFixed(2),z:+mz.toFixed(2),a:NET.pa};if(NET.h)(NET.pin||(NET.pin={}))[NET.mid]=o;else nemit('ev',o)}}}
+    if(e){if(e.pssf===false&&performance.now()-NET.pzT>1500){NET.pzId=0;GHC.p=2}else{p.x=e.x;p.z=e.z;NET.pa=(NET.pa||0)+(p.bl>0&&!NET.paH?1:0);NET.paH=p.bl>0;if(p.bs>0&&!NET.psH){if(GHC.s>0)toast('Especial em recarga: '+Math.ceil(GHC.s)+' s');else{NET.ps=(NET.ps||0)+1;GHC.s=PSPC(e.k)}}NET.psH=p.bs>0;posHint(e);NET.piT=(NET.piT||0)-dt;
+      if(NET.piT<=0){NET.piT=.08;const o={t:'pin',x:+mx.toFixed(2),z:+mz.toFixed(2),a:NET.pa,s:NET.ps||0};if(NET.h)(NET.pin||(NET.pin={}))[NET.mid]=o;else nemit('ev',o)}}}
     else{ghPick(dt);if(p.bl>0||p.bs>0){NET.psel=(NET.psel||0)+1}else if(p.bh>0){if(GHC.p>0)toast('Aguarde '+Math.ceil(GHC.p)+' s para possuir de novo');else{const q=NET.pcand&&NET.pcand[(NET.psel||0)%NET.pcand.length];
-      if(!q)toast('Nenhum inimigo comum perto para possuir');else{NET.pzId=q.id;NET.pzT=performance.now();NET.pa=0;if(NET.h)posStart(q,NET.mid);else nemit('ev',{t:'pos',id:q.id});toast('Você possuiu um inimigo! ○/□ ataca · 25 s')}}}}}}
+      if(!q)toast('Nenhum inimigo comum perto para possuir');else{NET.pzId=q.id;NET.pzT=performance.now();GHC.s=0;if(NET.h)posStart(q,NET.mid);else nemit('ev',{t:'pos',id:q.id});toast('Você possuiu um inimigo! ○ ataque · □ especial · 25 s')}}}}}}
 // câmera de quem caiu: corpo possuído > espírito > aliado vivo
 function ghFocus(){if(NET.pzId){const e=E.find(o=>o.id==NET.pzId);if(e)return e}if(ghMode()=='esp')return p;return NET.sp||p}
 // possessão: marca os inimigos que dá para possuir perto da câmera; ○/□ troca o alvo, △ possui
@@ -2766,13 +2766,30 @@ function ghPick(dt){const f=ghFocus();if(f!==p){p.x=f.x;p.z=f.z}const L=[];for(c
   const sel=NET.pcand[si];PKA.visible=!!sel;if(sel){PKA.position.set(sel.x,2.6*(sel.sz||1)+.3+.15*Math.sin(t*5),sel.z);PKA.rotation.y+=dt*3}
   const hint=$('ghh');hint.style.display='block';hint.textContent=n?'😈 Possessão: '+n+' inimigo(s) disponível(is) · ○ trocar alvo · △ possuir':'😈 Possessão: nenhum inimigo comum perto do seu aliado'}
 function ghHide(){PKM.forEach(m=>m.visible=false);if(PKA)PKA.visible=false;const h=$('ghh');if(h)h.style.display='none'}
-function posStart(e,peer){if(!e||e.boss||e.pss)return;e.pss=peer;e.pssT=25;e.pssf=true;e.hp=e.mx;e.pa0=0;ring(e.x,e.z,1.8,0xb05aff);puff(e.x,1.2,e.z,16,0xb05aff,4,4,.6,.14)}
+// ataques do inimigo possuído (host)
+function PSPC(k){return k=='x'?99:k=='h'?6:'rcftw'.includes(k)?4:4}
+function PSPN(k){return k=='x'?'💥 explodir':k=='h'?'💚 curar o grupo':'rcftw'.includes(k)?'🏹 rajada':'💨 investida'}
+function posNear(e,r,cone){let q=null,bd=r;const f=e.g.rotation.y,fx=Math.sin(f),fz=Math.cos(f);for(const o of E){if(o===e||o.hp<=0||o.pss)continue;const dx=o.x-e.x,dz=o.z-e.z,d=Math.hypot(dx,dz)||.01;if(d<bd&&(!cone||(dx*fx+dz*fz)/d>cone)){bd=d;q=o}}return q}
+function posHit(o,a,peer,kx,kz){o.hp-=a;if(o.hq!==undefined)o.hq-=a;if(o.dlh!==undefined)o.dlh-=a;o.fl=.12;if(kx!==undefined){o.kx=kx;o.kz=kz}dmgNum(o,a);stAdd(peer,o,a)}
+function posShoot(e,peer,sp){const q=posNear(e,16)||posNear(e,16,.5);const a0=q?Math.atan2(q.x-e.x,q.z-e.z):e.g.rotation.y;e.g.rotation.y=a0;e.wind=.3;e.sw=.25;
+  for(const da of sp?[-.2,0,.2]:[0]){shot(a0+da,{ox:e.x,oz:e.z,dmg:1.1+e.dm*.04,sp:24,t:.9,g:e.k=='c'||e.k=='w'?SG:undefined,m:e.k=='c'||e.k=='w'?MF:undefined});const pr=PR[PR.length-1];if(pr)pr.pz=peer}}
+function posSpecial(e,peer){const k=e.k;
+  if(k=='x'){const r=3.6;for(const o of E)if(o!==e&&o.hp>0&&!o.pss&&Math.hypot(o.x-e.x,o.z-e.z)<r)posHit(o,6,peer,(o.x-e.x)*6,(o.z-e.z)*6);ring(e.x,e.z,r,0xff5a1a);puff(e.x,1,e.z,30,0xff7a2a,7,6,.7,.2);shake=Math.max(shake,.6);sfx('boom');e.pssT=0;return}
+  if(k=='h'){const a=18;if(!NET.gh)p.hp=Math.min(PMX,p.hp+a);for(const r of NET.rp)if(r.alive)nemit('ev',{t:'heal',to:r.peer,a});ring(e.x,e.z,8,0x66ff88);puff(e.x,1.4,e.z,16,0x66ff88,4,4,.6,.12);return}
+  if('rcftw'.includes(k)){posShoot(e,peer,1);return}
+  const q=posNear(e,9,.3)||posNear(e,9),f=q?Math.atan2(q.x-e.x,q.z-e.z):e.g.rotation.y,L=q?Math.min(8,Math.hypot(q.x-e.x,q.z-e.z)+1):6,fx=Math.sin(f),fz=Math.cos(f);e.g.rotation.y=f;
+  const x0=e.x,z0=e.z;e.x+=fx*L;e.z+=fz*L;bound(e);for(const o of E){if(o===e||o.hp<=0||o.pss)continue;const t2=((o.x-x0)*fx+(o.z-z0)*fz);if(t2<0||t2>L+1)continue;const px=x0+fx*t2,pz=z0+fz*t2;if(Math.hypot(o.x-px,o.z-pz)<1.4){posHit(o,2.5+e.dm*.06,peer,fx*14,fz*14);o.kd=Math.max(o.kd>0?o.kd:0,1)}}
+  puff(x0,.4,z0,12,0xcdb58a,5,2,.5,.15);ring(e.x,e.z,1.6,0xb05aff);shake=Math.max(shake,.3);sfx('dash')}
+function posHint(e){const h=$('ghh');h.style.display='block';h.textContent='😈 Possuindo · ○ '+(e.rng?'atirar':'atacar')+' · □ '+PSPN(e.k)+(GHC.s>0?' ('+Math.ceil(GHC.s)+' s)':' (pronto)')}
+function posStart(e,peer){if(!e||e.boss||e.pss)return;e.pss=peer;e.pssT=25;e.pssf=true;e.hp=e.mx;{const I=(NET.pin||{})[peer]||{};e.pa0=I.a||0;e.ps0=I.s||0}ring(e.x,e.z,1.8,0xb05aff);puff(e.x,1.2,e.z,16,0xb05aff,4,4,.6,.14)}
 // host: inimigo possuído anda com os comandos do morto, ataca os outros inimigos e não toma dano; os abates contam no ranking do morto
 function posAI(e,dt){const peer=e.pss,me=peer===NET.mid,r=me?null:NET.rp.find(q=>q.peer==peer),alive=me?!NET.gh:(r?r.alive:true);e.pssT-=dt;
   if(e.pssT<=0||alive||(!me&&!r)){e.pss=0;e.pssf=false;e.hp=0;e.nk=1;return}
   e.hp=e.mx;e.stun=e.kd=e.fear=e.slow=e.ice=0;const I=(NET.pin||{})[peer]||{x:0,z:0,a:0},sp=6.2*(e.sp||1);e.x+=(I.x||0)*sp*dt;e.z+=(I.z||0)*sp*dt;bound(e);e.mv=Math.min(1,Math.hypot(I.x||0,I.z||0));
   if(Math.abs(I.x||0)+Math.abs(I.z||0)>.1)e.g.rotation.y=Math.atan2(I.x,I.z);
-  if((I.a||0)>e.pa0){e.pa0=I.a;e.wind=.25;e.sw=.25;{let q=null,bd=3.2;for(const o of E){if(o===e||o.hp<=0||o.pss)continue;const d=Math.hypot(o.x-e.x,o.z-e.z);if(d<bd){bd=d;q=o}}if(q)e.g.rotation.y=Math.atan2(q.x-e.x,q.z-e.z)}const f=e.g.rotation.y,fx=Math.sin(f),fz=Math.cos(f);let n=0;
+  if((I.s||0)>e.ps0){e.ps0=I.s;posSpecial(e,peer)}
+  if((I.a||0)>e.pa0&&e.rng){e.pa0=I.a;posShoot(e,peer,0)}
+  if((I.a||0)>e.pa0){e.pa0=I.a;e.wind=.25;e.sw=.25;{const q=posNear(e,5);if(q){const dx=q.x-e.x,dz=q.z-e.z,d=Math.hypot(dx,dz)||.01,st=Math.min(Math.max(0,d-1.3),2.2);e.x+=dx/d*st;e.z+=dz/d*st;bound(e)}}{let q=null,bd=3.2;for(const o of E){if(o===e||o.hp<=0||o.pss)continue;const d=Math.hypot(o.x-e.x,o.z-e.z);if(d<bd){bd=d;q=o}}if(q)e.g.rotation.y=Math.atan2(q.x-e.x,q.z-e.z)}const f=e.g.rotation.y,fx=Math.sin(f),fz=Math.cos(f);let n=0;
     for(const o of E){if(o===e||o.hp<=0||o.pss)continue;const dx=o.x-e.x,dz=o.z-e.z,d=Math.hypot(dx,dz)||.01;if(d<2.6&&(dx*fx+dz*fz)/d>-.2){const a=1.4+e.dm*.05;o.hp-=a;if(o.hq!==undefined)o.hq-=a;if(o.dlh!==undefined)o.dlh-=a;o.fl=.12;o.kx=dx/d*7;o.kz=dz/d*7;dmgNum(o,a);stAdd(peer,o,a);n++}}if(n){shake=Math.max(shake,.1);sfx('hit')}}}
 // necromante: passiva — a cada 10 abates, 3 zumbis próprios surgem e atacam os inimigos por perto
 var NKC=0;function necKill(){if(wi!=9||NET.gh)return;NKC++;if(NKC<10)return;NKC=0;for(let i=0;i<3;i++){const a=i/3*PI2+p.f,x=p.x+Math.sin(a)*2,z=p.z+Math.cos(a)*2,g=mkMin('z');S.add(g);TM.push({k:'zz',x,z,t:12,cd:.3,g,f:a});ring(x,z,1.2,0x7cff8a)}puff(p.x,1,p.z,20,0x7cff8a,5,4,.6,.15);toast('🧟 Passiva: 3 zumbis se levantaram!')}
