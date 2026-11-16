@@ -209,7 +209,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 16/11 · ataques do possuído</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 16/11 · puxada do arco</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
@@ -2444,7 +2444,7 @@ function heroAnim(v,dt,spd){const A=v.A,air=p.y>.2,melee=[0,1,2,4,5,7,10].includ
     sW=(a,w)=>{if(w>.002){if(!a.isScheduled())a.play();a.setEffectiveWeight(w)}else if(a.isScheduled())a.stop()},shot=k=>{const a=A[k];if(v.one&&v.one!==a)v.one.stop();a.reset();a.play();v.one=a};
   if(p.att>(v.pat||0)+.001&&!dead){const k=wi==8?(v.alt?'cross':'jab'):cast?'spell':p.k=='H'||p.k=='G'?'heavy':p.k=='S'?'atkC':p.k=='T'?'dash':(v.alt?'atkB':'atkA');
     v.alt=!v.alt;A[k].timeScale=Math.max(.8,Math.min(4,A[k].getClip().duration/Math.max(.2,p.att+.15)));shot(k)}
-  v.pat=p.att;if(p.shA){p.shA=0;const s=A.spell;s.timeScale=2.2;shot('spell')}
+  v.pat=p.att;if(p.shA){p.shA=0;const k=wi==3&&A.bow?'bow':'spell';A[k].timeScale=k=='bow'?1:2.2;shot(k)}
   if(p.fl>0&&!(v.pfl>0)&&!(v.one&&v.one!==A.hit&&!v.one.paused)){A.hit.timeScale=1.3;shot('hit')}v.pfl=p.fl;
   const bk=dead?'death':p.dg>0?'roll':air?'jump':p.blk?'shield':spd>8.5?'sprint':spd>3?'jog':spd>.4?'walk':melee?'idleM':'idle';
   if(bk!=v.pb){if(bk=='roll'){A.roll.reset();A.roll.timeScale=Math.min(4,A.roll.getClip().duration/Math.max(.3,p.dg+.15))}if(bk=='death')A.death.reset();if(bk=='death'||bk=='roll')v.one=null}v.pb=bk;
@@ -2583,7 +2583,7 @@ function vrmUpd(dt){const v=VRMS.v;if(!v||!VRV||!v.scene.visible)return;const H=
     // mão que segura a arma: o braço aponta na direção da lâmina (o golpe sai do ombro); sem arma, segue a mão do esqueleto antigo
     const hm=!!v.mx,fistA=wi==8&&a&&!hm,ikL=!hm&&(wL||fistA),ikR=!hm&&(wR||sh||fistA);if(wL)wTgt(sw,.42,ext,VH1);else faR.localToWorld(VH1.set(0,-.36,0));
     if(wR)wTgt(sw2,-.42,0,VH2);else if(sh)pg.localToWorld(VH2.copy(sh2.position).multiply(VS).add(VO));else faL.localToWorld(VH2.set(0,-.36,0));
-    if(ikL)ccd([lo,lu],le,VH1);if(ikR)ccd([ro,ru],re,VH2);
+    if(ikL)ccd([lo,lu],le,VH1);if(ikR)ccd([ro,ru],re,VH2);if(hm&&wi==3)bowIK(v,lo,lu,le,re);
     const pl=pg.worldToLocal(le.getWorldPosition(VA)),pr=pg.worldToLocal(re.getWorldPosition(VB).clone());if(wL)sw.position.copy(pl);if(wR)sw2.position.copy(pr);if(hm){VRMS.cw=(VRMS.cw??1)+((a||(wi==3&&performance.now()-(p.shT||0)<450))?-1:1)*Math.min(1,dt*10);VRMS.cw=Math.max(0,Math.min(1,VRMS.cw));const cwA=Math.max(VRMS.cw,[2,5].includes(wi)?.45:.25);if(wL){hGrip(sw,le,0,wi,cwA);hOut(sw,pg)}if(wR){hGrip(sw2,re,1,wi,cwA);hOut(sw2,pg)}}
     // escudo do Guerreiro preso à mão (o braço vem da animação)
     if(sh&&v.mx){const ry=sh2.rotation.y;sh2.position.copy(pr);sh2.position.x-=Math.cos(ry)*.07;sh2.position.z+=Math.sin(ry)*.07}
@@ -2661,8 +2661,13 @@ function heroClone(v0){const sc=THREE.SkeletonUtils.clone(v0.scene),B={},hair={}
   if(v0.A){const mx=new THREE.AnimationMixer(sc),A={};for(const k in v0.A){const s=v0.A[k],a=mx.clipAction(s.getClip());a.setLoop(s.loop,s.repetitions);a.clampWhenFinished=s.clampWhenFinished;A[k]=a}v.mx=mx;v.A=A;v.bw={};v.ow=0}
   return v}
 var AGV=new THREE.Vector3();
+// arqueiro: a animação de mira (Pistol_Shoot da Universal Animation Library) estica o braço do arco; a outra mão puxa a corda até o rosto
+var BIK=[new THREE.Vector3(),new THREE.Vector3(),new THREE.Vector3(),new THREE.Quaternion(),new THREE.Quaternion()];
+function bowIK(v,lo,lu,le,re){const a=v.A&&v.A.bow;if(!a||v.one!==a||!(v.ow>.03)||!v.B.Head)return;const t=a.time/a.getClip().duration,f=v.ow*(t<.5?1:Math.max(0,1-(t-.5)/.3));if(f<.01)return;
+  const [H,Rp,T,q0,q1]=BIK;v.B.Head.getWorldPosition(H);re.getWorldPosition(Rp);const sc=H.y>0?1:1;T.copy(Rp).sub(H);T.y=0;const d=T.length()||1;T.multiplyScalar(.1/d).add(H);T.y-=.12;
+  q0.copy(lu.quaternion);q1.copy(lo.quaternion);ccd([lo,lu],le,T);const i0=lu.quaternion.clone(),i1=lo.quaternion.clone();lu.quaternion.copy(q0).slerp(i0,f);lo.quaternion.copy(q1).slerp(i1,f);lu.updateMatrixWorld(true)}
 // armas dos outros jogadores presas às mãos do herói 3D deles
-function avGrip(g,R){const B=g.hv.B,le=B.LeftMiddleProximal||B.LeftHand,re=B.RightMiddleProximal||B.RightHand,w=g.w,wL=[0,1,2,4,5,6,7,9,10,11].includes(w),wR=[2,3,5,10].includes(w);g.updateMatrixWorld(true);
+function avGrip(g,R){const B=g.hv.B,le=B.LeftMiddleProximal||B.LeftHand,re=B.RightMiddleProximal||B.RightHand,w=g.w,wL=[0,1,2,4,5,6,7,9,10,11].includes(w),wR=[2,3,5,10].includes(w);g.updateMatrixWorld(true);if(w==3&&B.LeftLowerArm)bowIK(g.hv,B.LeftLowerArm,B.LeftUpperArm,le,re);
   if(wL&&le&&R.sw){R.sw.position.copy(g.worldToLocal(le.getWorldPosition(AGV)));g.cw=Math.max(0,Math.min(1,(g.cw??1)+(g.hv&&g.hv.ow>.3?-.15:.15)));hGrip(R.sw,le,0,w,Math.max(g.cw,[2,5].includes(w)?.45:.25));hOut(R.sw,g)}if(wR&&re&&R.sw2){R.sw2.position.copy(g.worldToLocal(re.getWorldPosition(AGV)));hGrip(R.sw2,re,1,w,Math.max(g.cw,[2,5].includes(w)?.45:.25));hOut(R.sw2,g)}if(w==0&&re&&R.sh2)R.sh2.position.copy(g.worldToLocal(re.getWorldPosition(AGV)))}
 function avHero(g,pr){const sx=pr.sx?1:0,v0=HERO.g[sx];if(!v0){if(VRV&&!HERO.p[sx]&&typeof heroGet=='function')heroGet(sx).catch(()=>{});return}if(!THREE.SkeletonUtils)return;
   const v=heroClone(v0),w=g.w,c=w>=6?w-4:Math.floor(w/3),sv={race,sex};race=g.rc%8;sex=sx;try{heroRace(v);heroCloth(v,c)}finally{race=sv.race;sex=sv.sex}
@@ -2671,7 +2676,7 @@ function avHeroAnim(r,v,dt,spd){const A=v.A;if(!A)return;const w=v.w,air=(r.vy??
     sW=(a,x)=>{if(x>.002){if(!a.isScheduled())a.play();a.setEffectiveWeight(x)}else if(a.isScheduled())a.stop()},shot=k=>{const a=A[k];if(!a)return;if(v.one&&v.one!==a)v.one.stop();a.reset();a.play();v.one=a};
   if(r.ak&&r.atT>(v.pat||0)+.001&&!dead){const k=w==8?(v.alt?'cross':'jab'):cast?'spell':r.ak.k=='H'||r.ak.k=='G'?'heavy':r.ak.k=='S'?'atkC':r.ak.k=='T'?'dash':(v.alt?'atkB':'atkA');v.alt=!v.alt;
     if(A[k]){A[k].timeScale=Math.max(.8,Math.min(4,A[k].getClip().duration/Math.max(.2,(r.ak.dur||.4)+.15)));shot(k)}}
-  v.pat=r.atT||0;if(r.shA&&!dead){r.shA=0;if(A.spell){A.spell.timeScale=2.2;shot('spell')}}if(r.hp<(v.php??r.hp)-1&&A.hit&&!(v.one&&v.one!==A.hit&&!v.one.paused)){A.hit.timeScale=1.3;shot('hit')}v.php=r.hp;
+  v.pat=r.atT||0;if(r.shA&&!dead){r.shA=0;const k=w==3&&A.bow?'bow':'spell';if(A[k]){A[k].timeScale=k=='bow'?1:2.2;shot(k)}}if(r.hp<(v.php??r.hp)-1&&A.hit&&!(v.one&&v.one!==A.hit&&!v.one.paused)){A.hit.timeScale=1.3;shot('hit')}v.php=r.hp;
   const bk=dead?'death':r.dg?'roll':air?'jump':r.blk?'shield':spd>8.5?'sprint':spd>3?'jog':spd>.4?'walk':melee?'idleM':'idle';
   if(bk!=v.pb){if(bk=='roll'&&A.roll)A.roll.reset();if(bk=='death'&&A.death)A.death.reset();if(bk=='death'||bk=='roll')v.one=null}v.pb=bk;
   if(bk=='walk')A.walk.timeScale=Math.max(.6,Math.min(1.6,spd/2));else if(bk=='jog')A.jog.timeScale=Math.max(.7,Math.min(1.5,spd/5.5));else if(bk=='sprint')A.sprint.timeScale=Math.max(.8,Math.min(1.5,spd/9));
