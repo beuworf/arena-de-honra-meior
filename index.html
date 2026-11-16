@@ -56,7 +56,8 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 .sl.hd{background:rgba(90,180,255,.35)}
 #bW{right:auto;bottom:auto;left:calc(var(--sal,env(safe-area-inset-left,0px)) + 14px);top:calc(var(--sat,env(safe-area-inset-top,0px)) + 118px);width:70px;height:40px;border-radius:14px;background:rgba(40,50,70,.75);font-size:14px}
 #cdn{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;background:rgba(10,18,28,.45);text-align:center}#cdn b{display:block;font:900 clamp(70px,22vw,170px)/1 system-ui,sans-serif;color:#fff;text-shadow:0 0 8px #000,0 6px 0 #0006}#cdn small{font-size:16px;opacity:.85;margin-top:6px}@keyframes cdIn{0%{transform:scale(1.8);opacity:0}30%{transform:scale(1);opacity:1}100%{transform:scale(.92);opacity:.95}}
-#toast{position:fixed;left:50%;top:38%;transform:translateX(-50%);font-size:18px;background:var(--glass);padding:6px 14px;border-radius:10px;display:none}
+#toast{position:static;font-size:12px;line-height:1.3;background:rgba(10,18,28,.42);color:#f2ead8;padding:3px 9px;border-radius:7px;display:none;border-left:3px solid rgba(255,211,77,.7);text-shadow:0 1px 2px #000;pointer-events:none;animation:tIn .25s ease-out}@keyframes tIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+#hud>#toast{max-width:100%}
 .sm{display:none;height:8px}
 .sm i{display:block;height:100%;width:100%}
 #st{background:#e8c547}#ah{background:#4fbf6a}#ae{background:#4aa3e8}
@@ -208,7 +209,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 16/11 · melhorias na lateral</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 16/11 · avisos discretos</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
@@ -765,7 +766,7 @@ function bagIn(id){if(!bag)return false;
   if(id=='bJ')hand=cur;else if(id=='bL')useIt(cur);
   bag=0;bagUI();return true}
 let hO=0,hT=0;
-function toast(s){const t=$('toast');t.textContent=s;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',1400)}
+function toast(s){const t=$('toast');if(t.parentNode!==$('hud')){const x=$('xpw');x.parentNode.insertBefore(t,x.nextSibling)}t.style.animation='none';void t.offsetWidth;t.style.animation='';t.textContent=s;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',1400)}
 function hold(dt){const o=!!(K.KeyJ||G.o||tO),t=!!(K.KeyK||G.t||tT),ok=hand>=0&&!bag&&!dead&&wi!=9&&wi!=11&&!NET.gh;abite(t,dt);
   if(!o)hO=0;else if(hO>=0&&ok){hO+=dt;if(hO>.7){useIt(hand);hO=-9;bagUI()}}
   if(!t)hT=0;else if(hT>=0&&ok){hT+=dt;if(hT>.7){hT=-9;give()}}}
