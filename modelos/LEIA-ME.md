@@ -7,7 +7,8 @@ JSON com o `.glb` em base64. Veja os créditos em `CREDITOS.txt`.
   proporções, pele, cabelo e traços; cada classe veste a sua roupa.
 - `ini_*.json`: inimigos 3D (orcs, elfos, puglin e diabinho, Quaternius), com
   roupas por tipo e pintura de ossos nos esqueletos.
-- `animacoes.json`: animações (Universal Animation Library 1 e 2, Quaternius).
+- `animacoes2.json`: animações (Universal Animation Library 1 e 2, Quaternius),
+  convertidas para o esqueleto dos heróis, com o instante de impacto de cada golpe.
 - `armas.json`: armas 3D (KayKit Fantasy Weapons Bits).
 
 O boneco 3D vem ligado por padrão (*Configurações → Boneco 3D*). Desligado, o
