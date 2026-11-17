@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+# Arquivos só desta máquina do OhMyGame (builds e cache). O resto de
+# .ohmygame/ (nome, capa, assets) e canvas/ deve ir para o git.
+.ohmygame/local/
+.ohmygame/build/
