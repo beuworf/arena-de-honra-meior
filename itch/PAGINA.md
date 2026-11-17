@@ -56,7 +56,7 @@ Disponível em português, inglês, japonês, chinês, espanhol e russo (escolha
 - 🧘 **Monge** — socos, chutes e apoio aos aliados
 - 💀 **Necromante** — zumbi, esqueleto mago, escudeiro, cão e abutre
 - 😈 **Corrompido** — lâminas em círculo, raio dos olhos e forma gigante
-- 🪶 **Xamã** — totens, raio em cadeia, cura das águas e lobo espiritual
+- 🛠️ **Mestre** — Xamã (totens, raio em cadeia, cura e lobo espiritual), Maquinista (torretas e golens feitos com peças dos inimigos) ou Armadilheiro (armadilhas de controle, laço e faca)
 
 **Destaques**
 - Online com amigos: crie uma sala e passe o código de 4 dígitos (funciona em 4G/5G).
