@@ -169,6 +169,80 @@ body.led #xup{display:flex!important;z-index:31;pointer-events:auto}
 html.frot{--sat:env(safe-area-inset-right,0px);--sab:env(safe-area-inset-left,0px);--sal:env(safe-area-inset-top,0px);--sar:env(safe-area-inset-bottom,0px)}
 html.frot body{position:fixed;left:0;top:0;width:var(--fw,100vh);height:var(--fh,100vw);transform:translate(var(--fh,100vw),0) rotate(90deg);transform-origin:0 0}
 </style>
+<style>
+#lng{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin:0 0 6px}
+#lng button{font:inherit;font-size:15px;line-height:1;padding:4px 6px 3px;border-radius:9px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.07);color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:34px}
+#lng button small{font-size:9px;opacity:.75;letter-spacing:.5px}
+#lng button.on{border-color:#ffd34d;background:rgba(255,211,77,.18)}
+#lpk{display:none;flex-direction:column;align-items:center;gap:6px;padding:8px 12px;margin:-2px 0 6px;border-radius:12px;background:rgba(10,18,28,.75);border:1px solid rgba(255,211,77,.45);font-size:12px;max-width:min(340px,90vw);text-align:center}
+#lpk .row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+#lpk span.b{padding:5px 10px;border-radius:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);cursor:pointer}
+@media (max-height:500px){#lng{margin:0}#lng button{font-size:13px;padding:2px 5px;min-width:30px}#lng button small{font-size:8px}}
+</style>
+<script>
+// ---- Idiomas: o jogo é escrito em português; este tradutor troca, na tela, cada texto pelo do idioma escolhido.
+// Funciona pelo próprio DOM (todo texto que aparece passa por aqui), então menus, avisos, HUD e bestiário mudam juntos.
+// Busca: texto exato -> texto com números trocados por # -> pedaços conhecidos dentro do texto (frases montadas com números e nomes).
+(function(){
+  var LS={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}};
+  var LANGS=[['pt','🇧🇷','PT','Português'],['en','🇺🇸','EN','English'],['ja','🇯🇵','JA','日本語'],['zh','🇨🇳','ZH','中文'],['es','🇪🇸','ES','Español'],['ru','🇷🇺','RU','Русский']];
+  var I={lang:'pt',dict:null,tpl:null,frag:null,cache:new Map(),packs:{}};window.I18N=I;
+  var ORIG=new WeakMap(),DONE=new WeakMap(),AORIG=new WeakMap(),SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,NOSCRIPT:1};
+  var LET=/[A-Za-zÀ-ÿ]/,NUM=/\d+(?:[.,]\d+)?/g,esc=function(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')};
+  function build(t){I.dict=new Map();I.tpl=new Map();var fr=[];
+    for(var k in t){var v=t[k];if(typeof v!='string'||!v)continue;var c=k.replace(/\s+/g,' ').trim();I.dict.set(c,v);
+      if(/\d/.test(c))I.tpl.set(c.replace(NUM,'#'),v);if(c.replace(/[^A-Za-zÀ-ÿ]/g,'').length>=3)fr.push(c)}
+    fr.sort(function(a,b){return b.length-a.length});
+    I.frag=fr.length?new RegExp('(^|[^A-Za-zÀ-ÿ])('+fr.map(esc).join('|')+')(?![A-Za-zÀ-ÿ])','g'):null;I.cache.clear()}
+  function fillNums(tr,nums){var i=0,c=0;tr.replace(NUM,function(){c++});if(c!==nums.length)return tr;return tr.replace(NUM,function(){return nums[i++]})}
+  function tr(s){if(I.lang=='pt'||!I.dict||!LET.test(s))return s;var hit=I.cache.get(s);if(hit!==undefined)return hit;
+    var m=s.match(/^(\s*)([\s\S]*?)(\s*)$/),core=m[2].replace(/\s+/g,' '),out=null;
+    if(I.dict.has(core))out=I.dict.get(core);
+    else if(/\d/.test(core)){var key=core.replace(NUM,'#');if(I.tpl.has(key))out=fillNums(I.tpl.get(key),core.match(NUM))}
+    if(out==null&&I.frag){var any=0;out=core.replace(I.frag,function(a,pre,w){any=1;return pre+I.dict.get(w)});if(!any)out=null}
+    if(out==null){if(I.miss)I.miss.add(core)}else if(I.sec&&I.sec!='s')out=out.replace(/(\d) ?s(?![A-Za-zÀ-ÿ])/g,'$1'+I.sec);
+    var r=out==null?s:m[1]+out+m[3];if(I.cache.size>4000)I.cache.clear();I.cache.set(s,r);return r}
+  I.t=tr;
+  function doText(n){var p=n.parentNode;if(!p||SKIP[p.nodeName]||(p.closest&&p.closest('.notr')))return;var d=n.data;if(DONE.get(n)===d)return;ORIG.set(n,d);var r=tr(d);if(r!==d){DONE.set(n,r);n.data=r}else DONE.delete(n)}
+  var ATT=['placeholder','title'];
+  function doAttr(el){for(var i=0;i<ATT.length;i++){var a=ATT[i],v=el.getAttribute&&el.getAttribute(a);if(!v)continue;var o=AORIG.get(el)||{};if(o['d'+a]===v)continue;o[a]=v;var r=tr(v);o['d'+a]=r;AORIG.set(el,o);if(r!==v)el.setAttribute(a,r)}}
+  function walk(root){if(root.nodeType==3){doText(root);return}if(root.nodeType!=1||SKIP[root.nodeName])return;doAttr(root);var w=document.createTreeWalker(root,5,null),n;while(n=w.nextNode()){if(n.nodeType==3)doText(n);else doAttr(n)}}
+  // troca de idioma: volta cada texto ao original em português e traduz de novo
+  function redo(){var w=document.createTreeWalker(document.body,5,null),n;while(n=w.nextNode()){if(n.nodeType==3){var o=ORIG.get(n);if(o!==undefined&&DONE.get(n)===n.data){n.data=o}DONE.delete(n);doText(n)}else{var a=AORIG.get(n);if(a)for(var i=0;i<ATT.length;i++){var k=ATT[i];if(a[k]&&n.getAttribute(k)===a['d'+k])n.setAttribute(k,a[k]);delete a['d'+k]}doAttr(n)}}
+    document.title=tr('Arena de Honra');document.documentElement.lang=I.lang=='pt'?'pt-BR':I.lang;if(window.onLang)try{window.onLang(I.lang)}catch(e){}}
+  var mo=new MutationObserver(function(ms){if(I.lang=='pt'&&!I.wasOther)return;for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type=='characterData')doText(m.target);else if(m.type=='attributes')doAttr(m.target);else for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j])}});
+  function start(){mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:ATT});redo();ui()}
+  function pack(){var s=LS.get('arena_lpk');if(!s)return null;try{return JSON.parse(s)}catch(e){return null}}
+  function load(code){if(code=='pt')return Promise.resolve({t:{}});if(code=='pk'){var p=pack();return Promise.resolve(p||{t:{}})}
+    if(I.packs[code])return Promise.resolve(I.packs[code]);return fetch('idiomas/'+code+'.json').then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}).then(function(j){I.packs[code]=j;return j})}
+  I.set=function(code,save){return load(code).then(function(j){I.lang=code;if(code!='pt')I.wasOther=1;I.sec=j.sec||'s';build(j.t||{});if(save!==false)LS.set('arena_lang',code);redo();ui()}).catch(function(e){console.warn('idioma',code,e);if(code!='pt')I.set('pt',false)})};
+  // ---- seletor na tela inicial
+  function ui(){var bar=document.getElementById('lng');if(!bar)return;var p=pack(),h='';
+    LANGS.forEach(function(L){h+='<button data-lg="'+L[0]+'" class="notr'+(I.lang==L[0]?' on':'')+'" title="'+L[3]+'">'+L[1]+'<small>'+L[2]+'</small></button>'});
+    if(p)h+='<button data-lg="pk" class="notr'+(I.lang=='pk'?' on':'')+'" title="'+(p.name||'Pacote').replace(/"/g,'')+'">'+(p.flag||'🏳️')+'<small>'+String(p.code||'PAC').slice(0,3).toUpperCase().replace(/</g,'')+'</small></button>';
+    h+='<button data-lg="box" class="notr" title="Pacote de idioma">📦<small>PAC</small></button>';bar.innerHTML=h}
+  function box(){var b=document.getElementById('lpk');if(!b)return;var open=b.style.display!='flex';b.style.display=open?'flex':'none';if(!open)return;var p=pack();
+    b.innerHTML='<b>📦 Pacote de idioma</b><span>Baixe o pacote com todos os textos do jogo, traduza o lado direito de cada linha e carregue aqui. Ele fica salvo neste aparelho.</span>'
+      +'<div class="row"><span class="b" id="lpx">⬇ Baixar pacote</span><span class="b" id="lpi">⬆ Carregar pacote</span>'+(p?'<span class="b" id="lpr">🗑 Remover pacote</span>':'')+'</div>'+(p?'<small class="notr">'+String(p.name||'').replace(/</g,'')+'</small>':'')+'<small id="lpm"></small>'}
+  function msg(t){var m=document.getElementById('lpm');if(m)m.textContent=t}
+  function exportPack(){Promise.all([load('en'),I.lang!='pt'&&I.lang!='en'?load(I.lang):Promise.resolve(null)]).then(function(r){var base=r[0].t,cur=I.lang=='pt'?null:(I.lang=='en'?r[0].t:(r[1]&&r[1].t)||{}),t={};
+      Object.keys(base).forEach(function(k){t[k]=cur?(cur[k]||k):k});
+      var j={formato:'Arena de Honra · pacote de idioma 1',code:'xx',name:'Meu idioma',flag:'🏳️',info:'Troque o texto da direita de cada linha pela tradução; a esquerda é o original em português e não muda. Mantenha os números e símbolos (○ △ □ ✕ #). Depois carregue o arquivo no jogo pelo botão 📦.',t:t};
+      var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(j,null,1)],{type:'application/json'}));a.download='arena-de-honra-idioma.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);msg('✓')}).catch(function(e){msg('⚠ '+e.message)})}
+  function importPack(f){var r=new FileReader();r.onload=function(){try{var j=JSON.parse(r.result);if(!j||typeof j.t!='object')throw new Error('sem a lista "t"');var n=0;for(var k in j.t)if(typeof j.t[k]=='string')n++;if(!n)throw new Error('vazio');
+        j.code=String(j.code||'pac').slice(0,8);j.name=String(j.name||'Pacote').slice(0,40);j.flag=String(j.flag||'🏳️').slice(0,8);LS.set('arena_lpk',JSON.stringify(j));I.set('pk');setTimeout(function(){box();box();msg('✓ '+n)},50)}catch(e){msg('⚠ '+e.message)}};r.readAsText(f)}
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-lg],#lpx,#lpi,#lpr');if(!t)return;e.stopPropagation();
+    if(t.id=='lpx')return exportPack();if(t.id=='lpi')return document.getElementById('lpf').click();if(t.id=='lpr'){LS.set('arena_lpk',null);if(I.lang=='pk')I.set('pt');ui();box();box();return}
+    var c=t.getAttribute('data-lg');if(c=='box')return box();I.set(c)},true);
+  document.addEventListener('change',function(e){if(e.target&&e.target.id=='lpf'){var f=e.target.files[0];e.target.value='';if(f)importPack(f)}},true);
+  // idioma salvo; na primeira visita, o do navegador
+  var saved=LS.get('arena_lang'),nav=(navigator.language||'pt').slice(0,2).toLowerCase(),first=saved||(LANGS.some(function(L){return L[0]==nav})?nav:'pt');
+  if(first=='pk'&&!pack())first='pt';
+  function boot(){start();if(first!='pt')I.set(first,!!saved)}
+  if(document.body)boot();else document.addEventListener('DOMContentLoaded',boot);
+})();
+</script>
+
 </head>
 <body>
 <div id="splash" aria-label="beuworf"><svg viewBox="0 0 200 204" width="170" height="173" aria-hidden="true">
@@ -209,7 +283,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · novos nomes das classes</div><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · idiomas</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>

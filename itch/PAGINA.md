@@ -47,6 +47,8 @@ Action RPG de horda no navegador: 8 classes, 8 raças, chefes secretos e online 
 Escolha sua raça, sexo e classe, sobreviva às ondas de inimigos e derrote o chefe de cada fase. A cada abate você ganha XP, sobe de nível e escolhe melhorias — tudo recomeça a cada partida, então quem joga melhor vai mais longe.
 
 **8 classes e 12 estilos de jogo**
+Disponível em português, inglês, japonês, chinês, espanhol e russo (escolha pela bandeira na tela inicial).
+
 - ⚔️ **Guerreiro** — Guardião (espada e escudo), Disciplinado (espada longa) ou Berserk (dois machados)
 - 🏹 **Caçador** — Arqueiro (arco), Selvagem (lança com animal companheiro) ou Assassino (adagas)
 - 🔮 **Mago** — troque entre Fogo, Gelo, Sombra e Ilusão no meio da luta
