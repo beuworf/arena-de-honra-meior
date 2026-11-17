@@ -129,7 +129,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;image-renderi
 #tm{position:fixed;right:12px;top:calc(var(--sat,env(safe-area-inset-top,0px)) + 8px);background:var(--glass);padding:4px 10px;border-radius:10px;font-size:12px;display:none;text-align:right}
 #dn{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}
 .dn{position:absolute;transform:translate(-50%,-50%);font-weight:800;font-size:16px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap}
-.dn.big{font-size:22px;color:#ffd34d}
+.dn.big{font-size:22px;color:#ffd34d}.dn.crit{font-size:25px;color:#ff7a2a;text-shadow:0 0 4px #000,0 0 8px rgba(255,90,20,.9)}
 #pause{position:fixed;inset:0;z-index:7;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(10,18,28,.8);text-align:center;padding:16px;box-sizing:border-box}
 #pause b{font-size:30px;letter-spacing:3px}#pause.pon{background:rgba(10,18,28,.62);z-index:40}#pause.pon b{font-size:22px}#psc{display:none;max-width:min(620px,calc(var(--vw,1vw)*94));overflow:auto}#psc table{border-collapse:collapse;font-size:13px;margin:0 auto}#psc th,#psc td{padding:3px 9px;border-bottom:1px solid rgba(255,255,255,.15)}#psc th{opacity:.75;font-weight:600}#psc small{display:block;margin-top:6px}
 #pause small{max-width:min(560px,calc(var(--vw,1vw)*90));font-size:13px;opacity:.85;line-height:1.5}
@@ -283,7 +283,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · ataque automático e placar</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · acerto crítico</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
@@ -641,7 +641,7 @@ function atk(k){let q=null,bd=7;
 function strike(){const c=p.c,fx=Math.sin(p.f),fz=Math.cos(p.f);let any=0;const hit=[];
   for(const e of E){const dx=e.x-p.x,dz=e.z-p.z,d=Math.hypot(dx,dz)||.01;
     if(d<c.r&&(c.a||d<1||(dx*fx+dz*fz)/d>.1))hit.push([e,d,dx,dz])}
-  for(const [e,d,dx,dz] of c.one?hit.sort((a,b)=>a[1]-b[1]).slice(0,1):hit){const air0=e.lf>0,hb=e.hp;e.hp-=c.m*(e.stun>0?2:1)*(e.brk>0?1.5:1)*(p.y>.5&&e.lf>0?1.5:1)*(wi==4&&air0?2:1)*(1+RC.phy);e.hp-=RC.mg0;if(wi==4&&air0){if(!e.boss&&e.hp<=e.mx*.3)e.hp=0;p.hp=Math.min(PMX,p.hp+Math.max(0,hb-Math.max(e.hp,0))*.7);ring(e.x,e.z,1.5,0x66ff88)}dmgNum(e,hb-e.hp,c.m>=2);hitFx(e,dx/d,dz/d,c.m);e.kx=dx/d*c.b;e.kz=dz/d*c.b;e.fl=.12;any=1;if(c.st)e.stun=c.st;if(c.brk)e.brk=6;if(c.bl)e.bleed=4;if(c.bc&&Math.random()<c.bc){e.bleed=4;p.reg=4}if(c.an&&wi==4&&an.alive&&an.mode==0){if(!an.atk&&Math.hypot(e.x-an.x,e.z-an.z)<12)anAtk('bite',e,{mv:1,dm:.6});else{e.hp-=.6;if(AN[an.type][3]=='t')e.bleed=4}}if(wi==5)e.psn=Math.max(e.psn>0?e.psn:0,4);if(c.toss)e.toss=1.2;if(c.lf){e.lf=c.lf;e.wind=0}else if(e.lf>0)e.lf=Math.max(e.lf,.9)}
+  for(const [e,d,dx,dz] of c.one?hit.sort((a,b)=>a[1]-b[1]).slice(0,1):hit){const air0=e.lf>0,hb=e.hp,cm_=crit(0);e.hp-=cm_*c.m*(e.stun>0?2:1)*(e.brk>0?1.5:1)*(p.y>.5&&e.lf>0?1.5:1)*(wi==4&&air0?2:1)*(1+RC.phy);e.hp-=RC.mg0;if(wi==4&&air0){if(!e.boss&&e.hp<=e.mx*.3)e.hp=0;p.hp=Math.min(PMX,p.hp+Math.max(0,hb-Math.max(e.hp,0))*.7);ring(e.x,e.z,1.5,0x66ff88)}dmgNum(e,hb-e.hp,c.m>=2);hitFx(e,dx/d,dz/d,c.m);e.kx=dx/d*c.b;e.kz=dz/d*c.b;e.fl=.12;any=1;if(c.st)e.stun=c.st;if(c.brk)e.brk=6;if(c.bl)e.bleed=4;if(c.bc&&Math.random()<c.bc){e.bleed=4;p.reg=4}if(c.an&&wi==4&&an.alive&&an.mode==0){if(!an.atk&&Math.hypot(e.x-an.x,e.z-an.z)<12)anAtk('bite',e,{mv:1,dm:.6});else{e.hp-=.6;if(AN[an.type][3]=='t')e.bleed=4}}if(wi==5)e.psn=Math.max(e.psn>0?e.psn:0,4);if(c.toss)e.toss=1.2;if(c.lf){e.lf=c.lf;e.wind=0}else if(e.lf>0)e.lf=Math.max(e.lf,.9)}
   if(any&&wi==10){const n=c.one?1:hit.length;p.ev=Math.min(.25,(p.ev||0)+.06*n);p.evT=2.5;pst=Math.min(100,pst+(p.gi>0?.5*Math.min(n,3):1.5*n))}if(any){sfx(c.m>=2?'heavy':'hit');if(XL.lh&&!NET.gh&&t-(p.lhT||0)>.25){p.lhT=t;p.hp=Math.min(PMX,p.hp+XL.lh)}if(p.zmb)p.hp=Math.min(PMX,p.hp+1.5);hs=.03+c.m*.015;shake=.15+c.m*.1;if(wi==8){p.hp=Math.min(PMX,p.hp+1.5);healAllies(p.x,p.z,9,1.5)}}}
 function dodge(){if(wi==0&&!dead&&!NET.gh&&!(p.stn>0)&&(K.KeyL||G.b||tb)){shieldBash();return}if(wi==10&&!dead&&!NET.gh&&!(p.stn>0)&&corrDash())return;if(dead||NET.gh||p.dg>0||p.dcd>0||p.stn>0)return;sfx('dash');if(wi==5){if(pst<30)return toast('Sem estamina para esquivar');pst-=30}if(wi==9)dogSummon();
   p.dg=W[wi].dg.d;p.dcd=W[wi].dg.c;p.inv=W[wi].dg.i;p.dv=W[wi].dg.v;p.att=0;sl.material.opacity=0;if(wi==6)p.mdh=new Set();
@@ -814,18 +814,26 @@ function bagUI(){$('bag').style.display=bag?'block':'none';
   $('slots').innerHTML=IT.map((t,k)=>`<div class="sl${k==cur?' on':''}${k==hand?' hd':''}" data-k="${k}">${t.i}<b>${t.c}</b><small>${t.n}</small></div>`).join('');hud()}
 // ---- Nível do personagem na run: XP por abate, +3% de dano e +4 de vida máxima por nível e uma melhoria à escolha. Zera quando a partida acaba.
 // A escolha fica num painel pequeno no topo (não pausa): botão L1 / Q / toque passa de opção, segurar escolhe; também dá para tocar/clicar na opção ou usar Z X V.
-var XL={sup:0,lv:1,xp:0,dp:0,dq:0,hp:0,sp:0,cd:0,ev:0,rg:0,kh:0,pj:0,rp:0,rm:0,rc:0,lh:0,ls:0,hl:0,mn:0,n:{},pend:0,opts:null,sel:0,kd:0};var PMX=100;
+var XL={sup:0,lv:1,xp:0,dp:0,dq:0,hp:0,sp:0,cd:0,ev:0,rg:0,kh:0,pj:0,rp:0,rm:0,rc:0,lh:0,ls:0,hl:0,mn:0,pc:0,pd:0,qc:0,qd:0,n:{},pend:0,opts:null,sel:0,kd:0};var PMX=100;
 // Melhorias de nível: [ícone, texto, efeito, máximo de vezes, peso (chance de aparecer), classes que recebem (vazio = todas)].
 // Cada melhoria tem um teto, para nenhum atributo empilhar sem limite; cada classe só recebe o que serve para ela.
+// ---- Crítico: algumas classes têm chance de acerto crítico físico e/ou mágico; o crítico multiplica o dano (base 150%).
+// [chance física, chance mágica, dano crítico] por build; as melhorias de nível aumentam (chance total até 60%).
+const CRB=[[0,0,1.5],[.15,0,1.6],[.1,0,1.5],[.1,0,1.5],[.06,0,1.5],[.2,0,1.75],[0,.1,1.5],[0,0,1.5],[.1,0,1.5],[0,.06,1.5],[.08,.06,1.5],[0,.08,1.5]];
+const crCh=m=>{const b=CRB[wi]||CRB[0],c=m?b[1]:b[0];return c>0?Math.min(.6,c+(m?XL.qc:XL.pc)):0},crMul=m=>(CRB[wi]||CRB[0])[2]+(m?XL.qd:XL.pd);
+// sorteia o crítico de um acerto: devolve o multiplicador e marca CRT.on para o número de dano sair destacado
+var CRT={on:0};function crit(m){if(NET.gh){CRT.on=0;return 1}CRT.on=Math.random()<crCh(m)?1:0;return CRT.on?crMul(m):1}
+const XPCR=[1,2,3,4,5,8,10],XMCR=[6,9,10,11];
 const XFIS=[0,1,2,3,4,5,7,8,10,11],XMAG=[6,7,9,10,11],XPRJ=[3,6,7,10],XTIR=[3,6],XCAC=[0,1,2,4,5,7,8,10,11];
 const XUP=[['⚔️','Dano físico +8%',()=>XL.dp+=.08,6,1,XFIS],['🔮','Dano mágico +8%',()=>XL.dq+=.08,6,1,XMAG],['❤️','Vida máx. +12',()=>{XL.hp+=12;p.hp+=12},6,1],['👟','Velocidade +5%',()=>XL.sp+=.05,4,.8],
   ['⏱️','Recarga −6%',()=>XL.cd+=.06,5,.9],['🌀','Esquiva +3%',()=>XL.ev+=.03,3,.3],['💚','Regeneração +0,5/s',()=>XL.rg+=.5,4,.9],['🩸','Cura por abate +1',()=>XL.kh+=2,4,.8],['🎯','Projéteis +10%',()=>XL.pj+=.1,5,1,XPRJ],
   ['🛡️','Res. a projéteis +8%',()=>XL.rp+=.08,4,.9],['🪖','Res. corpo a corpo +7%',()=>XL.rm+=.07,4,.9,XCAC],['⛓️','Res. a controle +20%',()=>XL.rc+=.2,3,.6],
-  ['🧛','Cura ao bater +0,35',()=>XL.lh+=.35,3,.8,XCAC],['🏹','Cura ao atirar +0,35',()=>XL.ls+=.35,3,.8,XTIR],['✨','Cura melhorada +10%',()=>XL.hl+=.1,4,.7],['🧟','Invocações +8% de dano',()=>XL.mn+=.08,6,1,[9]]];
+  ['🧛','Cura ao bater +0,35',()=>XL.lh+=.35,3,.8,XCAC],['🏹','Cura ao atirar +0,35',()=>XL.ls+=.35,3,.8,XTIR],['✨','Cura melhorada +10%',()=>XL.hl+=.1,4,.7],['🧟','Invocações +8% de dano',()=>XL.mn+=.08,6,1,[9]],
+  ['🎯','Chance crítica física +4%',()=>XL.pc+=.04,4,.9,XPCR],['💥','Dano crítico físico +20%',()=>XL.pd+=.2,4,.8,XPCR],['🔮','Chance crítica mágica +4%',()=>XL.qc+=.04,4,.9,XMCR],['🌟','Dano crítico mágico +20%',()=>XL.qd+=.2,4,.8,XMCR]];
 const xCan=k=>{const u=XUP[k];return(!u[5]||u[5].includes(wi))&&(XL.n[k]||0)<u[3]};
 const XPK={n:2,r:2,c:2.5,k:1,b:12,B:80,K:120,Q:120,I:160,H:120,e:8,a:12,f:9,u:10,t:8,j:10,g:6,g1:3,g2:1.5,w:12,l:8,o:8,p:12,y:10,z:16,i:30,x:4,h:8,v:10,m:.5},xpOf=e=>e.k[0]=='X'?45:XPK[e.k]||2,xNeed=()=>10+XL.lv*8;
 function xApply(){const b={...RBASE,...RACES[race].m},lv=(XL.lv-1)*.03+(p.bfT>0?.25:0);RC.phy=b.phy+XL.dp+lv;RC.mag=b.mag+XL.dq+lv;RC.ev=b.ev+XL.ev;RC.shot=b.shot+XL.pj;RC.heal=(race==6&&!NET.on?Math.max(b.heal,1.08):b.heal)+XL.hl;RC.ally=b.ally+XL.hl;PMX=100+XL.hp+(XL.lv-1)*4;if(p.hp>PMX)p.hp=PMX}
-function xReset(){Object.assign(XL,{sup:0,lv:1,xp:0,dp:0,dq:0,hp:0,sp:0,cd:0,ev:0,rg:0,kh:0,pj:0,rp:0,rm:0,rc:0,lh:0,ls:0,hl:0,mn:0,n:{},pend:0,opts:null,sel:0,kd:0});PMX=100;xUI()}
+function xReset(){Object.assign(XL,{sup:0,lv:1,xp:0,dp:0,dq:0,hp:0,sp:0,cd:0,ev:0,rg:0,kh:0,pj:0,rp:0,rm:0,rc:0,lh:0,ls:0,hl:0,mn:0,pc:0,pd:0,qc:0,qd:0,n:{},pend:0,opts:null,sel:0,kd:0});PMX=100;xUI()}
 function xGain(a){if(cls<0||scr!='play')return;XL.xp+=a;let up=0;while(XL.xp>=xNeed()){XL.xp-=xNeed();XL.lv++;XL.pend++;up=1}
   if(up){xApply();p.hp=Math.min(PMX,p.hp+10);toast('⬆ Nível '+XL.lv+'! Escolha uma melhoria');sfx('lvl');const o=NET.rx;NET.rx=1;ring(p.x,p.z,2.2,0xc9a6ff);NET.rx=o;puff(p.x,1,p.z,14,0xc9a6ff,3,4,.6,.14);if(!XL.opts)xOffer()}xUI()}
 // apoio no online: cura e escudo de verdade aplicados em aliados (e marcar aliado) viram pontos de Apoio e XP
@@ -901,7 +909,7 @@ const PJM=1.25;function projUpd(dt){for(let i=PR.length-1;i>=0;i--){const a=PR[i
   if(NB.length&&isMag(a)&&inNB(m.position.x,m.position.z)){puff(m.position.x,1.2,m.position.z,6,0x7ad8ff,3,2,.3,.1);S.remove(m);PR.splice(i,1);continue}
   const h=a.tg?(Math.hypot(a.tg.x-m.position.x,a.tg.z-m.position.z)<1.3?a.tg:null):E.find(e=>e.hp>0&&!(a.hl&&a.hl.includes(e))&&Math.hypot(e.x-m.position.x,e.z-m.position.z)<(a.hr||.9));
   if(h&&((h.k=='a'&&!isMag(a))||(h.k=='w'&&isMag(a)))){armDefl(h,m.position.x,m.position.z);S.remove(m);PR.splice(i,1);continue}if(h)h.pjT=performance.now();
-  if(h){const mgc=isMag(a);if(XL.ls&&!a.pz&&!NET.gh&&t-(p.lsT||0)>.3){p.lsT=t;p.hp=Math.min(PMX,p.hp+XL.ls)}h.hp-=a.dmg*PJM*(h.k=='j'?1.6:1)*(h.lf>0?1.5:1)*(1+RC.shot)*(1+(mgc?RC.mag:RC.phy))+RC.mg0;if(a.pz)stAdd(a.pz,h,a.dmg*PJM);h.fl=.1;if(a.weak&&a.slow&&(h.slow>0||h.weak>0)&&!h.boss&&!(a.bid&&h.icb===a.bid)){h.ice=3;ring(h.x,h.z,1.5,0xbfeaff)}if(a.bid)h.icb=a.bid;if(a.slow)h.slow=a.slow;if(a.burn)h.burn=a.burn;if(a.weak)h.weak=a.weak;if(a.kn){h.bleed=6;p.kn=h;p.knT=5}if(a.hm)holy(h.x,h.z);if(a.psn)h.psn=5;if(a.bn)h.burn=Math.max(h.burn>0?h.burn:0,3);if(a.dk)darkBoom(h.x,h.z);
+  if(h){const mgc=isMag(a),cm_=a.pz?1:crit(mgc?1:0),hb_=h.hp;if(XL.ls&&!a.pz&&!NET.gh&&t-(p.lsT||0)>.3){p.lsT=t;p.hp=Math.min(PMX,p.hp+XL.ls)}h.hp-=cm_*a.dmg*PJM*(h.k=='j'?1.6:1)*(h.lf>0?1.5:1)*(1+RC.shot)*(1+(mgc?RC.mag:RC.phy))+RC.mg0;if(cm_>1){CRT.on=1;dmgNum(h,hb_-h.hp,1)}if(a.pz)stAdd(a.pz,h,a.dmg*PJM);h.fl=.1;if(a.weak&&a.slow&&(h.slow>0||h.weak>0)&&!h.boss&&!(a.bid&&h.icb===a.bid)){h.ice=3;ring(h.x,h.z,1.5,0xbfeaff)}if(a.bid)h.icb=a.bid;if(a.slow)h.slow=a.slow;if(a.burn)h.burn=a.burn;if(a.weak)h.weak=a.weak;if(a.kn){h.bleed=6;p.kn=h;p.knT=5}if(a.hm)holy(h.x,h.z);if(a.psn)h.psn=5;if(a.bn)h.burn=Math.max(h.burn>0?h.burn:0,3);if(a.dk)darkBoom(h.x,h.z);
     if(a.aoe){for(const o of E)if(o!==h&&o.hp>0&&Math.hypot(o.x-h.x,o.z-h.z)<a.aoe){dmg(o,a.dmg*PJM*.5);if(a.burn)o.burn=Math.max(o.burn>0?o.burn:0,a.burn*.6)}ring(h.x,h.z,a.aoe,0xff6a2a);puff(h.x,1,h.z,8,0xff7a2a,5,4,.45,.15);shake=Math.max(shake,.2)}
     if(a.pc>1){a.pc--;(a.hl=a.hl||[]).push(h)}else a.pc=0}
   if((h&&!(a.pc>0))||a.t<=0){S.remove(m);PR.splice(i,1)}}}
@@ -1005,7 +1013,7 @@ function bars(){if(NET.on&&NET.ph=='p')netBars();const a=wi>=3,n=wi==4;$('mn').s
 const EL=['🔥 Fogo','❄️ Gelo','🌑 Sombra','🌀 Ilusão'],ELC=[0xff6a2a,0x8fd3ff,0x7a4ac0,0xc0a0ff];let el=0;
 const MD={e:null,t:0},CL=[],FX=[],RG=new THREE.CircleGeometry(1,16),SG=new THREE.SphereGeometry(.3,6,5);
 const MF=new THREE.MeshBasicMaterial({color:0xff6a2a}),MI=new THREE.MeshBasicMaterial({color:0x8fd3ff}),CLM=new THREE.MeshLambertMaterial({color:0xc0a0ff,transparent:true,opacity:.55});
-const dmg=(e,n)=>{e.hp-=n*(1+RC.mag)*(e.weak>0?1.25:1)*(e.ice>0?1.3:1);e.fl=.1};
+const dmg=(e,n)=>{const cm_=crit(1),hb=e.hp;e.hp-=cm_*n*(1+RC.mag)*(e.weak>0?1.25:1)*(e.ice>0?1.3:1);e.fl=.1;if(cm_>1){CRT.on=1;dmgNum(e,hb-e.hp,1)}};
 function setEl(n){el=n;toast(EL[n]);hud()}
 function ring(x,z,r,c){if(NET.on&&NET.ph=='p'&&!NET.rx){const n=performance.now();if(n-(NET.rgT||0)>80){NET.rgT=n;nemit('ev',{t:'rg',x:+x.toFixed(1),z:+z.toFixed(1),r:+r.toFixed(1),c})}}const m=new THREE.Mesh(RG,new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.5,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x,.1,z);m.scale.setScalar(r);S.add(m);FX.push({m,t:.5})}
 function area(x,z,r,n,f,c){for(const e of E)if(Math.hypot(e.x-x,e.z-z)<r){dmg(e,n);f(e)}ring(x,z,r,c);shake=Math.max(shake,.2)}
@@ -1160,7 +1168,7 @@ const mvTo=(m,tx,tz,sp,dt)=>{const dx=tx-m.x,dz=tz-m.z,d=Math.hypot(dx,dz)||.01;
 // alvo das invocações quando agem sozinhas: o inimigo mais perto delas, desde que perto do necromante (não se afastam demais)
 function ftg(m,r,lh){let q=null,b=r;for(const e of E){if(e.hp<=0||Math.hypot(e.x-p.x,e.z-p.z)>lh)continue;const d=Math.hypot(e.x-m.x,e.z-m.z);if(d<b){b=d;q=e}}return q}
 // dano das invocações: cresce com a melhoria de nível "Invocações" (só o Necromante recebe)
-function mnD(e,a,kb,x,z){dmgE(e,a*(1+XL.mn),kb,x,z)}
+function mnD(e,a,kb,x,z){const cm_=wi==9?crit(1):1;dmgE(e,cm_*a*(1+XL.mn),kb,x,z)}
 function mnUpd(dt){const mh=(m,f)=>{if(!NET.on&&m.hp<m.max){m.hp=Math.min(m.max,m.hp+m.max*f);ring(m.x,m.z,.9,0x66ff88)}};for(const m of MN){m.cd-=dt;m.cmd-=dt;
   if(m.hp<=0&&m.alive){m.alive=false;m.hp=0;toast('Invocação caiu! Segure o botão dela para reviver')}
   if(m.alive){const tgt=m.cmd>0?nearest(22,p.x,p.z):ftg(m,m.k=='m'?14:10,m.k=='m'?15:13),dp=Math.hypot(p.x-m.x,p.z-m.z);
@@ -1191,7 +1199,7 @@ function tmUpd(dt){for(let i=TM.length-1;i>=0;i--){const m=TM[i];m.t-=dt;m.cd-=d
   else{y=m.t>6.5||!tgt?3:1.8;if(m.t>6.5||!tgt){mvTo(m,p.x,p.z,12,dt)}else{const d=Math.hypot(tgt.x-m.x,tgt.z-m.z);mvTo(m,tgt.x,tgt.z,12,dt);if(d<1.5&&m.cd<=0){m.n=(m.n||0)%3+1;if(m.n<3){m.cd=.7;mnD(tgt,1,4,m.x,m.z)}else{m.cd=1.4;m.dv=.35;for(const e of E)if(Math.hypot(e.x-m.x,e.z-m.z)<2.3){mnD(e,1.8,9,m.x,m.z);e.kd=Math.max(e.kd>0?e.kd:0,.8)}ring(m.x,m.z,2.3,0x6a5a7a);puff(m.x,.3,m.z,10,0x2e2a34,4,2,.5,.16);shake=.25}}}if(m.dv>0){m.dv-=dt;y=Math.max(.3,y-1.6*(m.dv/.35))}y+=Math.sin(t*5)*.2}
   m.g.position.set(m.x,y,m.z);m.g.rotation.y=m.f;if(m.k=='d')qdDog(m,dt);else if(m.k=='v')qdDemon(m,dt);if(m.g.wL){const fl=Math.sin(t*9+i)*.55-.1;m.g.wL.rotation.z=-fl;m.g.wR.rotation.z=fl}if(m.t<=0){S.remove(m.g);TM.splice(i,1)}}}
 function darkOrb(){const q=ptarget(30);if(!q)return toast('Sem alvo');CD.dk=5;p.f=aim(q);shot(p.f,{dmg:1,tg:q,sp:18,t:2.2,dk:1,g:DKG,m:DKM})}
-function darkBoom(x,z){for(const e of E)if(Math.hypot(e.x-x,e.z-z)<3.5){e.hp-=2*(1+RC.mag);e.fear=2.5;e.wind=0;e.fl=.12}ring(x,z,3.5,0x6a2aa0);shake=.35}
+function darkBoom(x,z){for(const e of E)if(Math.hypot(e.x-x,e.z-z)<3.5){const cm_=crit(1);e.hp-=cm_*2*(1+RC.mag);if(cm_>1){CRT.on=1;dmgNum(e,cm_*2*(1+RC.mag),1)}e.fear=2.5;e.wind=0;e.fl=.12}ring(x,z,3.5,0x6a2aa0);shake=.35}
 function absorb(dt){let tot=0;for(const m of MN)if(m.alive&&m.hp>m.max*.15){const d=Math.min(12*dt,m.hp-m.max*.15);m.hp-=d;tot+=d}if(tot>0)p.hp=Math.min(PMX,p.hp+tot*.9)}
 function nHold(dt){if(wi!=9||dead||cls<0||NET.gh)return;const H={z:!!(K.KeyJ||G.o||tO),m:!!(K.KeyK||G.t||tT),s:!!(K.KeyL||G.b||tb)};
   for(const k in H){if(!H[k]){hn[k]=0;continue}hn[k]+=dt;const m=NM[k];
@@ -1762,7 +1770,7 @@ $('pgo').addEventListener('pointerdown',e=>{e.stopPropagation();setPause(false)}
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!PAUSED)setPause(true)});
 function helpFade(){const h=$('help');h.classList.remove('off');clearTimeout(helpFade.t);helpFade.t=setTimeout(()=>h.classList.add('off'),15000)}
 const DN=[],DV=new THREE.Vector3();
-function dmgNum(e,a,big){if(!(a>=.05)||DN.length>40)return;const d=document.createElement('div');d.className='dn'+(big?' big':'');d.textContent=a>=10?Math.round(a):a.toFixed(1).replace('.0','');$('dn').appendChild(d);DN.push({d,x:e.x+rnd(-.3,.3),y:1.9*(e.sz||1),z:e.z,t:.8})}
+function dmgNum(e,a,big){if(!(a>=.05)||DN.length>40)return;const cr=CRT.on;CRT.on=0;const d=document.createElement('div');d.className='dn'+(cr?' crit':big?' big':'');d.textContent=(cr?'✦':'')+(a>=10?Math.round(a):a.toFixed(1).replace('.0',''));$('dn').appendChild(d);DN.push({d,x:e.x+rnd(-.3,.3),y:1.9*(e.sz||1),z:e.z,t:.8})}
 function dnUpd(dt){if(!NET.on){if(p.shd>0){p.shdT-=dt;if(p.shdT<=0)p.shd=0}pSh.visible=p.shd>0}if(p.stn>0&&Math.random()<.3)puff(p.x+rnd(-.3,.3),2.3,p.z+rnd(-.3,.3),1,0xffe27a,.6,1.2,.4,.08,.1);const w=innerWidth,h=innerHeight;for(let i=DN.length-1;i>=0;i--){const n=DN[i];n.t-=dt;n.y+=dt*1.6;if(n.t<=0){n.d.remove();DN.splice(i,1);continue}
   DV.set(n.x,n.y,n.z).project(C);n.d.style.left=((DV.x+1)/2*w)+'px';n.d.style.top=((1-DV.y)/2*h)+'px';n.d.style.opacity=DV.z>1?0:Math.min(1,n.t*3)}}
 // ---- Animação dos inimigos: passo pela velocidade real, braços opostos às pernas, inclinação,
@@ -2224,7 +2232,7 @@ function zapFx(pts,w=.07){sfx('zap');for(let i=0;i+5<pts.length;i+=3){let ax=pts
       m.position.set((ax+cx)/2,(ay+cy)/2,(az+cz)/2);m.lookAt(cx,cy,cz);m.scale.set(w,w,l);m.frustumCulled=false;S.add(m);ZF.push({m,t:.13});ax=cx;ay=cy;az=cz}}}
 function zEmit(L2){if(NET.on&&NET.ph=='p'&&L2.length)nemit('ev',{t:'zp',l:L2.map(a=>a.map(v=>+v.toFixed(1)))})}
 function zChain(x,z,n,r0,first){const out=first?[first]:[];let cx=first?first.x:x,cz=first?first.z:z,r=first?5.5:r0;while(out.length<n){let q=null,b=r;for(const e of E){if(e.hp<=0||out.includes(e))continue;const d=Math.hypot(e.x-cx,e.z-cz);if(d<b){b=d;q=e}}if(!q)break;out.push(q);cx=q.x;cz=q.z;r=5.5}return out}
-function zapFrom(x,y,z,list,dm,L2){const pts=[x,y,z];list.forEach((e,i)=>{const a=dm*Math.pow(.85,i)*(1+(RC.mag||0));e.hp-=a;dmgNum(e,a,dm>1);e.fl=.1;pts.push(e.x,1.05*(e.sz||1),e.z);if(p.zl)p.zl.add(e)});zapFx(pts);L2.push(pts)}
+function zapFrom(x,y,z,list,dm,L2){const pts=[x,y,z];list.forEach((e,i)=>{const a=crit(1)*dm*Math.pow(.85,i)*(1+(RC.mag||0));e.hp-=a;dmgNum(e,a,dm>1);e.fl=.1;pts.push(e.x,1.05*(e.sz||1),e.z);if(p.zl)p.zl.add(e)});zapFx(pts);L2.push(pts)}
 // alvo do raio: até o raio do totem em volta do xamã, ou qualquer inimigo dentro da área de um totem (mesmo longe)
 function zTarget(){const inT=e=>TOT.some(o=>Math.hypot(e.x-o.x,e.z-o.z)<TRD),m=mouseFoe(60);if(m&&m.hp>0&&(Math.hypot(m.x-p.x,m.z-p.z)<TRD||inT(m)))return m;let q=ptarget(TRD);if(q)return q;let b=1e9;for(const e of E){if(e.hp<=0||!inT(e))continue;const d=Math.hypot(e.x-p.x,e.z-p.z);if(d<b){b=d;q=e}}return q}
 function zCast(m){const L2=[],q=zTarget(),l=q?zChain(p.x,p.z,5,13,q):[];if(l.length){p.f=aim(l[0]);zapFrom(p.x+Math.sin(p.f)*.5,1.5,p.z+Math.cos(p.f)*.5,l,1.2*m,L2)}
