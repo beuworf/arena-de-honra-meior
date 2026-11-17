@@ -9,6 +9,7 @@ JSON com o `.glb` em base64. Veja os créditos em `CREDITOS.txt`.
   roupas por tipo e pintura de ossos nos esqueletos.
 - `animacoes2.json`: animações (Universal Animation Library 1 e 2, Quaternius),
   convertidas para o esqueleto dos heróis, com o instante de impacto de cada golpe.
+- `torretas.json`: torretas do Maquinista (3 modelos OBJ convertidos: canhão, canhão de engrenagem e laser; base fixa, meio e cano giram).
 - `armas.json`: armas 3D (KayKit Fantasy Weapons Bits).
 
 O boneco 3D vem ligado por padrão (*Configurações → Boneco 3D*). Desligado, o
