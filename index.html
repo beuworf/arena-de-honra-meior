@@ -283,7 +283,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · equilíbrio do Mestre</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · golens energizados</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
@@ -2367,6 +2367,7 @@ function glAnim(g,dt,mv,atk,hurt,br){const d=g.md,A=d.A;if(!d)return;const one=k
   const bk=mv>1.5&&d.ty==2?'Run':mv>.2?'Walk':'Idle';if(bk!=d.cur){for(const k of['Idle','Walk','Run'])if(k!=bk&&A[k])A[k].fadeOut(.2);A[bk].reset().fadeIn(.2).play();d.cur=bk}
   if(d.one&&!d.one.isRunning())d.one=null;for(const k of['Idle','Walk','Run'])if(A[k])A[k].setEffectiveWeight(d.one?.25:k==bk?1:A[k].getEffectiveWeight());d.mx.update(dt)}
 function mkCons(k){const t=k[0],ty=+k[1]||0,g=new THREE.Group();
+  if(t=='G'){const r=new THREE.Mesh(CSRG,new THREE.MeshBasicMaterial({color:GLT[ty][5],transparent:true,opacity:.75,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));r.rotation.x=-Math.PI/2;r.position.y=.07;r.scale.setScalar(1.1);r.visible=false;g.add(r);g.enR=r}
   if(t=='G'&&GLM){glMake(g,ty);g.b=g.md.sc}
   else if(t=='T'&&TMOD){const c=TRT[ty][3];g.hd=tmBuild(g,ty,c);g.pips=[0,1,2].map(i=>{const q=add(new THREE.BoxGeometry(.09,.09,.09),MQM.gold,-.12+i*.12,.42,-.5,g);q.visible=i==0;return q});
     if(TRT[ty][0]>0){const r=new THREE.Mesh(CSRG,new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.22,depthWrite:false,side:THREE.DoubleSide}));r.rotation.x=-Math.PI/2;r.position.y=.06;r.scale.setScalar(TRT[ty][0]);g.add(r);g.rg=r}}
@@ -2422,6 +2423,8 @@ function mqUpd(dt){if(wi!=12){if(MCS.length||MQD.length)mqClear();return}
   for(let i=MQB.length-1;i>=0;i--){const b=MQB[i];b.t-=dt;b.m.position.lerpVectors(b.a,b.b,1-b.t/b.T);b.m.position.y=1+Math.sin(Math.PI*(1-b.t/b.T))*2.5;if(b.t<=0){S.remove(b.m);MQB.splice(i,1);for(const e of E)if(e.hp>0&&Math.hypot(e.x-b.b.x,e.z-b.b.z)<2.6)dmgE(e,b.dm,9,b.b.x,b.b.z);ring(b.b.x,b.b.z,2.6,0xff9a3a);puff(b.b.x,.6,b.b.z,16,0xff8a3a,6,5,.5,.16);sfx('boom');shake=Math.max(shake,.2)}}
   const dm=csDm();
   for(let i=MCS.length-1;i>=0;i--){const c=MCS[i];if(c.fl>0)c.fl-=dt;
+    if(c.t=='G'){let en=0;for(const o of MCS)if(o.t=='T'&&!o.br&&Math.hypot(o.x-c.x,o.z-c.z)<Math.max(4,Math.min(6,csR(o)))){en=1;break}c.en=en;if(en&&c.hp<1)c.hp=1;
+      if(en&&Math.random()<dt*6){const cc=GLT[c.ty][5];puff(c.x+rnd(-.5,.5),rnd(.6,2.2),c.z+rnd(-.5,.5),1,cc,1.5,2,.35,.07)}if(c.g.enR)c.g.enR.visible=!!en}
     if(!c.br&&c.hp<=0){c.br=1;c.hp=0;csLook(c);puff(c.x,.8,c.z,14,0x666666,4,4,.6,.16);toast((c.t=='T'?'Torreta':'Golem')+' quebrado! ○ conserta · △ desmonta')}
     if(c.br){if(c.g.md)glAnim(c.g,dt,0,0,0,1);continue}if(c.rg>0){c.rg-=dt;c.hp=Math.min(c.mx,c.hp+c.mx*.04*dt)}c.cd-=dt;
     if(c.t=='T'){const R=csR(c),lm=csLm(c);if(c.ty==6){c.g.hd.rotation.y+=dt*2;continue}
@@ -2475,7 +2478,10 @@ function ccTick(dt){for(const e of E){if(e.tv>0)e.tv-=dt;if(e.oil>0){e.oil-=dt;i
 function csTarget(e,tg){if(e.boss&&!(e.k=='B'))return tg;let best=null,bd=1e9;const tau=(o,tr)=>{const d=Math.hypot(e.x-o.x,e.z-o.z);if(d<tr&&d<bd){bd=d;best=o}};
   for(const b of BAIT)tau(b,b.tr);for(const c of MCS)if(!c.br){const tr=csTr(c);if(tr)tau(c,tr)}
   if(NET.h)for(const r of NET.rp)for(const k in r.mns||{}){const o=r.mns[k];if(o.cs&&!o.br&&o.tr)tau(o,o.tr)}
-  if(best)return best;let cur=Math.hypot(e.x-tg.x,e.z-tg.z);for(const c of MCS)if(!c.br){const d=Math.hypot(e.x-c.x,e.z-c.z);if(d<cur){cur=d;tg=c}}
+  if(best)return best;
+  // torretas inteiras por perto são o alvo preferido (golens energizados ficam de lado)
+  {let bt=null,bb=12;for(const c of MCS)if(c.t=='T'&&!c.br){const d=Math.hypot(e.x-c.x,e.z-c.z);if(d<bb){bb=d;bt=c}}if(NET.h)for(const r of NET.rp)for(const k in r.mns||{}){const o=r.mns[k];if(o.cs&&!o.br&&o.k&&o.k[0]=='T'){const d=Math.hypot(e.x-o.x,e.z-o.z);if(d<bb){bb=d;bt=o}}}if(bt)return bt}
+  let cur=Math.hypot(e.x-tg.x,e.z-tg.z);for(const c of MCS)if(!c.br){const d=Math.hypot(e.x-c.x,e.z-c.z);if(d<cur){cur=d;tg=c}}
   if(NET.h)for(const r of NET.rp)for(const k in r.mns||{}){const o=r.mns[k];if(o.cs&&!o.br&&o.hp>0){const d=Math.hypot(e.x-o.x,e.z-o.z);if(d<cur){cur=d;tg=o}}}return tg}
 
 function sham(){if(p.wf){if(p.bs>0){p.bs=0;if(!(CD.wd>0))wolfDash()}else if(p.bh>0)atk('H');else if(p.bl>0)atk('L');return}
