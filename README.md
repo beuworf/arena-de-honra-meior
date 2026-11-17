@@ -161,6 +161,7 @@ em **Configurações**.
     - **○ chave de fenda:** combo curto, pouco dano; a construção atingida fica "consertada" (regenera 4%/s por 5 s) e uma quebrada volta a funcionar com algumas pancadas.
     - **□ toque troca, □ segurado constrói** (parado, sem atacar; esquivar cancela e devolve as peças). Torretas (5 a 8 peças, 1,5 s): lança-chamas (queima em cone), flechas, explosiva (bomba em área), veneno, gelo (lentidão), cura (cura você, os aliados e as construções em volta) e distração (atrai os inimigos num raio de 8 m). Golens (15 a 20 peças, 4 s): resistência (aguenta e provoca de perto), força (pancada em área que atordoa), agilidade (rápido, golpes seguidos) e distração (provoca num raio de 7 m). Até 4 torretas e 4 golens (+1 de cada com uma melhoria de nível).
     - **Modelos das torretas:** 3 modelos 3D (canhão, canhão de engrenagem e laser) com a base fixa e o meio e o cano girando para o alvo. Lança-chamas, gelo e cura usam o laser; flechas e veneno o canhão de engrenagem; explosiva e distração o canhão. A cor de cada tipo fica nas partes claras do modelo.
+    - **Modelo dos golens:** "Giant" da Quaternius, com as animações dele (parado, andar, correr, atacar, apanhar e cair quando quebra). A pintura é de metal com placas e trilhas de circuito acesas na cor do tipo (azul resistência, laranja força, azul-claro agilidade, amarelo distração). Ficam um pouco mais altos que o Minotauro (2,3 a 2,55 m, o maior é o de resistência).
     - **Golens** agem no raio da torreta mais próxima e a consertam aos poucos; sem torreta, agem em volta do jogador.
     - **△:** perto de uma torreta, faz o upgrade (6 e 10 peças, até o nível 3: +35% de dano, +20% de alcance, +50% de vida); perto de uma construção quebrada, desmonta e devolve metade das peças; perto de um aliado caído no online, gasta 25 peças e o reconstrói; senão, marca o alvo prioritário das torretas e golens por 8 s.
     - **Construções têm vida:** os inimigos atacam as construções mais perto que o jogador; com a vida zerada ficam quebradas (consertar com ○ ou desmontar com △). Os assassinos ignoram as construções e vão direto no Maquinista.
@@ -274,7 +275,7 @@ AGENTS.md              regras para agentes de código (OhMyGame, Claude Code, Co
 ## Créditos
 
 - **Jogo:** beuworf
-- **Modelos 3D e animações (CC0):** **Quaternius** — https://itch.io/profile/quaternius (https://quaternius.com) (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Universal Animation Library 1 e 2)
+- **Modelos 3D e animações (CC0):** **Quaternius** — https://itch.io/profile/quaternius (https://quaternius.com) (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Universal Animation Library 1 e 2, torretas e Giant)
 - **Armas 3D (CC0):** **Kay Lousberg** — https://kaylousberg.com (KayKit – Fantasy Weapons Bits)
 - Sons, música, cenários e efeitos gerados pelo próprio jogo; motor gráfico three.js.
 

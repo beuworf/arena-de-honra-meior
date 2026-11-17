@@ -73,7 +73,7 @@ Feito por **beuworf**. Se você curtiu, uma doação ajuda muito a continuar o j
 ## Créditos
 
 - **Jogo:** beuworf
-- **Modelos 3D e animações (CC0):** **Quaternius** — https://itch.io/profile/quaternius (https://quaternius.com) (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Universal Animation Library 1 e 2)
+- **Modelos 3D e animações (CC0):** **Quaternius** — https://itch.io/profile/quaternius (https://quaternius.com) (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Universal Animation Library 1 e 2, torretas e Giant)
 - **Armas 3D (CC0):** **Kay Lousberg** — https://kaylousberg.com (KayKit – Fantasy Weapons Bits)
 - Sons, música, cenários e efeitos gerados pelo próprio jogo; motor gráfico three.js.
 

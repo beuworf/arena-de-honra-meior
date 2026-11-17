@@ -283,11 +283,11 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · modelos das torretas</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt">ARENA DE HONRA</div><input id="mnm" maxlength="10" placeholder="Seu nickname" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 17/11 · golens 3D</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
-<p><b>Quaternius</b> · <a href="https://itch.io/profile/quaternius" target="_blank" rel="noopener">itch.io/profile/quaternius</a> · <a href="https://quaternius.com" target="_blank" rel="noopener">quaternius.com</a><br><small>Universal Base Characters · Modular Character Outfits – Fantasy · Characters – Fantasy Races · Bestiary – Dungeon Monsters · Ultimate Animated Animals · Ultimate Monsters · Universal Animation Library 1 e 2</small></p>
+<p><b>Quaternius</b> · <a href="https://itch.io/profile/quaternius" target="_blank" rel="noopener">itch.io/profile/quaternius</a> · <a href="https://quaternius.com" target="_blank" rel="noopener">quaternius.com</a><br><small>Universal Base Characters · Modular Character Outfits – Fantasy · Characters – Fantasy Races · Bestiary – Dungeon Monsters · Ultimate Animated Animals · Ultimate Monsters · Universal Animation Library 1 e 2 · Torretas e Giant</small></p>
 <p><b>Kay Lousberg</b> · <a href="https://kaylousberg.com" target="_blank" rel="noopener">kaylousberg.com</a><br><small>KayKit – Fantasy Weapons Bits</small></p>
 <p><small>Obrigado aos artistas por disponibilizarem esses modelos gratuitamente. Se gostou do visual, visite e apoie o trabalho deles.</small></p>
 <p><small>Sons, música, cenários e efeitos feitos pelo próprio jogo. Motor gráfico: three.js.</small></p>
@@ -1584,7 +1584,7 @@ function avUpd(r,dt){const g=r.av,R=g.R;if(!R)return;const Vx=r.vx??r.x,Vy=r.vy?
 function rpMinions(r,pr,dt){r.mns=r.mns||{};const seen={};const list=(pr.mn||'').split(';').filter(Boolean);list.forEach((s2,i)=>{const [k,x,z,hh]=s2.split(','),cl=k[0]=='c',cs=/^[TGAB]/.test(k),key=cl?k:cs?k[0]+k[1]+i:k+i;seen[key]=1;let o=r.mns[key];
     if(cs){if(!o){const g=mkCons(k);g.position.set(+x,0,+z);S.add(g);o=r.mns[key]={g,x:+x,z:+z,k,cs:k[0]=='T'||k[0]=='G'||k[0]=='B',mn:1,fl:0,i,peer:r.peer}}o.i=i;if(o.k!==k){o.k=k;const c={t:k[0],ty:+k[1],lv:+k[2]||1,br:k.includes('x'),g:o.g};if(o.g.pips||o.g.rg)csLook(c)}o.br=k.includes('x');o.tr=k[0]=='B'?10:k[0]=='T'&&k[1]=='6'?8+2*((+k[2]||1)-1):k[0]=='G'?GLT[+k[1]][4]:0;
       if(hh!==undefined&&hh!==o.ph){o.ph=hh;o.hp=+hh;o.lhp=o.hp}if(o.k[0]=='B'){o.hp=1e9;o.lhp=1e9}if(NET.h&&o.lhp!==undefined&&o.hp<o.lhp-.05&&o.k[0]!='B'){nemit('ev',{t:'csh',to:r.peer,i:o.i,dm:+(o.lhp-o.hp).toFixed(2)});o.lhp=o.hp}
-      const kk=Math.min(1,10*dt),dx=+x-o.x,dz=+z-o.z;o.x+=dx*kk;o.z+=dz*kk;o.g.position.set(o.x,0,o.z);if(o.g.b&&Math.abs(dx)+Math.abs(dz)>.02)o.g.rotation.y=Math.atan2(dx,dz);return}
+      const kk=Math.min(1,10*dt),dx=+x-o.x,dz=+z-o.z;o.x+=dx*kk;o.z+=dz*kk;o.g.position.set(o.x,0,o.z);const mvr=Math.hypot(dx,dz)>.02;if(o.g.b&&mvr)o.g.rotation.y=Math.atan2(dx,dz);if(o.g.md)glAnim(o.g,dt,mvr?3:0,0,0,o.br);return}
     if(!o){let g;if(cl){g=r.av.clone(true);if(r.av.hv&&THREE.SkeletonUtils){const i=r.av.children.indexOf(r.av.hv.scene);if(i>=0){g.remove(g.children[i]);g.add(THREE.SkeletonUtils.clone(r.av.hv.scene))}}const mk=new THREE.Mesh(BLG,new THREE.MeshBasicMaterial({color:ELC[+k[1]]||0xffffff,transparent:true,opacity:.7,depthWrite:false}));mk.rotation.x=-Math.PI/2;mk.position.y=.09;mk.scale.setScalar(1.3);g.add(mk);S.add(g);ring(+x,+z,1.2,ELC[+k[1]])}else if(k=='z'||k=='m'||k=='s'||k=='zz')g=mkMin(k=='zz'?'z':k);else g=k=='t'?mkTot():k=='v'?mkVult():mkDog();o=r.mns[key]={g,x:+x,z:+z,k};if(cl)Object.assign(o,{cl:1,el:+k[1],hp:2,mn:1,fl:0})}
     if(o.cl&&NET.h&&o.hp<=0&&!o.kd){o.kd=1;o.g.visible=false;nemit('ev',{t:'ck',to:r.peer,el:o.el});puff(o.x,1.1,o.z,14,ELC[o.el],5,5,.6,.15)}
     const kk=Math.min(1,10*dt),dx=+x-o.x,dz=+z-o.z;o.x+=dx*kk;o.z+=dz*kk;o.g.position.set(o.x,o.k=='v'?2.2+Math.sin(t*5)*.2:0,o.z);minion3d(o,dt,1);if(o.k=='d')qdDog(o,dt);else if(o.k=='v')qdDemon(o,dt);if(o.g.wL){const fl=Math.sin(t*9)*.55-.1;o.g.wL.rotation.z=-fl;o.g.wR.rotation.z=fl}if(Math.abs(dx)+Math.abs(dz)>.02)o.g.rotation.y=Math.atan2(dx,dz)});
@@ -2340,8 +2340,34 @@ function tmGeo(n,pt,mt){const key=n+pt+mt;if(TMG[key])return TMG[key];const b=at
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(f,3));g.computeVertexNormals();return TMG[key]=g}
 function tmBuild(g,ty,c){const n=TMT[ty],M=TMOD.m[n],root=new THREE.Group();root.scale.setScalar(.72);g.add(root);const hd=new THREE.Group();root.add(hd);const lm=L(c),dm=MQM.tm||(MQM.tm=L(0x6a6c76));
   for(const pt of['Base','Mid','Gun'])if(M[pt])for(const mt in M[pt]){const m=new THREE.Mesh(tmGeo(n,pt,mt),mt=='Light'?lm:dm);(pt=='Base'?root:hd).add(m)}return hd}
+// ---- Golem 3D (modelo Giant, Quaternius): metal com placas e trilhas de circuito brilhando na cor de cada tipo; altura um pouco acima do Minotauro
+var GLM=null;const GLH=[2.55,2.45,2.3,2.4],GLMT={};
+async function glLoad(){try{if(!THREE.GLTFLoader)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js');if(!THREE.SkeletonUtils)await lsc('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js');
+  const r=await mget('golem');if(!r.ok)return;const g=await new Promise(async(ok,no)=>{try{new THREE.GLTFLoader().parse(await r.arrayBuffer(),'',ok,no)}catch(e){no(e)}});const sc=g.scene;sc.updateMatrixWorld(true);
+  let map=null;sc.traverse(o=>{if(o.isMesh){o.frustumCulled=false;if(o.material.map){map=o.material.map;map.encoding=THREE.LinearEncoding}}});const bb=new THREE.Box3().setFromObject(sc);
+  GLM={sc,h:bb.max.y-bb.min.y,map,clips:Object.fromEntries(g.animations.map(a=>[a.name,a]))}}catch(e){console.warn('golem 3D',e)}}
+function glMat(ty){if(GLMT[ty])return GLMT[ty];const m=new THREE.MeshPhongMaterial({map:GLM.map,skinning:true,shininess:70,specular:new THREE.Color(0x9aa4b4)}),u={uCk:{value:new THREE.Color(GLT[ty][5])},uBr:{value:0}};m.userData.u=u;const base=THREE.Material.prototype.onBeforeCompile;
+  // metal escovado com placas: linhas de junção em grade uniforme (pela face dominante) e trilhas de circuito acesas na cor do tipo
+  m.onBeforeCompile=function(sh){Object.assign(sh.uniforms,u);sh.vertexShader='varying vec3 vSt;\nvarying vec3 vNo;\n'+sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvSt=position;vNo=normal;');
+    sh.fragmentShader='varying vec3 vSt;\nvarying vec3 vNo;\nuniform vec3 uCk;\nuniform float uBr;\nfloat h2(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}\n'+sh.fragmentShader
+      .replace('#include <map_fragment>','#include <map_fragment>\nfloat ckM=0.;{vec3 an=abs(normalize(vNo));vec2 uv=an.x>an.y&&an.x>an.z?vSt.zy:an.y>an.z?vSt.xz:vSt.xy;vec2 q=uv*1.7,c=floor(q),f=fract(q);'
+        +'float pl=min(min(f.x,1.-f.x),min(f.y,1.-f.y));float seam=1.-smoothstep(.015,.035,pl);'
+        +'float r=h2(c),tr=0.;if(r<.55){float o=.25+.5*h2(c+7.3);tr=r<.28?1.-smoothstep(.03,.06,abs(f.y-o)):1.-smoothstep(.03,.06,abs(f.x-o));float nd=length(f-vec2(r<.28?o*0.+.5:o,r<.28?o:.5));tr=max(tr*step(.2,min(f.x,f.y))*step(min(f.x,f.y),.8),1.-smoothstep(.06,.09,nd));}'
+        +'ckM=tr;float l=dot(diffuseColor.rgb,vec3(.3,.59,.11));vec3 mt=vec3(.46,.49,.55)*(.8+.4*l)*(.93+.07*h2(c*1.7));mt=mix(mt,vec3(.08,.09,.11),seam);diffuseColor.rgb=mix(mt,uCk*.4,tr*(1.-uBr*.7));diffuseColor.rgb*=1.-uBr*.35;}')
+      .replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance+=uCk*ckM*(1.-uBr)*1.6;');base.call(this,sh)};
+  m.customProgramCacheKey=()=>'golemMetal';return GLMT[ty]=m}
+function glMake(g,ty){const sc=THREE.SkeletonUtils.clone(GLM.sc);sc.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.material=glMat(ty);o.castShadow=true}});sc.scale.setScalar(GLH[ty]/GLM.h);g.add(sc);
+  const mx=new THREE.AnimationMixer(sc),A={};for(const k in GLM.clips){A[k]=mx.clipAction(GLM.clips[k]);if(k=='Attack'||k=='HitRecieve'||k=='Death'){A[k].setLoop(THREE.LoopOnce,1);A[k].clampWhenFinished=true}}A.Idle.play();g.md={sc,mx,A,cur:'Idle',ty};return g}
+// animação do golem 3D: base pelo movimento, golpe, tranco ao apanhar, quebra
+function glAnim(g,dt,mv,atk,hurt,br){const d=g.md,A=d.A;if(!d)return;const one=k=>{const a=A[k];if(!a)return;a.reset();a.play();a.setEffectiveWeight(1);d.one=a};
+  if(br){if(d.cur!='Death'){for(const k in A)if(k!='Death')A[k].stop();A.Death.reset();A.Death.play();d.cur='Death';d.one=null}d.mx.update(dt);return}
+  if(d.cur=='Death'){A.Death.stop();d.cur=''}
+  if(atk){A.Attack.timeScale=1.6;one('Attack')}else if(hurt&&!(d.one&&d.one.isRunning()))one('HitRecieve');
+  const bk=mv>1.5&&d.ty==2?'Run':mv>.2?'Walk':'Idle';if(bk!=d.cur){for(const k of['Idle','Walk','Run'])if(k!=bk&&A[k])A[k].fadeOut(.2);A[bk].reset().fadeIn(.2).play();d.cur=bk}
+  if(d.one&&!d.one.isRunning())d.one=null;for(const k of['Idle','Walk','Run'])if(A[k])A[k].setEffectiveWeight(d.one?.25:k==bk?1:A[k].getEffectiveWeight());d.mx.update(dt)}
 function mkCons(k){const t=k[0],ty=+k[1]||0,g=new THREE.Group();
-  if(t=='T'&&TMOD){const c=TRT[ty][3];g.hd=tmBuild(g,ty,c);g.pips=[0,1,2].map(i=>{const q=add(new THREE.BoxGeometry(.09,.09,.09),MQM.gold,-.12+i*.12,.42,-.5,g);q.visible=i==0;return q});
+  if(t=='G'&&GLM){glMake(g,ty);g.b=g.md.sc}
+  else if(t=='T'&&TMOD){const c=TRT[ty][3];g.hd=tmBuild(g,ty,c);g.pips=[0,1,2].map(i=>{const q=add(new THREE.BoxGeometry(.09,.09,.09),MQM.gold,-.12+i*.12,.42,-.5,g);q.visible=i==0;return q});
     if(TRT[ty][0]>0){const r=new THREE.Mesh(CSRG,new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.22,depthWrite:false,side:THREE.DoubleSide}));r.rotation.x=-Math.PI/2;r.position.y=.06;r.scale.setScalar(TRT[ty][0]);g.add(r);g.rg=r}}
   else if(t=='T'){const c=TRT[ty][3],m=L(c);add(new THREE.CylinderGeometry(.42,.52,.35,8),MQM.base,0,.18,0,g);add(new THREE.CylinderGeometry(.16,.2,.55,6),MQM.dark,0,.6,0,g);
     const hd=new THREE.Group();hd.position.y=.95;g.add(hd);add(new THREE.BoxGeometry(.46,.34,.46),m,0,0,0,hd);
@@ -2349,7 +2375,7 @@ function mkCons(k){const t=k[0],ty=+k[1]||0,g=new THREE.Group();
     else{const b=add(new THREE.CylinderGeometry(ty==2?.12:.06,ty==2?.12:.08,.6,6),MQM.dark,0,0,.4,hd);b.rotation.x=Math.PI/2}
     g.hd=hd;g.pips=[0,1,2].map(i=>{const q=add(new THREE.BoxGeometry(.09,.09,.09),MQM.gold,-.12+i*.12,.42,-.24,g);q.visible=i==0;return q});
     if(TRT[ty][0]>0){const r=new THREE.Mesh(CSRG,new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.22,depthWrite:false,side:THREE.DoubleSide}));r.rotation.x=-Math.PI/2;r.position.y=.06;r.scale.setScalar(TRT[ty][0]);g.add(r);g.rg=r}}
-  else if(t=='G'){const c=GLT[ty][5],m=L(c),s=ty==2?.8:ty==0?1.15:1;const b=new THREE.Group();b.scale.setScalar(s);g.add(b);g.b=b;
+  if(t=='G'&&g.md){}else if(t=='G'){const c=GLT[ty][5],m=L(c),s=ty==2?.8:ty==0?1.15:1;const b=new THREE.Group();b.scale.setScalar(s);g.add(b);g.b=b;
     add(new THREE.BoxGeometry(.7,.75,.45),m,0,1.05,0,b);add(new THREE.BoxGeometry(.38,.32,.36),MQM.base,0,1.62,.02,b);add(new THREE.BoxGeometry(.26,.06,.04),new THREE.MeshBasicMaterial({color:ty==3?0xffd34d:0x7fe8ff}),0,1.66,.2,b);
     g.aL=new THREE.Group();g.aL.position.set(-.48,1.3,0);b.add(g.aL);add(new THREE.BoxGeometry(.22,.7,.22),MQM.base,0,-.32,0,g.aL);g.aR=new THREE.Group();g.aR.position.set(.48,1.3,0);b.add(g.aR);add(new THREE.BoxGeometry(.22,.7,.22),MQM.base,0,-.32,0,g.aR);
     g.lL=new THREE.Group();g.lL.position.set(-.18,.68,0);b.add(g.lL);add(new THREE.BoxGeometry(.24,.68,.26),MQM.dark,0,-.34,0,g.lL);g.lR=new THREE.Group();g.lR.position.set(.18,.68,0);b.add(g.lR);add(new THREE.BoxGeometry(.24,.68,.26),MQM.dark,0,-.34,0,g.lR)}
@@ -2361,7 +2387,7 @@ function mkCons(k){const t=k[0],ty=+k[1]||0,g=new THREE.Group();
   else if(t=='B'){add(new THREE.SphereGeometry(.22,8,6),L(0xa02020),0,.2,0,g);add(new THREE.CylinderGeometry(.04,.04,.4,5),L(0xe8e0c8),.18,.2,0,g).rotation.z=1.2;const r=new THREE.Mesh(CSRG,new THREE.MeshBasicMaterial({color:0xff6060,transparent:true,opacity:.25,depthWrite:false,side:THREE.DoubleSide}));r.rotation.x=-Math.PI/2;r.position.y=.05;r.scale.setScalar(10);g.add(r)}
   return g}
 const csLm=c=>1+.35*((c.lv||1)-1),csR=c=>c.t=='T'?TRT[c.ty][0]*(1+.2*((c.lv||1)-1)):0,csTr=c=>c.br?0:c.t=='T'&&c.ty==6?8+2*((c.lv||1)-1):c.t=='G'?GLT[c.ty][4]:0,csDm=()=>(1+XL.mn)*(1+(RC.phy||0));
-function csLook(c){const g=c.g;if(g.pips)g.pips.forEach((q,i)=>q.visible=i<(c.lv||1));if(g.rg)g.rg.scale.setScalar(Math.max(.01,csR(c)));g.rotation.z=c.br?.35:0;g.traverse(o=>{if(o.isMesh&&o!==g.rg){if(c.br){if(!o.userData.m0)o.userData.m0=o.material;o.material=MQM.brk}else if(o.userData.m0){o.material=o.userData.m0;o.userData.m0=null}}})}
+function csLook(c){const g=c.g;if(g.md){g.md.br=!!c.br;return}if(g.pips)g.pips.forEach((q,i)=>q.visible=i<(c.lv||1));if(g.rg)g.rg.scale.setScalar(Math.max(.01,csR(c)));g.rotation.z=c.br?.35:0;g.traverse(o=>{if(o.isMesh&&o!==g.rg){if(c.br){if(!o.userData.m0)o.userData.m0=o.material;o.material=MQM.brk}else if(o.userData.m0){o.material=o.userData.m0;o.userData.m0=null}}})}
 function mqClear(){MCS.forEach(c=>S.remove(c.g));MCS.length=0;MQD.forEach(d=>S.remove(d.m));MQD.length=0;MQB.length=0;MQ.prio=null;p.mqB=null;if(MQ.bg){S.remove(MQ.bg);MQ.bg=null}}
 // peças caem dos inimigos (só para o próprio Maquinista)
 function mqDrop(e){if(wi!=12||e.nk)return;const n=e.boss?12:(e.k=='b'||e.k[0]=='X'||'aeuifjwlopyzhvx'.includes(e.k))?3:Math.random()<.7?1:0;for(let i=0;i<n;i++){const m=new THREE.Mesh(GEAR,MQM.gold);m.position.set(e.x+rnd(-.8,.8),.3,e.z+rnd(-.8,.8));m.rotation.x=Math.PI/2;S.add(m);MQD.push({m,t:25})}}
@@ -2396,7 +2422,7 @@ function mqUpd(dt){if(wi!=12){if(MCS.length||MQD.length)mqClear();return}
   const dm=csDm();
   for(let i=MCS.length-1;i>=0;i--){const c=MCS[i];if(c.fl>0)c.fl-=dt;
     if(!c.br&&c.hp<=0){c.br=1;c.hp=0;csLook(c);puff(c.x,.8,c.z,14,0x666666,4,4,.6,.16);toast((c.t=='T'?'Torreta':'Golem')+' quebrado! ○ conserta · △ desmonta')}
-    if(c.br)continue;if(c.rg>0){c.rg-=dt;c.hp=Math.min(c.mx,c.hp+c.mx*.04*dt)}c.cd-=dt;
+    if(c.br){if(c.g.md)glAnim(c.g,dt,0,0,0,1);continue}if(c.rg>0){c.rg-=dt;c.hp=Math.min(c.mx,c.hp+c.mx*.04*dt)}c.cd-=dt;
     if(c.t=='T'){const R=csR(c),lm=csLm(c);if(c.ty==6){c.g.hd.rotation.y+=dt*2;continue}
       if(c.ty==5){if(c.cd<=0){c.cd=TRT[5][1];const h=1.2*lm*(RC.ally||1);if(Math.hypot(p.x-c.x,p.z-c.z)<R&&!NET.gh&&p.hp<PMX){p.hp=Math.min(PMX,p.hp+h);puff(p.x,1,p.z,2,0x66ff88,1.5,2,.4,.1)}healAllies(c.x,c.z,R,h);for(const o of MCS)if(o!==c&&!o.br&&Math.hypot(o.x-c.x,o.z-c.z)<R)o.hp=Math.min(o.mx,o.hp+o.mx*.02)}continue}
       const q=csTgt(c,R);if(!q)continue;const a=Math.atan2(q.x-c.x,q.z-c.z);c.g.hd.rotation.y=a-c.g.rotation.y;if(c.cd>0)continue;c.cd=TRT[c.ty][1];
@@ -2412,7 +2438,7 @@ function mqUpd(dt){if(wi!=12){if(MCS.length||MQD.length)mqClear();return}
       if(d>(q?1.3:.6)){const s=G_[3]*dt;c.x+=dx/d*Math.min(s,d);c.z+=dz/d*Math.min(s,d);mv=1}c.f=Math.atan2(dx,dz);
       if(q&&d<1.6&&c.cd<=0){c.cd=G_[2];c.sw=.25;if(c.ty==1){for(const e of E)if(e.hp>0&&Math.hypot(e.x-q.x,e.z-q.z)<1.8){dmgE(e,G_[1]*dm,8,c.x,c.z);if(!e.boss)e.stun=Math.max(e.stun>0?e.stun:0,.8)}ring(q.x,q.z,1.8,0xa05a3a);shake=Math.max(shake,.12)}else dmgE(q,G_[1]*dm,c.ty==0?5:3,c.x,c.z)}
       if(an&&ad<3&&an.hp>0){an.hp=Math.min(an.mx,an.hp+an.mx*.015*dt)}   // golens consertam a torreta perto deles
-      const g=c.g,ph=t*(c.ty==2?16:9);g.position.set(c.x,0,c.z);g.rotation.y=c.f;const sw=c.sw>0?(c.sw-=dt,Math.sin((1-c.sw/.25)*Math.PI)*1.6):0;g.aL.rotation.x=mv?Math.sin(ph)*.6:0;g.aR.rotation.x=(mv?-Math.sin(ph)*.6:0)-sw;g.lL.rotation.x=mv?-Math.sin(ph)*.5:0;g.lR.rotation.x=mv?Math.sin(ph)*.5:0;g.b.position.y=mv?Math.abs(Math.sin(ph))*.06:0}}}
+      const g=c.g;if(g.md){g.position.set(c.x,0,c.z);g.rotation.y=c.f;glAnim(g,dt,mv?G_[3]:0,c.sw>0&&!c.swA,c.fl>0&&!c.flA,0);c.swA=c.sw>0;c.flA=c.fl>0;if(c.sw>0)c.sw-=dt;continue}const ph=t*(c.ty==2?16:9);g.position.set(c.x,0,c.z);g.rotation.y=c.f;const sw=c.sw>0?(c.sw-=dt,Math.sin((1-c.sw/.25)*Math.PI)*1.6):0;g.aL.rotation.x=mv?Math.sin(ph)*.6:0;g.aR.rotation.x=(mv?-Math.sin(ph)*.6:0)-sw;g.lL.rotation.x=mv?-Math.sin(ph)*.5:0;g.lR.rotation.x=mv?Math.sin(ph)*.5:0;g.b.position.y=mv?Math.abs(Math.sin(ph))*.06:0}}}
 // ---- Armadilheiro: faca invertida (○ ○ ○, o 3º golpe dá +50% em quem está preso), ○ segurado = laço, △ = isca, □ toque troca / segurado planta
 const TRPN=[['🕸️','Rede'],['🕳️','Fosso'],['🛢️','Óleo'],['🪢','Corda'],['🔔','Sino'],['🪞','Espelho']],TRPC=[0xd8c8a0,0x7a5a3a,0x3a3020,0xc8a060,0xffd34d,0xc8e8ff];
 var TRS={ch:3,rc:0,sel:0,lasT:0,bT:0},TRP=[],BAIT=[];
@@ -3123,7 +3149,7 @@ function posAI(e,dt){const peer=e.pss,me=peer===NET.mid,r=me?null:NET.rp.find(q=
     for(const o of E){if(o===e||o.hp<=0||o.pss)continue;const dx=o.x-e.x,dz=o.z-e.z,d=Math.hypot(dx,dz)||.01;if(d<2.6&&(dx*fx+dz*fz)/d>-.2){const a=1.4+e.dm*.05;o.hp-=a;if(o.hq!==undefined)o.hq-=a;if(o.dlh!==undefined)o.dlh-=a;o.fl=.12;o.kx=dx/d*7;o.kz=dz/d*7;dmgNum(o,a);stAdd(peer,o,a);n++}}if(n){shake=Math.max(shake,.1);sfx('hit')}}}
 // necromante: passiva — a cada 10 abates, 3 zumbis próprios surgem e atacam os inimigos por perto
 var NKC=0;function necKill(){if(wi!=9||NET.gh)return;NKC++;if(NKC<10)return;NKC=0;for(let i=0;i<3;i++){const a=i/3*PI2+p.f,x=p.x+Math.sin(a)*2,z=p.z+Math.cos(a)*2,g=mkMin('z');S.add(g);TM.push({k:'zz',x,z,t:12,cd:.3,g,f:a});ring(x,z,1.2,0x7cff8a)}puff(p.x,1,p.z,20,0x7cff8a,5,4,.6,.15);toast('🧟 Passiva: 3 zumbis se levantaram!')}
-emLoad();qdLoad();
+emLoad();qdLoad();glLoad();
 camApply();skyCol();shApply();
 gear();requestAnimationFrame(loop);
 })();
