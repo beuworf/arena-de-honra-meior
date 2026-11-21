@@ -1,0 +1,15 @@
+Áudio e trilha sonora (todos CC0 1.0 — Domínio Público):
+
+Trilha sonora (mus_menu.mp3, mus_combate.mp3, mus_chefe.mp3):
+- Menu ("Fantasy: Rising Moon"): RandomMind — https://opengameart.org/content/fantasy-rising-moon (CC0 1.0)
+- Combate ("Battle Theme A"): cynicmusic (Pixelsphere) — https://opengameart.org/content/battle-theme-a (CC0 1.0)
+- Chefe ("Epic Boss Battle"): Juhani Junkala / SubspaceAudio — https://opengameart.org/content/boss-battle-music (CC0 1.0)
+- Derrota (die_1.mp3, trecho): RandomMind ("Medieval: Defeat Theme") — https://opengameart.org/content/medieval-defeat-theme (CC0 1.0)
+
+Efeitos sonoros (CC0 1.0):
+- Golpes, rugidos, gemas e magias: rubberduck ("80 CC0 RPG SFX" & "100 CC0 SFX") — https://opengameart.org/content/80-cc0-rpg-sfx · https://opengameart.org/content/100-cc0-sfx
+- Golpes ao vento e esquiva: qubodup ("Swishes Sound Pack") — https://opengameart.org/content/swishes-sound-pack
+- Magia e metal: artisticdude / HaelDB ("RPG Sound Pack") — https://opengameart.org/content/rpg-sound-pack
+- Cura: "Cure Magic" — https://opengameart.org/content/cure-magic
+- Interface: Kenney ("Interface Sounds") — https://opengameart.org/content/interface-sounds · https://kenney.nl
+- Subida de nível, conquista e coleta: "7 Assorted Sound Effects" — https://opengameart.org/content/7-assorted-sound-effects-menu-level-up
