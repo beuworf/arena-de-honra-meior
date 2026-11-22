@@ -1338,7 +1338,7 @@ const PJM=1.25;function projUpd(dt){for(let i=PR.length-1;i>=0;i--){const a=PR[i
 const SB0=[[1.68,0.33,0],[1.98,0.69,0],[2.98,0.5,0],[1.72,0.84,0.11],[2.26,0.61,0.16],[2.25,0.88,0.15],[1.15,1,0],[1.25,0.7,0],[2.61,0.64,0.15],[4.1,0.46,0],[1,1,0],[1.1,0.9,0],[2.2,0.55,0],[2.4,0.55,0.1]];
 var SB=window.ARENA_SB||SB0;
 // ajuste extra por build [dano causado, dano recebido], calibrado no solo com o laboratório de bots (fase média 5,0–5,9); vale também no cooperativo
-const SBS0=[[1.407,0.711],[1.626,0.615],[1.39,0.719],[2.417,0.414],[1.55,0.645],[1.589,0.629],[1.648,0.607],[1.243,0.805],[1.258,0.795],[1.134,0.882],[0.96,1.042],[1.114,0.898],[0.55,0.85],[1.142,0.876]],SBS=window.ARENA_SBS||SBS0,SBC=[1,1,0];
+const SBS0=[[1.35,0.741],[1.546,0.647],[1.397,0.716],[2.365,0.423],[1.464,0.683],[1.511,0.662],[1.549,0.646],[1.201,0.833],[1.2,0.833],[1.108,0.903],[1.059,0.944],[1.036,0.965],[0.536,0.85],[1.07,0.935]],SBS=window.ARENA_SBS||SBS0,SBC=[1,1,0];
 // dificuldade do solo: Fácil (mais dano, menos dano recebido, sem conquistas), Normal (o balanceamento) e Difícil (prêmio ao chegar na fase 6)
 var DIFS=(()=>{try{const v=localStorage.getItem('arena_dif');return v==='0'||v==='2'?+v:1}catch(e){return 1}})();const DIFK=[[1.35,.6],[1,1],[.85,1.35]],DIFN=['Fácil','Normal','Difícil'];
 function difS(){return NET.on?1:DIFS}function achOff(){return difS()==0}
@@ -2793,7 +2793,7 @@ function raUpd(f,dt){f.t+=dt;const u=Math.min(1,f.t/f.warn);f.w.scale.setScalar(
     if(!dead&&!NET.gh&&!phCover(f.x,f.z,p.x,p.z)){bossHit(f.x,f.z,f.dm,.4,f.m||'☀️ Queimado pelo Sol de Rá! Esconda-se atrás das ruínas');p.burn=Math.max(p.burn||0,2)}
     else if(!dead&&!NET.gh)toast('🛡️ Protegido pela pedra!')}
   if(f.go)f.w.material.opacity*=.85;return f.t>f.warn+.5}
-const PHC=['volley','sun','circles','volley','sun'];
+const PHC=['volley','sun','circles','volley','sun'],VGH=new Set();
 function phAI(dt){for(const e of E){if(e.k!='F3'||e.hp<=0)continue;const D=e.dm,F=v=>+v.toFixed(1);
   if(e.ps===undefined){e.ps='c';e.pc=0;e.pi=0;e.fa=2.5;e.nohit=1;e.sp0=e.sp;e.bhp=e.hp;e.phf=1;secFx({a:'pf',id:e.id,on:1});
     const pts=[];for(let i=0;i<6;i++){const a=i/6*PI2+Math.PI/6;pts.push(F(e.x+Math.sin(a)*10.5),F(e.z+Math.cos(a)*10.5))}secFx({a:'ob',on:1,pts})}
@@ -2802,7 +2802,7 @@ function phAI(dt){for(const e of E){if(e.k!='F3'||e.hp<=0)continue;const D=e.dm,
   if(e.ps=='c'){e.sp=0;e.fa-=dt;if(e.fa>0||e.wind>0)continue;const L=PHC.concat(e.pc>=1?['sun']:[],e.pc>=2?['volley']:[]);
     if(e.pi>=L.length){e.ps='m';e.ft=9;e.ma=1;e.wfl=Math.max(0,e.hp-e.mx*.36);e.sp=e.sp0*1.15;e.phf=0;secFx({a:'pf',id:e.id,on:0});secFx({a:'zm',m:'🔻 O Faraó ficou sem mana e desceu para o corpo a corpo: ataque!'});continue}
     const mv=L[e.pi++],T=secT();if(!T.length){e.fa=.5;continue}e.fmv='cast';
-    if(mv=='volley'){for(const c of T){const a0=Math.atan2(c.x-e.x,c.z-e.z);for(let k=-1;k<=1;k++)secFx({a:'zp',x:F(e.x),z:F(e.z),an:+(a0+k*.22).toFixed(2),v:12,l:2.4,dm:F(D*.45),st:0,r:0,c:0xff9a2a,sz:1.3,m:'Bola de fogo do Faraó!'})}e.wind=.6;e.fa=1.5}
+    if(mv=='volley'){for(const c of T){const a0=Math.atan2(c.x-e.x,c.z-e.z),vg=1+Math.floor(Math.random()*1e6);for(let k=-1;k<=1;k++)secFx({a:'zp',x:F(e.x),z:F(e.z),an:+(a0+k*.22).toFixed(2),v:12,l:2.4,dm:F(D*.45),vg,st:0,r:0,c:0xff9a2a,sz:1.3,m:'Bola de fogo do Faraó!'})}e.wind=.6;e.fa=1.5}
     else if(mv=='sun'){secFx({a:'ra',x:F(e.x),z:F(e.z),w:2.8,dm:F(D*1.4)});secFx({a:'zm',m:'☀️ O Faraó invoca o Sol de Rá: esconda-se atrás das ruínas!'});e.wind=2.8;e.fa=3.8}
     else{for(const c of T){zc(c.x,c.z,2.6,1.1,D*1.1,.6,0xe0b060,'Areia movediça!');const a=Math.random()*PI2;zc(c.x+Math.sin(a)*4,c.z+Math.cos(a)*4,2.6,1.3,D*1.1,.6,0xe0b060,'Areia movediça!')}e.wind=.8;e.fa=1.7}
     continue}
@@ -2869,9 +2869,9 @@ function dmAI(dt){for(const e of E){if(e.k!='F5'||e.hp<=0)continue;const D=e.dm,
     else if(mv=='spin'){zc(e.x,e.z,5.5,1,D*1.1,0,0xff8030,'Redemoinho de fogo!');e.wind=1;e.ab=1.7}
     else{const L2=Math.min(13,d+2);zl(e,f,L2,2.8,.8,D*.9,.5,0xff2020,'Investida do Demônio!');e.wind=.8;e.dash={sx:e.x,sz:e.z,tx:e.x+Math.sin(f)*L2,tz:e.z+Math.cos(f)*L2,t:-.8,T:.4};e.ab=1.6}}
   else if(ph=='voo'){if(Math.random()<.65){const L2=Math.min(16,d+4);zl(e,f,L2,3,.85,D*.85,.5,0xc040ff,'Mergulho do Demônio!');e.wind=.85;e.dash={sx:e.x,sz:e.z,tx:e.x+Math.sin(f)*L2,tz:e.z+Math.cos(f)*L2,t:-.85,T:.45};e.ab=2.4;if(e.dv==2)secFx({a:'zm',m:'🦇 As asas do Demônio estão cansando...'})}
-    else{for(const c of T){const a0=Math.atan2(c.x-e.x,c.z-e.z);for(let k=-1;k<=1;k++)secFx({a:'zp',x:F(e.x),z:F(e.z),an:+(a0+k*.25).toFixed(2),v:13,l:2.2,dm:F(D*.5),st:0,r:0,c:0xc040ff,sz:1.2,m:'Fogo sombrio!'})}e.wind=.5;e.ab=1.6}}
+    else{for(const c of T){const a0=Math.atan2(c.x-e.x,c.z-e.z),vg=1+Math.floor(Math.random()*1e6);for(let k=-1;k<=1;k++)secFx({a:'zp',x:F(e.x),z:F(e.z),an:+(a0+k*.25).toFixed(2),v:13,l:2.2,dm:F(D*.5),vg,st:0,r:0,c:0xc040ff,sz:1.2,m:'Fogo sombrio!'})}e.wind=.5;e.ab=1.6}}
   else if(ph=='chamas'){const L=['volley','flame','circles','volley','flame'];if(e.mi>=L.length){dmOpen(e,8,'🔻 O Demônio gastou as chamas e desceu: ataque!');continue}const mv=L[e.mi++];
-    if(mv=='volley'){for(const c of T){const a0=Math.atan2(c.x-e.x,c.z-e.z);for(let k=-2;k<=2;k++)secFx({a:'zp',x:F(e.x),z:F(e.z),an:+(a0+k*.2).toFixed(2),v:12,l:2.4,dm:F(D*.55),st:0,r:0,c:0xff5020,sz:1.3,m:'Bola de fogo infernal!'})}e.wind=.6;e.ab=1.5}
+    if(mv=='volley'){for(const c of T){const a0=Math.atan2(c.x-e.x,c.z-e.z),vg=1+Math.floor(Math.random()*1e6);for(let k=-2;k<=2;k++)secFx({a:'zp',x:F(e.x),z:F(e.z),an:+(a0+k*.2).toFixed(2),v:12,l:2.4,dm:F(D*.55),vg,st:0,r:0,c:0xff5020,sz:1.3,m:'Bola de fogo infernal!'})}e.wind=.6;e.ab=1.5}
     else if(mv=='flame'){secFx({a:'ra',x:F(e.x),z:F(e.z),w:2.8,dm:F(D*1.6),c:0xff3a10,m:'🔥 Queimado pela Chama Infernal! Esconda-se atrás dos pilares'});secFx({a:'zm',m:'🔥 Chama Infernal: esconda-se atrás dos pilares!'});e.wind=2.8;e.ab=3.8}
     else{for(const c of T){zc(c.x,c.z,2.6,1.1,D*1.1,.6,0xff4020,'Fenda de lava!')}e.wind=.8;e.ab=1.7}}
   else{e.shT=(e.shT||0)+dt;if(e.shT>25&&e.sh&&e.sh.hp>0){e.sh.nk=1;e.sh.hp=0}if(!e.sh||e.sh.hp<=0||!E.includes(e.sh)){e.shT=0;dmOpen(e,7,'💥 A sombra se desfez: guarda do Demônio quebrada!');continue}
@@ -3071,7 +3071,7 @@ function zOn(d){const e=d.id?E.find(o=>o.id==d.id):null;
   else if(d.a=='zn'){const w=bMesh(zsec(d.h),d.c||0xff3030,.25);w.rotation.z=d.f;w.position.set(d.x,.09,d.z);w.scale.setScalar(d.r);BX.push({k:'zn',x:d.x,z:d.z,f:d.f,r:d.r,h:d.h,t:0,warn:d.w,dm:d.dm,st:d.st,m:d.m,kb:d.kb,w})}
   else if(d.a=='zl'){const w=bMesh(ZLG,d.c||0xff3030,.25);w.rotation.z=d.f;w.position.set(d.x,.09,d.z);w.scale.set(d.wd,d.l,1);BX.push({k:'zl',x:d.x,z:d.z,f:d.f,l:d.l,wd:d.wd,t:0,warn:d.w,dm:d.dm,st:d.st,m:d.m,w})}
   else if(d.a=='zp'){const fk=resolveBossProjKind(d),w=pmAcq(ZPO,MF,{fxKind:fk,fxCol:d.c});
-    w.position.set(d.x,1.2,d.z);w.rotation.y=d.an;if(d.sz)w.scale.setScalar(d.sz);const P=PROJ_FX[fk];if(P&&FXV)fxBurst(P.muzzle,d.x,1.2,d.z,d.c||P.col,P.ms*.5,P.ms,.2,Math.sin(d.an)*2,0,Math.cos(d.an)*2,3,.85);sfx(d.g>=1&&d.g<=4?'shot':'spell');BX.push({k:'zp',pm:1,fxKind:fk,ft:.02,x:d.x,z:d.z,vx:Math.sin(d.an)*d.v,vz:Math.cos(d.an)*d.v,t:0,l:d.l||1.2,dm:d.dm,st:d.st||0,r:d.r||0,c:d.c,spn:d.g==1||d.g==2,m:d.m||'Atingido!',w})}
+    w.position.set(d.x,1.2,d.z);w.rotation.y=d.an;if(d.sz)w.scale.setScalar(d.sz);const P=PROJ_FX[fk];if(P&&FXV)fxBurst(P.muzzle,d.x,1.2,d.z,d.c||P.col,P.ms*.5,P.ms,.2,Math.sin(d.an)*2,0,Math.cos(d.an)*2,3,.85);sfx(d.g>=1&&d.g<=4?'shot':'spell');BX.push({k:'zp',pm:1,fxKind:fk,ft:.02,x:d.x,z:d.z,vx:Math.sin(d.an)*d.v,vz:Math.cos(d.an)*d.v,t:0,l:d.l||1.2,dm:d.dm,st:d.st||0,r:d.r||0,c:d.c,spn:d.g==1||d.g==2,vg:d.vg||0,m:d.m||'Atingido!',w})}
   else if(d.a=='zh'){const w=bMesh(BFG,d.c,.22);w.position.set(d.x,.09,d.z);w.scale.setScalar(d.r);BX.push({k:'zh',x:d.x,z:d.z,r:d.r,t:0,d:d.d,dm:d.dm,tk:.5,w})}
   else if(d.a=='zt'){const w=mkTot();w.position.set(d.x,0,d.z);w.g=1;w.au.material.color.setHex(0xff5a5a);w.ed.material.color.setHex(0xff7a7a);w.scale.setScalar(.95);S.add(w);w.au.scale.setScalar(4.5);w.ed.scale.setScalar(4.5);BX.push({k:'zt',x:d.x,z:d.z,r:4.5,t:0,d:d.d,dm:d.dm,tk:1.2,w})}
   else if(d.a=='zr'){lring(d.x,d.z,2.2,d.c);puff(d.x,1,d.z,12,d.c,3,4,.6,.14)}
@@ -3088,7 +3088,7 @@ function zUpd(f,dt){f.t+=dt;const pd=Math.hypot(p.x-f.x,p.z-f.z);
   if(f.k=='zh'||f.k=='zt'){f.tk-=dt;if(f.k=='zh')f.w.material.opacity=.18+.08*Math.sin(t*6);else{f.w.gm.position.y=1.82+Math.sin(t*3)*.07;f.w.gm.rotation.y+=dt*2}
     if(f.tk<=0){f.tk=f.k=='zh'?.5:1.2;if(pd<f.r&&!dead&&!NET.gh&&p.inv<=0&&p.y<.5){if(f.k=='zt')zapFx([f.x,1.8,f.z,p.x,1.1,p.z]);hurt(f.dm,0,0)}}return f.t>f.d}
   if(f.k=='zp'){f.x+=f.vx*dt;f.z+=f.vz*dt;f.w.position.set(f.x,1.2,f.z);if(f.spn)f.w.rotation.x+=14*dt;fxTickRig(f.w,dt,f);let boom=f.t>=f.l;
-    if(!boom&&pd<.9+(f.r?.5:0)&&p.y<1.3){boom=true;if(!f.r)bossHit(f.x,f.z,f.dm,f.st,f.m)}
+    if(!boom&&pd<.9+(f.r?.5:0)&&p.y<1.3){boom=true;if(!f.r&&!(f.vg&&VGH.has(f.vg))){bossHit(f.x,f.z,f.dm,f.st,f.m);if(f.vg){if(VGH.size>64)VGH.clear();VGH.add(f.vg)}}}
     if(boom){const P=PROJ_FX[f.fxKind||'magic'];if(P&&FXV)fxBurst(P.boom,f.x,1.2,f.z,f.c||P.col,P.bs*.55,P.bs*(f.r?1.5:1),.3,0,.4,0,3,.88);if(f.r){lring(f.x,f.z,f.r,f.c||0xff6a2a);puff(f.x,1,f.z,12,f.c||0xff6a2a,4,3,.5,.16);if(Math.hypot(p.x-f.x,p.z-f.z)<f.r)bossHit(f.x,f.z,f.dm,f.st,f.m)}return true}return false}
   return true}
 // ---- Inimigos novos: escudeiro (bloqueia de frente), kamikaze (corre e explode), curandeiro (cura os outros), invocador (chama diabinhos)
