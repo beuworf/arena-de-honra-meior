@@ -2,7 +2,8 @@ Modelos 3D e animações (CC0, domínio público, exceto onde indicado):
 - Heróis: "Universal Base Characters" e "Modular Character Outfits - Fantasy" de Quaternius (quaternius.com)
 - Inimigos: "Characters - Fantasy Races" e "Bestiary - Dungeon Monsters" de Quaternius
 - Animações: "Universal Animation Library" 1 e 2 de Quaternius e biblioteca humana extra do Mesh2Motion (mesh2motion.org, CC0)
-- Animais (lobo, husky, cavalo, boi e burro): "Ultimate Animated Animals" de Quaternius
+- Animais (lobo, husky, cavalo, boi, burro, vaca e cervo): "Ultimate Animated Animals" de Quaternius
+- Natureza (bétulas, bordos, árvores secas, arbustos, grama, flores e textura das pedras): "Stylized Nature MegaKit" de Quaternius (CC0)
 - Demônio voador: "Demon" de Quaternius (Ultimate Monsters)
 - Torretas do Maquinista (canhão, canhão de engrenagem e laser) e golens ("Giant"): Quaternius
 - Armas: "KayKit Fantasy Weapons Bits" de Kay Lousberg (kaylousberg.com); os inimigos usam as peças que os jogadores não usam (arco A, escudos A e C, sai)
