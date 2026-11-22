@@ -5,7 +5,7 @@ Modelos 3D e animações (CC0, domínio público, exceto onde indicado):
 - Animais (lobo, husky, cavalo, boi e burro): "Ultimate Animated Animals" de Quaternius
 - Demônio voador: "Demon" de Quaternius (Ultimate Monsters)
 - Torretas do Maquinista (canhão, canhão de engrenagem e laser) e golens ("Giant"): Quaternius
-- Armas: "KayKit Fantasy Weapons Bits" de Kay Lousberg (kaylousberg.com)
+- Armas: "KayKit Fantasy Weapons Bits" de Kay Lousberg (kaylousberg.com); os inimigos usam as peças que os jogadores não usam (arco A, escudos A e C, sai)
 - Chave de boca do Maquinista: "KayKit RPG Tools Bits" de Kay Lousberg (kaylousberg.com, CC0)
-- Cajado do Necromante e kukri do Armadilheiro: "Low Poly Weapon Pack" de Kickin' It Studios (kickinitstudios.itch.io; uso livre em jogos, crédito apreciado, proibido revender os modelos)
+- Cajado do Necromante, kukri do Armadilheiro e armas dos inimigos (espada curta, espadão, lâmina de folha e machado barbado): "Low Poly Weapon Pack" de Kickin' It Studios (kickinitstudios.itch.io; uso livre em jogos, crédito apreciado, proibido revender os modelos)
 Convertidos para o jogo: ossos no padrão VRM, texturas reduzidas, roupas por classe, armas no formato do jogo, animações ajustadas ao esqueleto (canhotas, como as armas do jogo) e pintura tribal de ossos feita no shader.

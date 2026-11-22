@@ -12,7 +12,7 @@ JSON com o `.glb` em base64. Veja os créditos em `CREDITOS.txt`.
 - `torretas.json`: torretas do Maquinista (3 modelos OBJ convertidos, Quaternius: canhão, canhão de engrenagem e laser; base fixa, meio e cano giram).
 - `golem.json`: golem do Maquinista (modelo "Giant", Quaternius), com pintura de metal e circuitos feita no shader.
 - `armas.json`: armas 3D (KayKit Fantasy Weapons Bits).
-- `armas2.json`: armas próprias de classe — chave de boca do Maquinista (KayKit RPG Tools Bits), cajado do Necromante e kukri do Armadilheiro (Low Poly Weapon Pack, Kickin' It Studios) e cajado do Xamã (KayKit Fantasy Weapons Bits). Malhas com cor por vértice, cabo no eixo Z.
+- `armas2.json`: armas próprias de classe — chave de boca do Maquinista (KayKit RPG Tools Bits), cajado do Necromante e kukri do Armadilheiro (Low Poly Weapon Pack, Kickin' It Studios) e cajado do Xamã (KayKit Fantasy Weapons Bits), mais as armas dos inimigos (chaves com prefixo `e`). Malhas com cor por vértice, cabo no eixo Z.
 
 O boneco 3D vem ligado por padrão (*Configurações → Boneco 3D*). Desligado, o
 jogo volta aos bonecos de blocos.
