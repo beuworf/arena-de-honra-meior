@@ -4,7 +4,8 @@ Arquivos desta pasta:
 
 - `arena-de-honra.zip` — o jogo pronto para subir (HTML5).
 - `capa.png` — capa da página (630×500).
-- `capturas/` — 5 imagens de 1280×720 para a galeria.
+- `capturas/` — 6 imagens de 1280×720 para a galeria (horda na vila, Brunilda, Faraó, Sentinelas do Portão, Demônio do Castelo e escolha de classe).
+- `apresentacao/` — imagens e GIF para montar a descrição (veja `apresentacao/APRESENTACAO.md`).
 - `logo-beuworf.svg` — sua logo.
 
 ## Passo a passo
@@ -29,7 +30,7 @@ Arquivos desta pasta:
 7. **Description:** cole a descrição abaixo (português e inglês).
 8. **Genre:** Action. **Tags:** as tags abaixo.
 9. **Pricing:** escolha **$0 or donate** (grátis com doação) e uma sugestão, por exemplo **US$ 2**.
-10. **Cover image:** envie a `capa.png`. **Screenshots:** envie as 5 capturas.
+10. **Cover image:** envie a `capa.png`. **Screenshots:** envie as 6 capturas.
 11. Deixe **Visibility** como **Draft** (rascunho), toque em **Save** e depois em **View page** para testar.
     Quando estiver tudo certo, mude para **Public**.
 12. Para receber as doações: **Settings → Payment** e conecte o **PayPal** (ou o que o itch oferecer para o Brasil).
@@ -38,7 +39,7 @@ Arquivos desta pasta:
 
 ## Texto curto (tagline)
 
-Action RPG de horda no navegador: 8 classes, 8 raças, chefes secretos e online com amigos — no PC e no celular.
+Action RPG de horda no navegador: 8 classes, 14 estilos, 5 chefes finais e online com amigos — no PC, celular e tablet.
 
 ## Descrição (português)
 
@@ -46,7 +47,7 @@ Action RPG de horda no navegador: 8 classes, 8 raças, chefes secretos e online 
 
 Escolha sua raça, sexo e classe, sobreviva às ondas de inimigos e derrote o chefe de cada fase. A cada abate você ganha XP, sobe de nível e escolhe melhorias — tudo recomeça a cada partida, então quem joga melhor vai mais longe.
 
-**8 classes e 12 estilos de jogo**
+**8 classes e 14 estilos de jogo**
 Disponível em português, inglês, japonês, chinês, espanhol e russo (escolha pela bandeira na tela inicial).
 
 - ⚔️ **Guerreiro** — Guardião (espada e escudo), Disciplinado (espada longa) ou Berserk (dois machados)
@@ -60,10 +61,14 @@ Disponível em português, inglês, japonês, chinês, espanhol e russo (escolha
 
 **Destaques**
 - Online com amigos: crie uma sala e passe o código de 4 dígitos (funciona em 4G/5G).
-- Chefes com ataques que dá para desviar, e um **segredo** para quem derrotar o chefe rápido no online.
+- **5 chefes finais**, um por cenário: Brunilda, Cavaleiro Sombrio, Faraó, Sentinelas do Portão e o Demônio do Castelo, com ataques avisados no chão.
+- Chefes com ataques que dá para desviar, e um **segredo** para quem derrotar o chefe rápido.
+- Guerreiros e lutadores sem ataque à distância **devolvem projéteis** com o golpe na hora certa; o Disciplinado tem uma **investida** com a espada.
+- Solo em **Fácil, Normal ou Difícil** (no Difícil, chegar à fase 6 dá um prêmio).
+- **Qualidade gráfica automática** (Baixa, Média e Alta): roda em tablets simples e fica bonito no PC, com árvores e animais 3D nos cenários.
 - Esqueletos campeões raros que usam o kit de uma classe sorteada.
 - Ranking no fim da partida online, com abates, dano no chefe e pontos de apoio.
-- Controles de toque ajustáveis, suporte a controle de PlayStation e mouse.
+- Controles de toque ajustáveis, suporte a controle de PlayStation e mouse, 6 idiomas e 100 conquistas.
 - Música e efeitos próprios, com volume separado para música e efeitos.
 
 Feito por **beuworf**. Se você curtiu, uma doação ajuda muito a continuar o jogo! 💚
@@ -73,7 +78,7 @@ Feito por **beuworf**. Se você curtiu, uma doação ajuda muito a continuar o j
 ## Créditos
 
 - **Jogo:** beuworf
-- **Modelos 3D e animações (CC0):** **Quaternius** — https://itch.io/profile/quaternius (https://quaternius.com) (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Universal Animation Library 1 e 2, torretas e Giant)
+- **Modelos 3D e animações (CC0):** **Quaternius** — https://itch.io/profile/quaternius (https://quaternius.com) (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Stylized Nature MegaKit, Universal Animation Library 1 e 2, torretas e Giant)
 - **Armas 3D (CC0):** **Kay Lousberg** — https://kaylousberg.com (KayKit – Fantasy Weapons Bits)
 - Sons, música, cenários e efeitos gerados pelo próprio jogo; motor gráfico three.js.
 
@@ -83,11 +88,11 @@ Obrigado aos artistas por disponibilizarem esses modelos gratuitamente.
 
 Pick your race, sex and class, survive the waves and defeat each stage's boss. Every kill gives XP; level up and choose upgrades. Everything resets each run, so better players go further.
 
-**8 classes, 12 playstyles:** Warrior (sword & shield, longsword, dual axes), Archer (bow, spear with animal companion, daggers), Mage (switch Fire, Ice, Shadow and Illusion mid-fight), Paladin, Monk, Necromancer, Corrupted and Shaman.
+**8 classes, 14 playstyles:** Warrior (sword & shield, longsword with a lunge, dual axes), Hunter (bow, spear with animal companion, daggers), Mage (switch Fire, Ice, Shadow and Illusion mid-fight), Paladin, Monk, Necromancer, Corrupted and Master (Shaman, Machinist with turrets and golems, Trapper).
 
-**Highlights:** online co-op with a 4-digit room code, dodgeable boss attacks, a secret for groups that kill the boss fast, rare champion skeletons using a random class kit, end-of-match ranking, adjustable touch controls, gamepad and mouse support, original music and sound with separate volume sliders.
+**Highlights:** 5 final bosses (one per stage), online co-op with a 4-digit room code, dodgeable boss attacks, projectile reflect with good timing, Easy/Normal/Hard solo difficulty, automatic graphics quality (runs on budget tablets, looks great on PC), 6 languages, 100 achievements, a secret for groups that kill the boss fast, rare champion skeletons using a random class kit, end-of-match ranking, adjustable touch controls, gamepad and mouse support, original music and sound with separate volume sliders.
 
-The game is in Brazilian Portuguese. Made by **beuworf**. If you enjoyed it, a donation really helps! 💚
+The game is available in Portuguese, English, Spanish, Russian, Japanese and Chinese. Made by **beuworf**. If you enjoyed it, a donation really helps! 💚
 
 ## Tags
 
