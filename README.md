@@ -251,7 +251,8 @@ em **Configurações**.
 - **Versão editada no celular (21/11):** ranking de combo (D até SSS, de 0,7× a 2,0× de dano conforme você varia os golpes), partículas com imagens do Kenney Particle Pack (`efeitos/`), sons e músicas em mp3 (`sons/`, todos CC0, créditos em `sons/CREDITOS.txt`), 100 conquistas com menu próprio e animações extras do Mesh2Motion (agachar, andar de lado, andar de costas, aterrissar). Tudo traduzido para os 5 idiomas.
 - **Menu em português:** "Jogar solo" e "Cooperativo". O cooperativo abre um submenu: *Criar sala (anfitrião)* ou *Entrar no jogo de um amigo*. "Lobby" virou "sala", "host" virou "anfitrião" e o aviso de chefe diz "CHEFE!".
 - **Maquinista:** a torreta de cura saiu e entrou o **Golem reparador**, que vai até as construções quebradas e conserta (2 peças por conserto). Cada construção ficou mais forte na sua especialidade: lança-chamas com mais alcance e dano, flechas mais longe e mais rápidas, bomba com mais dano e área, veneno mais longo, gelo com lentidão mais forte, torreta de distração com mais vida e armadura, golem de resistência com mais vida e armadura, golem de força com área e atordoamento maiores, golem de agilidade mais rápido, golem de distração provocando mais longe. Começa com 12 peças.
-- **Equilíbrio do solo (rodada 9):** meta de chegar à fase 5. Cada build tem um ajuste só do solo (dano causado e dano recebido) para que, em média, o bot chegue à fase 5 (fase média entre 5,19 e 5,66 em todas as 14 builds). O cooperativo não usa esse ajuste. Tabela em `docs/balanceamento-rodada9.md`.
+- **Equilíbrio do solo (rodada 9):** meta de chegar à fase 5. Cada build tem um ajuste de dano causado e dano recebido, calibrado no solo para que, em média, o bot chegue à fase 5 (fase média entre 5,19 e 5,66 em todas as 14 builds). O mesmo ajuste vale no cooperativo. Tabela em `docs/balanceamento-rodada9.md`.
+- **Armas próprias por classe:** o Maquinista luta com uma chave de boca (KayKit RPG Tools Bits), o Necromante com um cajado de garra e gema roxa, o Xamã com um cajado de madeira e o Armadilheiro com um kukri (Low Poly Weapon Pack, Kickin' It Studios), em `modelos/armas2.json`. Nenhuma classe repete a arma de outra.
 - **Projeto OhMyGame:** o repositório tem `ohmygame.json`, um documento de design (`docs/design.md`) e regras para o agente (`AGENTS.md`).
 
 ## Abrindo no OhMyGame
@@ -282,7 +283,8 @@ AGENTS.md              regras para agentes de código (OhMyGame, Claude Code, Co
 
 - **Jogo:** beuworf
 - **Modelos 3D e animações (CC0):** **Quaternius** — https://itch.io/profile/quaternius (https://quaternius.com) (Universal Base Characters, Modular Character Outfits – Fantasy, Characters – Fantasy Races, Bestiary – Dungeon Monsters, Ultimate Animated Animals, Ultimate Monsters, Universal Animation Library 1 e 2, torretas e Giant)
-- **Armas 3D (CC0):** **Kay Lousberg** — https://kaylousberg.com (KayKit – Fantasy Weapons Bits)
+- **Armas 3D (CC0):** **Kay Lousberg** — https://kaylousberg.com (KayKit – Fantasy Weapons Bits e KayKit – RPG Tools Bits)
+- **Armas 3D:** **Kickin' It Studios** — https://kickinitstudios.itch.io (Low Poly Weapon Pack; uso livre em jogos, crédito apreciado, proibido revender os modelos)
 - Sons, música, cenários e efeitos gerados pelo próprio jogo; motor gráfico three.js.
 
 Obrigado aos artistas por disponibilizarem esses modelos gratuitamente.

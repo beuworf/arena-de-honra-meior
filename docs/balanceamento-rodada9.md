@@ -3,7 +3,7 @@
 Meta pedida: no solo, toda build chega pelo menos à fase 5 (o castelo), com fase média entre 5,0 e 5,9.
 Bot jogando sozinho, raça neutra, até 30 min de jogo por partida (no máximo até a fase 10), 32 ou 48 partidas por build no ajuste final, já com o sistema de combo (rank D–SSS) e as mudanças do Maquinista.
 
-O ajuste é só do solo (`SBS0` em `index.html`): multiplica o dano causado e divide o dano recebido da build, por cima do ajuste geral `SB0`. No cooperativo continua valendo só o `SB0`; as mudanças nas construções do Maquinista (e as 12 peças iniciais) valem nos dois modos.
+O ajuste (`SBS0` em `index.html`) multiplica o dano causado e o dano recebido da build, por cima do ajuste geral `SB0`. Foi calibrado no solo e, a pedido, vale também no cooperativo (cada jogador usa o ajuste da própria build), assim como as mudanças nas construções do Maquinista e as 12 peças iniciais.
 
 | Build | Ajuste solo (dano causado / dano recebido) | Fase média | Mínima–máxima | Chegou à fase 5 | Tempo médio | Abates |
 |---|---|---|---|---|---|---|
