@@ -1,4 +1,4 @@
-# Oto Andarilho (próximo chefe, ainda fora do jogo)
+# Oto Andarilho (chefe final da fase 6, Muralha do Norte)
 
 Brutamontes do gelo: juba e barba brancas, braço esquerdo de gelo, ombreiras em forma de chifre azul, couro marrom e pele pálida.
 
@@ -18,5 +18,5 @@ Brutamontes do gelo: juba e barba brancas, braço esquerdo de gelo, ombreiras em
 Como no urso do Valrei: animação como diferença em relação ao repouso do herói, com o tronco só em parte e os braços seguindo a animação direto
 (`EMDMP.oto={Hips:.6,Spine:.35,Chest:.35,UpperChest:.35,Neck:.6,Head:.6, ombros/braços/mãos: -1}`). Assim ele mantém as pernas abertas e o corpo curvado e os golpes aparecem.
 
-## Falta
-- Decidir a fase, os golpes e a história dele no jogo.
+## No jogo
+- Entra como `modelos/oto.json` (o mesmo `oto_andarilho.glb` em base64), inimigo `F7`, chefe final da fase 6 (Muralha do Norte). Golpes e agarrão descritos no README.
