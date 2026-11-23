@@ -4,3 +4,5 @@ node_modules/
 # .ohmygame/ (nome, capa, assets) e canvas/ deve ir para o git.
 .ohmygame/local/
 .ohmygame/build/
+# modelo original do app (82 MB) fica fora do repositório
+ferramentas/urso-trovao/original_app.glb

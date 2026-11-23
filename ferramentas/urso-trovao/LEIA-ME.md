@@ -3,20 +3,21 @@
 Personagem da raça secreta Urso-trovão. **Nada desta pasta é carregado pelo jogo ainda**: falta a forma de urso e decidir as regras da transformação.
 
 ## Créditos
-- Arte de referência: inspirada na arte conceitual **"INUIT SIRIUS", de Wu Shenyou** (ArtStation). As imagens em `referencias/` servem de base para o modelo e a textura.
-- Modelo 3D gerado pelo autor do jogo num app de IA a partir dessas imagens (`original_app.glb`).
+- Arte de referência: inspirada na arte conceitual **"INUIT SIRIUS", de Wu Shenyou** (ArtStation). As imagens em `referencias/` serviram de base.
+- Modelo 3D gerado pelo autor do jogo num app de IA a partir dessas imagens.
 
-## Arquivos
-- `original_app.glb`: modelo como saiu do app (≈564 mil triângulos, sem esqueleto, sem textura).
-- `urso_base.glb`: versão para o jogo, com 12 mil triângulos e o esqueleto dos heróis (mesmas animações), na altura deles e virada para o mesmo lado. Os pesos de pele vêm do corpo do herói; cristais, cabelo e capuz seguem só a coluna e a cabeça.
-- `textura_folha.jpg`: a folha de 4 vistas redimensionada para 2048×1024; é a textura.
-- `rig.html`: refaz o `urso_base.glb` a partir do `original_app.glb` (botão para baixar no fim).
-- `previa.html`: mostra o modelo com a textura projetada (frente, lados e costas da folha), com as emendas suavizadas.
-- `previa.png`: como ficou.
+## Versão atual (modelo com textura)
+- `urso_base.glb`: versão para o jogo, com ~21 mil triângulos (o original tinha 1,5 milhão), textura 1024×1024 e o esqueleto dos heróis (mesmas animações), na altura deles e virada para o mesmo lado.
+- `urso_textura.jpg`: a textura separada (260 KB; a original tinha 4096×4096, 18 MB).
+- `rig.html`: refaz o `urso_base.glb` a partir do modelo original do app (que tem 82 MB e fica fora do repositório, no Google Drive do autor).
+- `previa.png`: frente, costas e um teste de pose exagerado (braço levantado e perna dobrada).
 
-Para abrir: na raiz do repositório, `python3 -m http.server` e acesse `/ferramentas/urso-trovao/previa.html`.
+## Versão anterior
+- `v1-projecao/`: primeiro modelo do app, que veio sem textura; a cor era projetada da folha de 4 vistas. Guardado só para referência.
+
+Para abrir as ferramentas: na raiz do repositório, `python3 -m http.server` e acesse `/ferramentas/urso-trovao/rig.html`.
 
 ## Pendências
 - Forma de urso (o autor vai gerar).
 - Regras da transformação (duração, se mantém a arma, urso em pé ou de quatro).
-- Detalhes do modelo: faixa de pano solta no quadril (o autor preferiu manter) e linhas brancas finas do contorno do desenho nas pernas.
+- Conferir a deformação com as animações de verdade do jogo (ombros, cristais e a tira pendurada atrás).

@@ -1,9 +1,11 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Urso-trovão</title></head><body style="margin:0"><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script><script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script><script src="https://cdn.jsdelivr.net/npm/meshoptimizer@0.22.0/meshopt_simplifier.js"></script><script>
-// Gera urso_base.glb: reduz o modelo do app (?t=triângulos, padrão 12000), põe o esqueleto dos heróis do jogo com os braços na pose do modelo (?a=graus, padrão 18)
-// e copia os pesos de pele do corpo do herói (4 vizinhos mais próximos; o que fica longe do corpo, como cristais e cabelo, só segue coluna e cabeça).
+<!doctype html><html><head><meta charset="utf-8"><title>Urso-trovão · esqueleto</title></head><body style="margin:0"><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script><script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script><script src="https://cdn.jsdelivr.net/npm/meshoptimizer@0.22.0/meshopt_simplifier.js"></script><script>
+// Gera urso_base.glb a partir do modelo do app (com textura): reduz (?t=triângulos alvo, padrão 14000; as costuras da textura limitam, sai ~21 mil),
+// centraliza pelo tronco, põe o esqueleto dos heróis com os braços na pose do modelo (?a=graus, padrão 66) e copia os pesos de pele do corpo do herói
+// (4 vizinhos mais próximos; o que fica a mais de ?far=0.12 m do corpo, como pontas de cristais e cabelo, só segue coluna e cabeça). Textura reduzida para 1024 JPG.
+// O modelo original do app (82 MB) não vai no repositório: coloque-o nesta pasta como original_app.glb ou passe ?m=caminho.
 // Abra servindo a raiz do repositório: python3 -m http.server e depois /ferramentas/urso-trovao/rig.html
 const b64=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer};
-const ld=buf=>new Promise((ok,no)=>new THREE.GLTFLoader().parse(buf,'',ok,no));const P=new URLSearchParams(location.search),ANG=+(P.get('a')||18),TRI=+(P.get('t')||12000),POSE=P.get('pose')||'';
+const ld=buf=>new Promise((ok,no)=>new THREE.GLTFLoader().parse(buf,'',ok,no));const P=new URLSearchParams(location.search),FAR=+(P.get('far')||.12),ANG=+(P.get('a')||66),TRI=+(P.get('t')||14000),POSE=P.get('pose')||'';
 (async()=>{await MeshoptSimplifier.ready;const H=await ld(b64((await (await fetch('../../modelos/herois_m.json')).json()).b));const hs=H.scene;hs.updateMatrixWorld(true);
  let body;const B={};hs.traverse(o=>{if(o.isSkinnedMesh&&o.name=='Corpo')body=o;if(o.isBone)B[o.name]=o});
  // 1) braços do herói para baixo (pose do modelo novo)
@@ -15,38 +17,39 @@ const ld=buf=>new Promise((ok,no)=>new THREE.GLTFLoader().parse(buf,'',ok,no));c
  body.skeleton.update();for(let i=0;i<bp.count;i++){v.fromBufferAttribute(bp,i);body.boneTransform(i,v);v.applyMatrix4(body.matrixWorld);HV.set([v.x,v.y,v.z],i*3)}
  const hb=new THREE.Box3().setFromArray(HV);
  // 2) modelo novo: virado para o mesmo lado, mesma altura, reduzido
- const G=await ld(await (await fetch(P.get('m')||'original_app.glb')).arrayBuffer());let gm;G.scene.traverse(o=>{if(o.isMesh)gm=o});let g=gm.geometry.clone();g.deleteAttribute('uv');g.deleteAttribute('normal');
- g=THREE.BufferGeometryUtils?THREE.BufferGeometryUtils.mergeVertices(g):g;
- const pos=g.attributes.position.array;let idx=g.index?g.index.array:null;
- // solda vértices iguais
- {const map=new Map(),np=[],rem=new Uint32Array(pos.length/3);for(let i=0;i<pos.length/3;i++){const k=Math.round(pos[i*3]*1e5)+','+Math.round(pos[i*3+1]*1e5)+','+Math.round(pos[i*3+2]*1e5);let j=map.get(k);if(j===undefined){j=np.length/3;map.set(k,j);np.push(pos[i*3],pos[i*3+1],pos[i*3+2])}rem[i]=j}
-  const src=idx||[...Array(pos.length/3).keys()];idx=new Uint32Array(src.length);for(let i=0;i<src.length;i++)idx[i]=rem[src[i]];var P0=new Float32Array(np)}
- const [si2,err]=MeshoptSimplifier.simplify(idx,P0,3,Math.floor(TRI*3/3)*3,.05,['LockBorder']);
- // compacta
- const used=new Map(),NP=[],NI=new Uint32Array(si2.length);for(let i=0;i<si2.length;i++){let j=used.get(si2[i]);if(j===undefined){j=NP.length/3;used.set(si2[i],j);NP.push(P0[si2[i]*3],P0[si2[i]*3+1],P0[si2[i]*3+2])}NI[i]=j}
- const gb=new THREE.Box3().setFromArray(NP),k=(hb.max.y-hb.min.y)/(gb.max.y-gb.min.y),cx=(gb.min.x+gb.max.x)/2,cz=(gb.min.z+gb.max.z)/2;
- for(let i=0;i<NP.length;i+=3){const x=(NP[i]-cx)*k,z=(NP[i+2]-cz)*k;NP[i]=-x;NP[i+1]=(NP[i+1]-gb.min.y)*k+hb.min.y;NP[i+2]=-z}   // gira 180°
+ const G=await new Promise((ok,no)=>new THREE.GLTFLoader().load(P.get('m')||'original_app.glb',ok,undefined,no));let gm;G.scene.traverse(o=>{if(o.isMesh)gm=o});G.scene.updateMatrixWorld(true);
+ const g0=gm.geometry.clone();g0.applyMatrix4(gm.matrixWorld);const P0=g0.attributes.position.array,UV0=g0.attributes.uv.array,idx=g0.index.array;
+ const [si2,err]=MeshoptSimplifier.simplify(idx instanceof Uint32Array?idx:new Uint32Array(idx),P0,3,TRI*3,1.0,[]);
+ const used=new Map(),NP=[],NU=[],NI=new Uint32Array(si2.length);for(let i=0;i<si2.length;i++){let j=used.get(si2[i]);if(j===undefined){j=NP.length/3;used.set(si2[i],j);NP.push(P0[si2[i]*3],P0[si2[i]*3+1],P0[si2[i]*3+2]);NU.push(UV0[si2[i]*2],UV0[si2[i]*2+1])}NI[i]=j}
+ const gb=new THREE.Box3().setFromArray(NP),k=(hb.max.y-hb.min.y)/(gb.max.y-gb.min.y);
+ // centro pelo tronco e quadril (mediana), não pela caixa: a tira pendurada nas costas e os cristais deslocariam o centro
+ const XS=[],ZS=[],y0=gb.min.y+(gb.max.y-gb.min.y)*.35,y1=gb.min.y+(gb.max.y-gb.min.y)*.7;for(let i=0;i<NP.length;i+=3)if(NP[i+1]>y0&&NP[i+1]<y1&&Math.abs(NP[i])<.12){XS.push(NP[i]);ZS.push(NP[i+2])}
+ XS.sort((a,b)=>a-b);ZS.sort((a,b)=>a-b);const zlo=ZS[Math.floor(ZS.length*.1)],zhi=ZS[Math.floor(ZS.length*.9)];const cx=XS[XS.length>>1],cz=(zlo+zhi)/2;
+ // centro do tronco do herói na mesma faixa
+ const HZ=[];for(let i=0;i<HV.length;i+=3){const yy=HV[i+1];if(yy>hb.min.y+(hb.max.y-hb.min.y)*.35&&yy<hb.min.y+(hb.max.y-hb.min.y)*.7&&Math.abs(HV[i])<.2)HZ.push(HV[i+2])}HZ.sort((a,b)=>a-b);const hcz=(HZ[Math.floor(HZ.length*.1)]+HZ[Math.floor(HZ.length*.9)])/2;
+ for(let i=0;i<NP.length;i+=3){const x=(NP[i]-cx)*k,z=(NP[i+2]-cz)*k;NP[i]=-x;NP[i+1]=(NP[i+1]-gb.min.y)*k+hb.min.y;NP[i+2]=-z+hcz}   // gira 180°
  // 3) pesos: 4 vizinhos mais próximos no corpo do herói (grade espacial)
  const cs=.06,grid=new Map(),key=(x,y,z)=>Math.floor(x/cs)+','+Math.floor(y/cs)+','+Math.floor(z/cs);for(let i=0;i<bp.count;i++){const kk=key(HV[i*3],HV[i*3+1],HV[i*3+2]);(grid.get(kk)||grid.set(kk,[]).get(kk)).push(i)}
- const n=NP.length/3,SI=new Uint16Array(n*4),SW=new Float32Array(n*4);
+ const DS=[];const n=NP.length/3,SI=new Uint16Array(n*4),SW=new Float32Array(n*4);
  for(let i=0;i<n;i++){const x=NP[i*3],y=NP[i*3+1],z=NP[i*3+2];let best=[];for(let r=1;r<12&&best.length<4;r++){best=[];const gx=Math.floor(x/cs),gy=Math.floor(y/cs),gz=Math.floor(z/cs);
      for(let a=-r;a<=r;a++)for(let b2=-r;b2<=r;b2++)for(let c=-r;c<=r;c++){const L=grid.get((gx+a)+','+(gy+b2)+','+(gz+c));if(L)for(const j of L){const d=(HV[j*3]-x)**2+(HV[j*3+1]-y)**2+(HV[j*3+2]-z)**2;best.push([d,j])}}}
    best.sort((p,q)=>p[0]-q[0]);best=best.slice(0,4);const acc={};let tot=0;for(const [d,j] of best){const w0=1/(Math.sqrt(d)+.01);for(let c=0;c<4;c++){const wv=[sw.getX(j),sw.getY(j),sw.getZ(j),sw.getW(j)][c]*w0;if(wv>0){const bi=[si.getX(j),si.getY(j),si.getZ(j),si.getW(j)][c];acc[bi]=(acc[bi]||0)+wv;tot+=wv}}}
-   const far=Math.sqrt(best[0][0])>.045,CORE=/^(Hips|Spine|Chest|UpperChest|Neck|Head)$/;if(far){for(const bi in acc)if(!CORE.test(body.skeleton.bones[bi].name))delete acc[bi];if(!Object.keys(acc).length){let b=body.skeleton.bones.findIndex(x=>x.name=='UpperChest');acc[b]=1}}const top=Object.entries(acc).sort((p,q)=>q[1]-p[1]).slice(0,4);const s=top.reduce((a,b2)=>a+b2[1],0);top.forEach(([bi,w],c)=>{SI[i*4+c]=+bi;SW[i*4+c]=w/s})}
- const ng=new THREE.BufferGeometry();ng.setAttribute('position',new THREE.Float32BufferAttribute(NP,3));ng.setIndex(new THREE.BufferAttribute(NI,1));ng.computeVertexNormals();
+   DS.push(Math.sqrt(best[0][0]));const far=Math.sqrt(best[0][0])>FAR,CORE=/^(Hips|Spine|Chest|UpperChest|Neck|Head)$/;if(far){for(const bi in acc)if(!CORE.test(body.skeleton.bones[bi].name))delete acc[bi];if(!Object.keys(acc).length){let b=body.skeleton.bones.findIndex(x=>x.name=='UpperChest');acc[b]=1}}const top=Object.entries(acc).sort((p,q)=>q[1]-p[1]).slice(0,4);const s=top.reduce((a,b2)=>a+b2[1],0);top.forEach(([bi,w],c)=>{SI[i*4+c]=+bi;SW[i*4+c]=w/s})}
+ const ng=new THREE.BufferGeometry();ng.setAttribute('position',new THREE.Float32BufferAttribute(NP,3));ng.setIndex(new THREE.BufferAttribute(NI,1));ng.setAttribute('uv',new THREE.Float32BufferAttribute(NU,2));ng.computeVertexNormals();
  ng.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(SI,4));ng.setAttribute('skinWeight',new THREE.Float32BufferAttribute(SW,4));
- const mat=new THREE.MeshLambertMaterial({color:0xb8b8c0,skinning:true});mat.name='Urso';const sm=new THREE.SkinnedMesh(ng,mat);sm.name='UrsoBase';
+ const cv=document.createElement('canvas');cv.width=cv.height=1024;cv.getContext('2d').drawImage(gm.material.map.image,0,0,1024,1024);window.jpg=cv.toDataURL('image/jpeg',.88);const tx=new THREE.CanvasTexture(cv);tx.encoding=THREE.sRGBEncoding;tx.flipY=false;const mat=new THREE.MeshLambertMaterial({map:tx,skinning:true});mat.name='Urso';const sm=new THREE.SkinnedMesh(ng,mat);sm.name='UrsoBase';
  // esqueleto: o mesmo do herói, na pose de agora como pose de ligação
  const root=body.skeleton.bones[0];let top=root;while(top.parent&&top.parent.isBone)top=top.parent;const ske=new THREE.Skeleton(body.skeleton.bones);
  const holder=top.parent;holder.add(sm);sm.bind(ske,new THREE.Matrix4());
  hs.traverse(o=>{if(o.isMesh&&o!==sm)o.visible=false});
- window.info={tri:NI.length/3,verts:n,err:+err.toFixed(4),k:+k.toFixed(3),hb:hb.max.toArray().map(a=>+a.toFixed(2))};
+ DS.sort((a,b)=>a-b);const armIdx=ske.bones.map((b,i)=>/Arm|Hand/.test(b.name)?i:-1).filter(i=>i>=0);let armV=0;for(let i=0;i<n;i++)if(armIdx.includes(SI[i*4]))armV++;
+ window.info={med:+DS[DS.length>>1].toFixed(3),p90:+DS[Math.floor(DS.length*.9)].toFixed(3),far:DS.filter(d=>d>FAR).length,armV,tri:NI.length/3,verts:n,err:+err.toFixed(4),k:+k.toFixed(3),hb:hb.max.toArray().map(a=>+a.toFixed(2))};
  // teste de deformação
- const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});R.setSize(1200,600);document.body.appendChild(R.domElement);const S=new THREE.Scene();S.background=new THREE.Color(0xdde4ea);S.add(new THREE.HemisphereLight(0xffffff,0x667788,1));const dl=new THREE.DirectionalLight(0xffffff,.6);dl.position.set(2,4,-5);S.add(dl);S.add(hs);
+ const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});R.setSize(1200,600);R.outputEncoding=THREE.sRGBEncoding;document.body.appendChild(R.domElement);const S=new THREE.Scene();S.background=new THREE.Color(0xdde4ea);S.add(new THREE.HemisphereLight(0xffffff,0x667788,1));const dl=new THREE.DirectionalLight(0xffffff,.6);dl.position.set(2,4,-5);S.add(dl);S.add(hs);
  const views=[[0,''],[Math.PI,''],[0,'pose']];R.setScissorTest(true);
  views.forEach(([a,ps],i)=>{if(ps){B.LeftUpperArm.rotateZ(1.1);B.RightLowerArm.rotateY(1.2);B.LeftUpperLeg.rotateX(-.9);B.LeftLowerLeg.rotateX(1.2);B.Spine.rotateX(.3);hs.updateMatrixWorld(true)}
    const C=new THREE.PerspectiveCamera(30,400/600,.1,50);C.position.set(Math.sin(a+Math.PI)*5,1.1,Math.cos(a+Math.PI)*5);C.lookAt(0,.95,0);R.setViewport(i*400,0,400,600);R.setScissor(i*400,0,400,600);R.render(S,C)});
  // exporta (sem a pose de teste)
- window.exp=()=>new Promise(ok=>{new THREE.GLTFExporter().parse(hs,r=>ok((()=>{let s2='';const u=new Uint8Array(r);for(let i=0;i<u.length;i+=8192)s2+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s2)})()),{binary:true,onlyVisible:true})});
- window.exp().then(x=>{window.glb=x;const a=document.createElement('a');a.href='data:model/gltf-binary;base64,'+x;a.download='urso_base.glb';a.textContent='⬇ baixar urso_base.glb ('+info.tri+' triângulos)';a.style.cssText='display:block;font:20px sans-serif;padding:12px';document.body.prepend(a);window.done=1})})().catch(e=>{window.err=String(e.stack||e);window.done=1});
+ window.exp=()=>new Promise(ok=>{new THREE.GLTFExporter().parse(hs,r=>ok((()=>{let s2='';const u=new Uint8Array(r);for(let i=0;i<u.length;i+=8192)s2+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s2)})()),{binary:true,onlyVisible:true,maxTextureSize:1024})});
+ window.exp().then(x=>{window.glb=x;const a=document.createElement('a');a.href='data:model/gltf-binary;base64,'+x;a.download='urso_base.glb';a.textContent='⬇ baixar urso_base.glb ('+info.tri+' triângulos)';a.style.cssText='display:block;font:20px sans-serif;padding:12px';document.body.prepend(a);const b=document.createElement('a');b.href=window.jpg;b.download='urso_textura.jpg';b.textContent='⬇ baixar urso_textura.jpg (1024×1024)';b.style.cssText=a.style.cssText;document.body.prepend(b);window.done=1})})().catch(e=>{window.err=String(e.stack||e);window.done=1});
 </script></body></html>
