@@ -1,17 +1,24 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Urso-trovão · esqueleto</title></head><body style="margin:0"><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script><script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script><script src="https://cdn.jsdelivr.net/npm/meshoptimizer@0.22.0/meshopt_simplifier.js"></script><script>
 // Gera urso_base.glb a partir do modelo do app (com textura): reduz (?t=triângulos alvo, padrão 14000; as costuras da textura limitam, sai ~21 mil),
-// centraliza pelo tronco, põe o esqueleto dos heróis com os braços na pose do modelo (?a=graus, padrão 66) e copia os pesos de pele do corpo do herói
-// (4 vizinhos mais próximos; o que fica a mais de ?far=0.12 m do corpo, como pontas de cristais e cabelo, só segue coluna e cabeça). Textura reduzida para 1024 JPG.
+// centraliza pelo tronco, põe o esqueleto dos heróis com os braços na pose do modelo (?a=graus a partir da vertical, padrão 43; os braços abrem para fora do corpo) e copia os pesos de pele do corpo do herói
+// (4 vizinhos mais próximos; o que fica a mais de ?far=0.12 m do corpo, como pontas de cristais e cabelo, só segue coluna e cabeça;
+// garras longe da pele seguem o osso do pé/mão; tanga e tiras entre as pernas seguem mais o quadril). Textura reduzida para 1024 JPG.
+// A pose de teste (3ª vista) é desfeita antes de exportar.
 // O modelo original do app (82 MB) não vai no repositório: coloque-o nesta pasta como original_app.glb ou passe ?m=caminho.
 // Abra servindo a raiz do repositório: python3 -m http.server e depois /ferramentas/urso-trovao/rig.html
+
+const _q=(SI,SW,NU,NI)=>{const n=SW.length/4,si=new Uint8Array(n*4),sw=new Uint8Array(n*4);for(let i=0;i<n;i++){let s=0,mx=0;for(let c=0;c<4;c++){si[i*4+c]=SI[i*4+c];const v=Math.round(SW[i*4+c]*255);sw[i*4+c]=v;s+=v;if(v>sw[i*4+mx])mx=c}sw[i*4+mx]+=255-s}
+  const uv=new Uint16Array(NU.length);for(let i=0;i<NU.length;i++)uv[i]=Math.round(Math.max(0,Math.min(1,NU[i]))*65535);return{si,sw,uv,ix:new Uint16Array(NI)}};
 const b64=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer};
-const ld=buf=>new Promise((ok,no)=>new THREE.GLTFLoader().parse(buf,'',ok,no));const P=new URLSearchParams(location.search),FAR=+(P.get('far')||.12),ANG=+(P.get('a')||66),TRI=+(P.get('t')||14000),POSE=P.get('pose')||'';
+const ld=buf=>new Promise((ok,no)=>new THREE.GLTFLoader().parse(buf,'',ok,no));const P=new URLSearchParams(location.search),FAR=+(P.get('far')||.12),ANG=+(P.get('a')||43),TRI=+(P.get('t')||14000),POSE=P.get('pose')||'',LCX=+(P.get('lx')||.2),LCW=+(P.get('lw')||.7);
 (async()=>{await MeshoptSimplifier.ready;const H=await ld(b64((await (await fetch('../../modelos/herois_m.json')).json()).b));const hs=H.scene;hs.updateMatrixWorld(true);
  let body;const B={};hs.traverse(o=>{if(o.isSkinnedMesh&&o.name=='Corpo')body=o;if(o.isBone)B[o.name]=o});
  // 1) braços do herói para baixo (pose do modelo novo)
  const down=(n,c,s)=>{const b=B[n],ch=B[c];const a=new THREE.Vector3(),e=new THREE.Vector3();b.getWorldPosition(a);ch.getWorldPosition(e);const cur=e.sub(a).normalize(),tg=new THREE.Vector3(s*Math.sin(ANG*Math.PI/180),-Math.cos(ANG*Math.PI/180),0);
    const q=new THREE.Quaternion().setFromUnitVectors(cur,tg),pw=new THREE.Quaternion();b.parent.getWorldQuaternion(pw);const bw=new THREE.Quaternion();b.getWorldQuaternion(bw);const nw=q.multiply(bw);b.quaternion.copy(pw.invert().multiply(nw));hs.updateMatrixWorld(true)};
- for(const [sd,s] of [['Left',1],['Right',-1]]){down(sd+'UpperArm',sd+'LowerArm',s);down(sd+'LowerArm',sd+'Hand',s)}
+ // o braço esquerdo do herói fica em -x neste espaço: abre para fora
+ for(const [sd,s] of [['Left',-1],['Right',1]]){down(sd+'UpperArm',sd+'LowerArm',s);down(sd+'LowerArm',sd+'Hand',s)}
+ window.armW=['Left','Right'].map(sd=>['UpperArm','LowerArm','Hand'].map(n=>B[sd+n].getWorldPosition(new THREE.Vector3()).toArray().map(v=>+v.toFixed(2))))
  // posições do corpo do herói já deformadas (pose nova)
  const bp=body.geometry.attributes.position,si=body.geometry.attributes.skinIndex,sw=body.geometry.attributes.skinWeight,HV=new Float32Array(bp.count*3),v=new THREE.Vector3();
  body.skeleton.update();for(let i=0;i<bp.count;i++){v.fromBufferAttribute(bp,i);body.boneTransform(i,v);v.applyMatrix4(body.matrixWorld);HV.set([v.x,v.y,v.z],i*3)}
@@ -28,28 +35,34 @@ const ld=buf=>new Promise((ok,no)=>new THREE.GLTFLoader().parse(buf,'',ok,no));c
  // centro do tronco do herói na mesma faixa
  const HZ=[];for(let i=0;i<HV.length;i+=3){const yy=HV[i+1];if(yy>hb.min.y+(hb.max.y-hb.min.y)*.35&&yy<hb.min.y+(hb.max.y-hb.min.y)*.7&&Math.abs(HV[i])<.2)HZ.push(HV[i+2])}HZ.sort((a,b)=>a-b);const hcz=(HZ[Math.floor(HZ.length*.1)]+HZ[Math.floor(HZ.length*.9)])/2;
  for(let i=0;i<NP.length;i+=3){const x=(NP[i]-cx)*k,z=(NP[i+2]-cz)*k;NP[i]=-x;NP[i+1]=(NP[i+1]-gb.min.y)*k+hb.min.y;NP[i+2]=-z+hcz}   // gira 180°
+ {const ang=[];for(const sg of[-1,1]){let sx=0,sy=0,sxx=0,sxy=0,syy=0,c=0;for(let i=0;i<NP.length;i+=3){const x=NP[i]*sg,y=NP[i+1];if(x>.3&&y>.75&&y<1.4){sx+=x;sy+=y;sxx+=x*x;sxy+=x*y;syy+=y*y;c++}}const vx=sxx/c-(sx/c)**2,vy=syy/c-(sy/c)**2,cv=sxy/c-(sx/c)*(sy/c);const th=.5*Math.atan2(2*cv,vx-vy);ang.push([c,+(90-Math.abs(th*180/Math.PI)).toFixed(1)])}window.modelArm=ang}
  // 3) pesos: 4 vizinhos mais próximos no corpo do herói (grade espacial)
  const cs=.06,grid=new Map(),key=(x,y,z)=>Math.floor(x/cs)+','+Math.floor(y/cs)+','+Math.floor(z/cs);for(let i=0;i<bp.count;i++){const kk=key(HV[i*3],HV[i*3+1],HV[i*3+2]);(grid.get(kk)||grid.set(kk,[]).get(kk)).push(i)}
  const DS=[];const n=NP.length/3,SI=new Uint16Array(n*4),SW=new Float32Array(n*4);
  for(let i=0;i<n;i++){const x=NP[i*3],y=NP[i*3+1],z=NP[i*3+2];let best=[];for(let r=1;r<12&&best.length<4;r++){best=[];const gx=Math.floor(x/cs),gy=Math.floor(y/cs),gz=Math.floor(z/cs);
      for(let a=-r;a<=r;a++)for(let b2=-r;b2<=r;b2++)for(let c=-r;c<=r;c++){const L=grid.get((gx+a)+','+(gy+b2)+','+(gz+c));if(L)for(const j of L){const d=(HV[j*3]-x)**2+(HV[j*3+1]-y)**2+(HV[j*3+2]-z)**2;best.push([d,j])}}}
    best.sort((p,q)=>p[0]-q[0]);best=best.slice(0,4);const acc={};let tot=0;for(const [d,j] of best){const w0=1/(Math.sqrt(d)+.01);for(let c=0;c<4;c++){const wv=[sw.getX(j),sw.getY(j),sw.getZ(j),sw.getW(j)][c]*w0;if(wv>0){const bi=[si.getX(j),si.getY(j),si.getZ(j),si.getW(j)][c];acc[bi]=(acc[bi]||0)+wv;tot+=wv}}}
-   DS.push(Math.sqrt(best[0][0]));const far=Math.sqrt(best[0][0])>FAR,CORE=/^(Hips|Spine|Chest|UpperChest|Neck|Head)$/;if(far){for(const bi in acc)if(!CORE.test(body.skeleton.bones[bi].name))delete acc[bi];if(!Object.keys(acc).length){let b=body.skeleton.bones.findIndex(x=>x.name=='UpperChest');acc[b]=1}}const top=Object.entries(acc).sort((p,q)=>q[1]-p[1]).slice(0,4);const s=top.reduce((a,b2)=>a+b2[1],0);top.forEach(([bi,w],c)=>{SI[i*4+c]=+bi;SW[i*4+c]=w/s})}
+   DS.push(Math.sqrt(best[0][0]));const far=Math.sqrt(best[0][0])>FAR,CORE=/^(Hips|Spine|Chest|UpperChest|Neck|Head)$/;// longe da pele do herói (cristais, gola, tira): só ossos do tronco; se não houver (garras dos pés e das mãos), fica só o osso mais forte daquele ponto
+   if(far){const t0=Object.entries(acc).sort((p,q)=>q[1]-p[1])[0];for(const bi in acc)if(!CORE.test(body.skeleton.bones[bi].name))delete acc[bi];if(!Object.keys(acc).length&&t0){const tn=body.skeleton.bones[t0[0]].name;acc[/Foot|Toes|Hand|Thumb|Index|Middle|Ring|Little|LowerArm/.test(tn)?t0[0]:body.skeleton.bones.findIndex(q=>q.name==(y<.95?'Hips':'UpperChest'))]=1}if(!Object.keys(acc).length){let b=body.skeleton.bones.findIndex(x=>x.name=='UpperChest');acc[b]=1}}
+   // tanga e tiras entre as pernas: seguem mais o quadril (senão esticam quando as pernas abrem)
+   {let wl=0,wr=0;for(const bi in acc){const nm=body.skeleton.bones[bi].name;if(/^Left(Upper|Lower)Leg/.test(nm))wl+=acc[bi];if(/^Right(Upper|Lower)Leg/.test(nm))wr+=acc[bi]}
+    if(wl+wr>0&&Math.min(wl,wr)/(wl+wr)>LCX){const hb2=body.skeleton.bones.findIndex(q=>q.name=='Hips');for(const bi in acc)if(/(Upper|Lower)Leg/.test(body.skeleton.bones[bi].name)){acc[hb2]=(acc[hb2]||0)+acc[bi]*LCW;acc[bi]*=1-LCW}}}const top=Object.entries(acc).sort((p,q)=>q[1]-p[1]).slice(0,4);const s=top.reduce((a,b2)=>a+b2[1],0);top.forEach(([bi,w],c)=>{SI[i*4+c]=+bi;SW[i*4+c]=w/s})}
  const ng=new THREE.BufferGeometry();ng.setAttribute('position',new THREE.Float32BufferAttribute(NP,3));ng.setIndex(new THREE.BufferAttribute(NI,1));ng.setAttribute('uv',new THREE.Float32BufferAttribute(NU,2));ng.computeVertexNormals();
- ng.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(SI,4));ng.setAttribute('skinWeight',new THREE.Float32BufferAttribute(SW,4));
- const cv=document.createElement('canvas');cv.width=cv.height=1024;cv.getContext('2d').drawImage(gm.material.map.image,0,0,1024,1024);window.jpg=cv.toDataURL('image/jpeg',.88);const tx=new THREE.CanvasTexture(cv);tx.encoding=THREE.sRGBEncoding;tx.flipY=false;const mat=new THREE.MeshLambertMaterial({map:tx,skinning:true});mat.name='Urso';const sm=new THREE.SkinnedMesh(ng,mat);sm.name='UrsoBase';
+ {const c=_q(SI,SW,NU,NI);ng.setIndex(new THREE.BufferAttribute(c.ix,1));ng.setAttribute('uv',new THREE.BufferAttribute(c.uv,2,true));ng.setAttribute('skinIndex',new THREE.BufferAttribute(c.si,4));ng.setAttribute('skinWeight',new THREE.BufferAttribute(c.sw,4,true))}
+ const cv=document.createElement('canvas');cv.width=cv.height=1024;cv.getContext('2d').drawImage(gm.material.map.image,0,0,1024,1024);window.jpg=cv.toDataURL('image/jpeg',.88);const tx=new THREE.CanvasTexture(cv);tx.encoding=THREE.sRGBEncoding;tx.flipY=false;tx.format=THREE.RGBFormat;const mat=new THREE.MeshLambertMaterial({map:tx,skinning:true});mat.name='Corpo';mat.name='Corpo';const sm=new THREE.SkinnedMesh(ng,mat);sm.name='UrsoBase';
  // esqueleto: o mesmo do herói, na pose de agora como pose de ligação
  const root=body.skeleton.bones[0];let top=root;while(top.parent&&top.parent.isBone)top=top.parent;const ske=new THREE.Skeleton(body.skeleton.bones);
- const holder=top.parent;holder.add(sm);sm.bind(ske,new THREE.Matrix4());
+ const holder=top.parent;holder.add(sm);sm.bind(ske,new THREE.Matrix4());sm.userData.altura=1.81;
  hs.traverse(o=>{if(o.isMesh&&o!==sm)o.visible=false});
  DS.sort((a,b)=>a-b);const armIdx=ske.bones.map((b,i)=>/Arm|Hand/.test(b.name)?i:-1).filter(i=>i>=0);let armV=0;for(let i=0;i<n;i++)if(armIdx.includes(SI[i*4]))armV++;
- window.info={med:+DS[DS.length>>1].toFixed(3),p90:+DS[Math.floor(DS.length*.9)].toFixed(3),far:DS.filter(d=>d>FAR).length,armV,tri:NI.length/3,verts:n,err:+err.toFixed(4),k:+k.toFixed(3),hb:hb.max.toArray().map(a=>+a.toFixed(2))};
+ window.info={arm:window.armW,model:window.modelArm,med:+DS[DS.length>>1].toFixed(3),p90:+DS[Math.floor(DS.length*.9)].toFixed(3),far:DS.filter(d=>d>FAR).length,armV,tri:NI.length/3,verts:n,err:+err.toFixed(4),k:+k.toFixed(3),hb:hb.max.toArray().map(a=>+a.toFixed(2))};
  // teste de deformação
  const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});R.setSize(1200,600);R.outputEncoding=THREE.sRGBEncoding;document.body.appendChild(R.domElement);const S=new THREE.Scene();S.background=new THREE.Color(0xdde4ea);S.add(new THREE.HemisphereLight(0xffffff,0x667788,1));const dl=new THREE.DirectionalLight(0xffffff,.6);dl.position.set(2,4,-5);S.add(dl);S.add(hs);
- const views=[[0,''],[Math.PI,''],[0,'pose']];R.setScissorTest(true);
+ const views=[[0,''],[Math.PI,''],[0,'pose']];const Q0={};for(const n in B)Q0[n]=B[n].quaternion.clone();R.setScissorTest(true);
  views.forEach(([a,ps],i)=>{if(ps){B.LeftUpperArm.rotateZ(1.1);B.RightLowerArm.rotateY(1.2);B.LeftUpperLeg.rotateX(-.9);B.LeftLowerLeg.rotateX(1.2);B.Spine.rotateX(.3);hs.updateMatrixWorld(true)}
    const C=new THREE.PerspectiveCamera(30,400/600,.1,50);C.position.set(Math.sin(a+Math.PI)*5,1.1,Math.cos(a+Math.PI)*5);C.lookAt(0,.95,0);R.setViewport(i*400,0,400,600);R.setScissor(i*400,0,400,600);R.render(S,C)});
+ for(const n in Q0)B[n].quaternion.copy(Q0[n]);hs.updateMatrixWorld(true);
  // exporta (sem a pose de teste)
  window.exp=()=>new Promise(ok=>{new THREE.GLTFExporter().parse(hs,r=>ok((()=>{let s2='';const u=new Uint8Array(r);for(let i=0;i<u.length;i+=8192)s2+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s2)})()),{binary:true,onlyVisible:true,maxTextureSize:1024})});
- window.exp().then(x=>{window.glb=x;const a=document.createElement('a');a.href='data:model/gltf-binary;base64,'+x;a.download='urso_base.glb';a.textContent='⬇ baixar urso_base.glb ('+info.tri+' triângulos)';a.style.cssText='display:block;font:20px sans-serif;padding:12px';document.body.prepend(a);const b=document.createElement('a');b.href=window.jpg;b.download='urso_textura.jpg';b.textContent='⬇ baixar urso_textura.jpg (1024×1024)';b.style.cssText=a.style.cssText;document.body.prepend(b);window.done=1})})().catch(e=>{window.err=String(e.stack||e);window.done=1});
+ window.exp().then(x=>{window.glb=x;window.done=1})})().catch(e=>{window.err=String(e.stack||e);window.done=1});
 </script></body></html>

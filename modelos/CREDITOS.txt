@@ -9,4 +9,5 @@ Modelos 3D e animações (CC0, domínio público, exceto onde indicado):
 - Armas: "KayKit Fantasy Weapons Bits" de Kay Lousberg (kaylousberg.com); os inimigos usam as peças que os jogadores não usam (arco A, escudos A e C, sai)
 - Chave de boca do Maquinista: "KayKit RPG Tools Bits" de Kay Lousberg (kaylousberg.com, CC0)
 - Cajado do Necromante, kukri do Armadilheiro e armas dos inimigos (espada curta, espadão, lâmina de folha e machado barbado): "Low Poly Weapon Pack" de Kickin' It Studios (kickinitstudios.itch.io; uso livre em jogos, crédito apreciado, proibido revender os modelos)
+- Valrei, o Esquecido (chefe final da fase 6, formas humana e de urso): modelos 3D gerados pelo autor do jogo num app de IA a partir da arte conceitual "INUIT SIRIUS", de Wu Shenyou (ArtStation), usada só como referência; reduzidos, com textura 1024 e o esqueleto dos heróis (modelos/valrei_h.json e modelos/valrei_u.json)
 Convertidos para o jogo: ossos no padrão VRM, texturas reduzidas, roupas por classe, armas no formato do jogo, animações ajustadas ao esqueleto (canhotas, como as armas do jogo) e pintura tribal de ossos feita no shader.

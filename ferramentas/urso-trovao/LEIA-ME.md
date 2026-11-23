@@ -1,6 +1,6 @@
-# Urso-trovão (forma base) — trabalho em andamento, ainda fora do jogo
+# Valrei, o Esquecido (forma humana e de urso)
 
-Personagem da raça secreta Urso-trovão. **Nada desta pasta é carregado pelo jogo ainda**: falta a forma de urso e decidir as regras da transformação.
+Modelos do chefe final da fase 6. No jogo eles entram como `modelos/valrei_h.json` (humano, feito do `urso_base.glb` desta pasta) e `modelos/valrei_u.json` (urso, feito do `forma-urso/urso_forma.glb`), no formato `{b: GLB em base64}`. A raça secreta Urso-trovão usa o herói humano com acessórios, não estes modelos.
 
 ## Créditos
 - Arte de referência: inspirada na arte conceitual **"INUIT SIRIUS", de Wu Shenyou** (ArtStation). As imagens em `referencias/` serviram de base.
@@ -8,6 +8,7 @@ Personagem da raça secreta Urso-trovão. **Nada desta pasta é carregado pelo j
 
 ## Versão atual (modelo com textura)
 - `urso_base.glb`: versão para o jogo, com ~21 mil triângulos (o original tinha 1,5 milhão), textura 1024×1024 e o esqueleto dos heróis (mesmas animações), na altura deles e virada para o mesmo lado.
+- Braços (corrigido em 23/11): o esqueleto do herói é ajustado com os braços abrindo para fora do corpo a 43° da vertical, como no modelo (antes eles eram girados para o lado errado, cruzavam o peito e a malha dos braços ficava presa ao tronco). As garras dos pés seguem o osso do pé, a tanga entre as pernas segue mais o quadril e a pose de teste não vai mais para o arquivo.
 - `urso_textura.jpg`: a textura separada (260 KB; a original tinha 4096×4096, 18 MB).
 - `rig.html`: refaz o `urso_base.glb` a partir do modelo original do app (que tem 82 MB e fica fora do repositório, no Google Drive do autor).
 - `previa.png`: frente, costas e um teste de pose exagerado (braço levantado e perna dobrada).
