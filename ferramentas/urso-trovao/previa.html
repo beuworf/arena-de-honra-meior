@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Urso-trovão</title></head><body style="margin:0"><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script><script>
+// Prévia da textura: projeta as 4 vistas da folha de referência (frente, lados, costas) no modelo, sem mapa UV, misturando pela direção da superfície.
+// O shader (onBeforeCompile) é o mesmo que vai para o jogo. Parâmetros: ?kx=0.93 (largura), sm=2 (suavidade das emendas), bl=1.5 (desfoque).
+const P=new URLSearchParams(location.search),SXD=1,SM=P.get('sm')||'2.0',BL=P.get('bl')||'1.5',KX=P.get('kx')||'0.93',FX=+(P.get('fx')||1),SX=+(P.get('sx')||-1);
+(async()=>{const g=await new Promise((ok,no)=>new THREE.GLTFLoader().load('urso_base.glb',ok,undefined,no));const tex=await new Promise(ok=>new THREE.TextureLoader().load('textura_folha.jpg',ok));tex.encoding=THREE.sRGBEncoding;tex.minFilter=THREE.LinearMipmapLinearFilter;tex.anisotropy=4;
+ let sm,B={};g.scene.traverse(o=>{if(o.isSkinnedMesh)sm=o;if(o.isBone)B[o.name]=o});
+ const m=new THREE.MeshLambertMaterial({skinning:true,map:tex});const U={uFx:{value:FX},uSx:{value:SX}};
+ m.onBeforeCompile=sh=>{Object.assign(sh.uniforms,U);sh.vertexShader='varying vec3 vBp;varying vec3 vBn;\n'+sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvBp=position;vBn=normal;');
+  sh.fragmentShader='#define KX '+KX+'\n#define SM '+SM+'\n#define BL '+BL+'\nvarying vec3 vBp;varying vec3 vBn;uniform float uFx;uniform float uSx;\n'+sh.fragmentShader.replace('#include <map_fragment>',`
+   vec3 n=normalize(vBn);float s=797.0/2752.0,sv=797.0/1536.0;float v=1.0-(1505.0/1536.0-(vBp.y-0.0)*sv);
+   vec2 uf=vec2(586.0/2752.0+uFx*vBp.x*s,v),ub=vec2(1826.0/2752.0-uFx*vBp.x*s,v),us1=vec2(1258.0/2752.0+uSx*vBp.z*s,v),us2=vec2(2458.0/2752.0-uSx*vBp.z*s,v);
+   vec3 w=pow(abs(n),vec3(SM));w/=(w.x+w.y+w.z+1e-4);
+   uf.x=586.0/2752.0+(uf.x-586.0/2752.0)*KX;ub.x=1826.0/2752.0+(ub.x-1826.0/2752.0)*KX;us1.x=1258.0/2752.0+(us1.x-1258.0/2752.0)*KX;us2.x=2458.0/2752.0+(us2.x-2458.0/2752.0)*KX;
+   // amostra suavizada (5 pontos) e o fundo branco do desenho não conta
+   vec2 o=vec2(BL/2048.0,BL/1024.0);
+   #define T5(uv) ((texture2D(map,uv)*2.0+texture2D(map,uv+vec2(o.x,0.))+texture2D(map,uv-vec2(o.x,0.))+texture2D(map,uv+vec2(0.,o.y))+texture2D(map,uv-vec2(0.,o.y)))/6.0)
+   vec4 cF=T5(uf),cB=T5(ub),cR=T5(us1),cL=T5(us2);
+   float zf=smoothstep(-.25,.25,-n.z),xf=smoothstep(-.25,.25,n.x);   // frente/costas e lado direito/esquerdo se misturam perto da borda
+   float mF=1.0-smoothstep(.78,.93,min(cF.r,min(cF.g,cF.b))),mB=1.0-smoothstep(.78,.93,min(cB.r,min(cB.g,cB.b))),mR=1.0-smoothstep(.78,.93,min(cR.r,min(cR.g,cR.b))),mL=1.0-smoothstep(.78,.93,min(cL.r,min(cL.g,cL.b)));
+   float wz=w.z+w.y*.5,wx=w.x+w.y*.5;
+   float aF=wz*zf*mF,aB=wz*(1.0-zf)*mB,aR=wx*xf*mR,aL=wx*(1.0-xf)*mL,sw=aF+aB+aR+aL;
+   vec4 tc=sw>.02?(cF*aF+cB*aB+cR*aR+cL*aL)/sw:vec4(.36,.38,.42,1.);
+   tc=mix(vec4(.36,.38,.42,1.),tc,smoothstep(.0,.08,sw));diffuseColor*=mapTexelToLinear(tc);`)};
+ sm.material=m;
+ const R=new THREE.WebGLRenderer({antialias:true});R.outputEncoding=THREE.sRGBEncoding;R.setSize(1200,600);document.body.appendChild(R.domElement);const S=new THREE.Scene();S.background=new THREE.Color(0xdde4ea);S.add(new THREE.HemisphereLight(0xffffff,0x8899aa,1.1));const d=new THREE.DirectionalLight(0xffffff,.5);d.position.set(1,3,-4);S.add(d);S.add(g.scene);R.setScissorTest(true);
+ [[-.5,5,.95],[0,5,.95],[-.9,2.2,1.45]].forEach(([a,r,y],i)=>{const C=new THREE.PerspectiveCamera(30,400/600,.1,50);C.position.set(Math.sin(a+Math.PI)*r,y+.1,Math.cos(a+Math.PI)*r);C.lookAt(0,y,0);R.setViewport(i*400,0,400,600);R.setScissor(i*400,0,400,600);R.render(S,C)});
+ window.done=1})().catch(e=>{window.err=String(e.stack||e);window.done=1});
+</script></body></html>
