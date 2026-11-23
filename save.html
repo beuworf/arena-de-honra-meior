@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Arena de Honra · saves</title></head>
+<body>
+<p>Página de saves do Arena de Honra. Não precisa abrir: o jogo usa esta página escondida.</p>
+<script>
+// Guarda os saves do Arena de Honra num endereço fixo (beuworf.github.io).
+// O itch.io coloca cada upload do jogo num endereço novo e o navegador separa o que cada endereço salva,
+// então o jogo abre esta página escondida e troca mensagens com ela: "get" devolve as chaves arena_*, "set" grava.
+// Conquistas (arena_ach) e recordes (arena_rec) só somam: uma cópia com menos progresso nunca apaga a outra.
+(function(){
+  var OK=[/^https:\/\/([a-z0-9-]+\.)*itch\.zone$/,/^https:\/\/([a-z0-9-]+\.)*itch\.io$/,/^https:\/\/([a-z0-9-]+\.)*ssl\.hwcdn\.net$/,
+    /^https:\/\/(raw|rawcdn)\.githack\.com$/,/^https:\/\/beuworf\.github\.io$/,/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/];
+  function allowed(o){for(var i=0;i<OK.length;i++)if(OK[i].test(o))return true;return false}
+  function K(k){return typeof k=='string'&&k.indexOf('arena_')==0&&k.indexOf('arena__')!=0}
+  function mx(a,b){var o={},k;for(k in a)o[k]=a[k];for(k in b){var x=o[k],y=b[k];o[k]=typeof x=='number'&&typeof y=='number'?Math.max(x,y):typeof x=='boolean'||typeof y=='boolean'?!!(x||y):y===undefined?x:y}return o}
+  function mrg(k,a,b){if(a==null)return b;if(b==null)return a;if(k!='arena_ach'&&k!='arena_rec')return b;var A,B;try{A=JSON.parse(a);B=JSON.parse(b)}catch(e){return b}
+    if(!A||!B||typeof A!='object'||typeof B!='object')return b;var o=mx(A,B);if(k=='arena_ach')['u','st','cl','rc','bw'].forEach(function(f){o[f]=mx(A[f]||{},B[f]||{})});return JSON.stringify(o)}
+  addEventListener('message',function(e){var d=e.data;if(!d||d.arenaSave!==1||!e.source||d.ready)return;var r={arenaSave:1,id:d.id};
+    if(!allowed(e.origin))r.deny=1;
+    else try{var ls=localStorage,k,i;
+      if(d.op=='get'){r.v={};for(i=0;i<ls.length;i++){k=ls.key(i);if(K(k))r.v[k]=ls.getItem(k)}}
+      else if(d.op=='set'&&d.v&&typeof d.v=='object'){for(k in d.v)if(K(k)){var v=d.v[k];if(v==null)ls.removeItem(k);else ls.setItem(k,mrg(k,ls.getItem(k),String(v)))}r.ok=1}
+    }catch(x){r.err=String(x&&x.message||x)}
+    try{e.source.postMessage(r,r.deny?'*':e.origin)}catch(x){}});
+  if(parent!==window)parent.postMessage({arenaSave:1,ready:1},'*');
+})();
+</script>
+</body></html>

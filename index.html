@@ -276,6 +276,50 @@ html.frot body{position:fixed;left:0;top:0;width:var(--fw,100vh);height:var(--fh
 @media (prefers-reduced-motion:reduce){.mi,.cb,.btn,.bk,.bf,#lng button,#achPop.in,#achPop.out{transition:none;animation:none}}
 </style>
 <script>
+// ---- Saves num endereço fixo. O itch.io coloca cada upload num endereço novo e o navegador separa o que cada endereço salva,
+// então as conquistas sumiam a cada atualização. A página save.html em beuworf.github.io (sempre o mesmo endereço) guarda uma
+// cópia das chaves arena_*: ao abrir, o jogo junta as duas cópias antes de começar (espera no máximo 3 s) e depois manda cada mudança para lá.
+(function(){
+  var U=window.ARENA_SAVE_URL||'https://beuworf.github.io/arena-de-honra-meior/save.html',O=null,ls=null,q=[],done=0,fr=null,id=0,cb={},pend={},rem=null,asked=0,ft=0,stl=0;
+  try{O=new URL(U,location.href).origin;ls=window.localStorage}catch(e){}
+  function go(){if(done)return;done=1;var f;while(f=q.shift())f()}
+  window.__svRun=function(f){if(done)f();else q.push(f)};
+  if(!ls||!O||O===location.origin||!(location.protocol=='https:'||window.ARENA_SAVE_URL)){go();return}
+  var SP=Storage.prototype,oSet=SP.setItem,oRem=SP.removeItem,oGet=SP.getItem;
+  function K(k){return typeof k=='string'&&k.indexOf('arena_')==0&&k.indexOf('arena__')!=0}
+  try{pend=JSON.parse(oGet.call(ls,'arena__svq')||'{}')||{}}catch(e){pend={}}
+  function keep(){try{oSet.call(ls,'arena__svq',JSON.stringify(pend))}catch(e){}}
+  // conquistas e recordes só aumentam: as duas cópias são somadas (mesma regra da save.html)
+  function mx(a,b){var o={},k;for(k in a)o[k]=a[k];for(k in b){var x=o[k],y=b[k];o[k]=typeof x=='number'&&typeof y=='number'?Math.max(x,y):typeof x=='boolean'||typeof y=='boolean'?!!(x||y):y===undefined?x:y}return o}
+  function mrg(k,a,b){if(a==null)return b;if(b==null)return a;if(k!='arena_ach'&&k!='arena_rec')return b;var A,B;try{A=JSON.parse(a);B=JSON.parse(b)}catch(e){return b}
+    if(!A||!B||typeof A!='object'||typeof B!='object')return b;var o=mx(A,B);if(k=='arena_ach')['u','st','cl','rc','bw'].forEach(function(f){o[f]=mx(A[f]||{},B[f]||{})});return JSON.stringify(o)}
+  function send(op,v,f){var i=++id;if(f)cb[i]=f;try{fr.contentWindow.postMessage({arenaSave:1,op:op,id:i,v:v},O)}catch(e){}}
+  function flush(){ft=0;if(!rem)return;var v={},n=0,k;for(k in pend){v[k]=oGet.call(ls,k);n++}if(!n)return;
+    send('set',v,function(r){if(!r.ok)return;for(var k in v)if(oGet.call(ls,k)===v[k])delete pend[k];keep()})}
+  // depois de uma resposta atrasada o jogo tem na memória a cópia velha: até recarregar, só conquistas e recordes (que se somam) são enviados
+  function dirty(k){if(!K(k)||stl&&k!='arena_ach'&&k!='arena_rec')return;pend[k]=1;keep();if(rem&&!ft)ft=setTimeout(flush,300)}
+  SP.setItem=function(k,v){oSet.call(this,k,v);if(this===ls)dirty(k)};SP.removeItem=function(k){oRem.call(this,k);if(this===ls)dirty(k)};
+  // junta: o que só existe de um lado vale; o que mudou aqui e ainda não foi enviado vale o daqui (menos num endereço novo,
+  // em que o jogo só gravou o padrão); senão vale o da cópia fixa
+  function sync(R){var ks={},k,i,ch=0,nw=!oGet.call(ls,'arena__svok');for(k in R)ks[k]=1;for(i=0;i<ls.length;i++){k=ls.key(i);ks[k]=1}
+    for(k in ks){if(!K(k))continue;var l=oGet.call(ls,k),r=k in R?R[k]:null,v=k=='arena_ach'||k=='arena_rec'?mrg(k,r,l):pend[k]&&!nw||r==null?l:r;
+      if(v!==l){ch=1;if(v==null)oRem.call(ls,k);else oSet.call(ls,k,v)}if(v!==r)pend[k]=1}
+    rem=R;try{oSet.call(ls,'arena__svok','1')}catch(e){}keep();flush();return ch}
+  function onGet(d){if(d.deny||d.err||!d.v||typeof d.v!='object'){go();return}var ch=sync(d.v);if(!done){clearTimeout(to);go();return}
+    // resposta atrasada: recarrega uma vez (quando estiver no menu) para o jogo ler o progresso recuperado
+    if(ch){stl=1;rl()}}
+  function rl(){var s=window.__arenaScr&&window.__arenaScr();if(s!='menu'){setTimeout(rl,2000);return}try{if(Date.now()-(+sessionStorage.getItem('arena__svr')||0)<60000)return;sessionStorage.setItem('arena__svr',String(Date.now()))}catch(e){return}location.reload()}
+  addEventListener('message',function(e){var d=e.data;if(e.origin!==O||!fr||e.source!==fr.contentWindow||!d||d.arenaSave!==1)return;
+    if(d.ready){if(!asked){asked=1;send('get',null,onGet)}return}var f=cb[d.id];delete cb[d.id];if(f)f(d)});
+  addEventListener('visibilitychange',function(){if(document.visibilityState=='hidden')flush()});addEventListener('pagehide',flush);
+  window.__svSt=function(){return{done:done,asked:asked,rem:!!rem,pend:pend,stl:stl}};
+  var to=setTimeout(go,3000);
+  fr=document.createElement('iframe');fr.src=U;fr.title='saves';fr.tabIndex=-1;fr.setAttribute('aria-hidden','true');fr.style.cssText='position:absolute;width:0;height:0;border:0;visibility:hidden';
+  fr.addEventListener('load',function(){setTimeout(function(){if(!asked){clearTimeout(to);go()}},500)});
+  (document.body||document.head||document.documentElement).appendChild(fr);
+})();
+</script>
+<script>
 // ---- Idiomas: o jogo é escrito em português; este tradutor troca, na tela, cada texto pelo do idioma escolhido.
 // Funciona pelo próprio DOM (todo texto que aparece passa por aqui), então menus, avisos, HUD e bestiário mudam juntos.
 // Busca: texto exato -> texto com números trocados por # -> pedaços conhecidos dentro do texto (frases montadas com números e nomes).
@@ -332,10 +376,13 @@ html.frot body{position:fixed;left:0;top:0;width:var(--fw,100vh);height:var(--fh
     var c=t.getAttribute('data-lg');if(c=='box')return box();I.set(c)},true);
   document.addEventListener('change',function(e){if(e.target&&e.target.id=='lpf'){var f=e.target.files[0];e.target.value='';if(f)importPack(f)}},true);
   // idioma salvo; na primeira visita, o do navegador
-  var saved=LS.get('arena_lang'),nav=(navigator.language||'pt').slice(0,2).toLowerCase(),first=saved||(LANGS.some(function(L){return L[0]==nav})?nav:'pt');
-  if(first=='pk'&&!pack())first='pt';
-  function boot(){start();if(first!='pt')I.set(first,!!saved)}
-  if(document.body)boot();else document.addEventListener('DOMContentLoaded',boot);
+  var saved,nav=(navigator.language||'pt').slice(0,2).toLowerCase(),first;
+  function pick(){saved=LS.get('arena_lang');first=saved||(LANGS.some(function(L){return L[0]==nav})?nav:'pt');if(first=='pk'&&!pack())first='pt'}
+  pick();
+  // espera os saves do endereço fixo (idioma salvo pode vir de lá)
+  function boot(){pick();start();if(first!='pt')I.set(first,!!saved)}
+  function go(){(window.__svRun||function(f){f()})(boot)}
+  if(document.body)go();else document.addEventListener('DOMContentLoaded',go);
 })();
 </script>
 
@@ -379,7 +426,7 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <button class="pb" id="bH">△</button><button class="pb" id="bL">○</button><button class="pb" id="bJ">✕</button><button class="pb" id="bB">□</button><button class="pb" id="bD">R1</button><button class="pb" id="bK">L1<small>Nível</small></button><button class="pb" id="bR">R2<small>Cone</small></button><button class="pb" id="bW">SELECT<small>Arma</small></button><button class="pb" id="bC">START<small>Pausa</small></button>
 <div id="cls"><div id="ct"></div><div id="sxr" class="row" style="margin-bottom:10px"></div><div id="cc"></div><div id="bk" class="bk">◀ Voltar</div></div>
 <div id="els"><button data-e="0">🔥</button><button data-e="1">❄️</button><button data-e="2">🌑</button><button data-e="3">🌀</button></div>
-<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt" class="notr" aria-label="Arena de Honra"><svg viewBox="0 0 420 184" width="360" height="158" role="img" aria-label="Arena de Honra"><defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff2a8"/><stop offset="48%" stop-color="#f2b238"/><stop offset="100%" stop-color="#9e5b10"/></linearGradient><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f3f6fa"/><stop offset="52%" stop-color="#a6aeb9"/><stop offset="100%" stop-color="#5a616c"/></linearGradient><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2c2b30"/><stop offset="100%" stop-color="#17171b"/></linearGradient></defs><path d="M58 12 H362 L374 72 L396 86 L388 158 L352 172 H68 L32 158 L24 86 L46 72 Z" fill="url(#pg)" stroke="#0b0b0e" stroke-width="8" stroke-linejoin="round"/><path d="M62 18 H358 L368 74 L390 88 L382 153 L348 166 H72 L38 153 L30 88 L52 74 Z" fill="none" stroke="#5c5750" stroke-width="2" stroke-linejoin="round"/><polygon points="72,82 174,78 174,86" fill="#ebb03a" stroke="#0d0d10" stroke-width="1.5"/><polygon points="348,82 246,78 246,86" fill="#ebb03a" stroke="#0d0d10" stroke-width="1.5"/><text x="210" y="64" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-weight="900" font-size="58" letter-spacing="4" fill="url(#ag)" stroke="#111114" stroke-width="7" paint-order="stroke fill">ARENA</text><text x="210" y="90" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-weight="900" font-size="23" letter-spacing="3" fill="#f7c85c" stroke="#111114" stroke-width="5" paint-order="stroke fill">DE</text><text x="210" y="148" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-weight="900" font-size="60" letter-spacing="4" fill="url(#sg)" stroke="#111114" stroke-width="7.5" paint-order="stroke fill">HONRA</text></svg></div><input id="mnm" maxlength="10" placeholder="Seu apelido" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 23/11 · torretas até o nível 5</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
+<div id="menu"><div id="fsb" title="Tela cheia">⛶<span>Tela cheia</span></div><div id="fsh"><b>Tela cheia no iPhone</b><p>O Safari do iPhone não deixa sites entrarem em tela cheia sozinhos. Para jogar sem as barras do navegador:</p><ol><li>Toque em <b>Compartilhar</b> (o quadrado com a seta ↑) na barra do Safari.</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li><li>Abra o jogo pelo ícone <b>Arena de Honra</b> que vai aparecer.</li></ol><div class="mi" id="fshx" style="padding:8px 22px">Entendi</div></div><div id="mt" class="notr" aria-label="Arena de Honra"><svg viewBox="0 0 420 184" width="360" height="158" role="img" aria-label="Arena de Honra"><defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff2a8"/><stop offset="48%" stop-color="#f2b238"/><stop offset="100%" stop-color="#9e5b10"/></linearGradient><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f3f6fa"/><stop offset="52%" stop-color="#a6aeb9"/><stop offset="100%" stop-color="#5a616c"/></linearGradient><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2c2b30"/><stop offset="100%" stop-color="#17171b"/></linearGradient></defs><path d="M58 12 H362 L374 72 L396 86 L388 158 L352 172 H68 L32 158 L24 86 L46 72 Z" fill="url(#pg)" stroke="#0b0b0e" stroke-width="8" stroke-linejoin="round"/><path d="M62 18 H358 L368 74 L390 88 L382 153 L348 166 H72 L38 153 L30 88 L52 74 Z" fill="none" stroke="#5c5750" stroke-width="2" stroke-linejoin="round"/><polygon points="72,82 174,78 174,86" fill="#ebb03a" stroke="#0d0d10" stroke-width="1.5"/><polygon points="348,82 246,78 246,86" fill="#ebb03a" stroke="#0d0d10" stroke-width="1.5"/><text x="210" y="64" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-weight="900" font-size="58" letter-spacing="4" fill="url(#ag)" stroke="#111114" stroke-width="7" paint-order="stroke fill">ARENA</text><text x="210" y="90" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-weight="900" font-size="23" letter-spacing="3" fill="#f7c85c" stroke="#111114" stroke-width="5" paint-order="stroke fill">DE</text><text x="210" y="148" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-weight="900" font-size="60" letter-spacing="4" fill="url(#sg)" stroke="#111114" stroke-width="7.5" paint-order="stroke fill">HONRA</text></svg></div><input id="mnm" maxlength="10" placeholder="Seu apelido" autocomplete="off" spellcheck="false"><div id="ver" style="font-size:11px;opacity:.55;margin:-6px 0 6px">versão 23/11 · progresso salvo entre versões</div><div id="lng"></div><div id="lpk"></div><input type="file" id="lpf" accept=".json,application/json" style="display:none"><div id="mb"></div><div id="mf"></div><div id="mrec"></div></div>
 <div id="set"><div id="mt2">Configurações</div><div id="sc"></div><div class="bk" id="sbk" style="display:block">◀ Voltar</div></div><div id="crd"><div id="mt3">Créditos</div><div class="cr">
 <p><b>Arena de Honra</b><br>criado por <b>beuworf</b></p>
 <p><b>Modelos 3D e animações</b> (CC0, domínio público)</p>
@@ -403,7 +450,8 @@ window.IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform=='Mac
 <div id="pause"><b id="ptl">PAUSADO</b><small id="phelp"></small><div id="psc"></div><div class="mi" id="pgo">▶ Continuar</div><div class="mi" id="prs">↺ Reiniciar fase (trocar classe)</div><div class="mi" id="pgu">🏳 Desistir da run</div><small id="pesc">Esc ou P também continuam</small></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-(()=>{
+// o jogo começa depois de juntar os saves do endereço fixo (ver "Saves num endereço fixo" no começo do arquivo)
+(window.__svRun||(f=>f()))(()=>{
 const $=i=>document.getElementById(i),rnd=(a,b)=>a+Math.random()*(b-a),PI2=Math.PI*2;
 addEventListener('keydown',kt,true);addEventListener('keyup',kt,true);
 const R=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance'});
@@ -2433,7 +2481,7 @@ const MENU0=['Jogar solo','Cooperativo','Configurações','Bestiário','Conquist
   MENU2=['🙂 Fácil','⚔️ Normal','💀 Difícil','◀ Voltar'],MENUF2=['Você causa mais dano e recebe menos. As conquistas ficam desligadas.','O jogo como foi balanceado.','Você causa menos dano e recebe mais. Chegue à fase 6 para desbloquear um prêmio.',''],
   MENU1=['🏠 Criar sala (anfitrião)','🔑 Entrar no jogo de um amigo','◀ Voltar'],MENUF1=['Cria uma sala com código de 4 dígitos para seus amigos entrarem. Eles precisam abrir esta página pelo convite.','Entre na sala de um amigo usando o código de 4 dígitos.',''];
 let MENUI=MENU0,MENUF=MENUF0,msub=0;
-let scr='menu',msel=0;
+let scr='menu',msel=0;window.__arenaScr=()=>scr;
 function menuSub(v){const from=msub;msub=v;MENUI=v==1?MENU1:v==2?MENU2:MENU0;MENUF=v==1?MENUF1:v==2?MENUF2:MENUF0;msel=v==1?0:v==2?DIFS:(from==2?0:1);menuUI()}
 function menuUI(){$('mb').classList.toggle('sub',!!msub);$('mb').innerHTML=(msub==1?'<div class="msh">👥 Cooperativo: escolha como jogar</div>':msub==2?'<div class="msh">⚔️ Jogar solo: escolha a dificuldade</div>':'')+MENUI.map((x,i)=>'<div class="mi'+(i==msel?' on':'')+'" data-m="'+i+'">'+x+'</div>').join('');$('mf').textContent=MENUF[msel]||'';recShow()}
 function showScr(s){scr=s;if(s=='menu')achFlushEnd(0);$('menu').style.display=s=='menu'?'flex':'none';$('set').style.display=s=='set'?'flex':'none';$('bst').style.display=s=='best'?'flex':'none';$('ach').style.display=s=='ach'?'flex':'none';$('crd').style.display=s=='cred'?'flex':'none';if(s=='best')bstUI();if(s=='ach')achUI();$('lob').style.display=s=='lobby'?'flex':'none';$('jn').style.display=s=='join'?'flex':'none';if(s=='menu')menuUI();if(s=='set')setUI()}
@@ -4540,7 +4588,7 @@ window.__spWait=location.hash=='#dbg'?0:1;
   set(1,'pronto!');setTimeout(()=>{if(window.__spEnd)window.__spEnd()},Math.max(250,2400-(performance.now()-t0)))})();
 camApply();skyCol();shApply();
 gear();requestAnimationFrame(loop);
-})();
+});
 </script>
 </body>
 </html>
