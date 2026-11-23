@@ -6,3 +6,4 @@ node_modules/
 .ohmygame/build/
 # modelo original do app (82 MB) fica fora do repositório
 ferramentas/urso-trovao/original_app.glb
+ferramentas/urso-trovao/forma-urso/original_app.glb

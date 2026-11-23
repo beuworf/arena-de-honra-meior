@@ -17,7 +17,14 @@ Personagem da raça secreta Urso-trovão. **Nada desta pasta é carregado pelo j
 
 Para abrir as ferramentas: na raiz do repositório, `python3 -m http.server` e acesse `/ferramentas/urso-trovao/rig.html`.
 
+## Forma de urso (`forma-urso/`)
+- `urso_forma.glb`: homem-urso em pé e curvado, com ~30 mil triângulos (o original tinha 1,5 milhão), textura 1024 e **a boca fechada** (a mandíbula foi girada 48° para cima, dentes cerrados).
+- Esqueleto: o mesmo dos heróis (mesmos nomes de ossos, então usa as mesmas animações), com cada osso ajustado às articulações do urso (`juntas.js`: pernas curtas e abertas, tronco enorme e curvado, braços longos). Pesos de pele calculados pela distância até os ossos, só entre ossos vizinhos.
+- Altura: 2,3 m curvado (o herói tem 1,8 m).
+- `rig.html`: refaz o arquivo a partir do modelo original do app (fora do repositório, ~83 MB no Google Drive do autor; coloque-o em `forma-urso/original_app.glb`).
+- `previa.png` (frente, lado e um teste de pose) e `previa_boca.png` (boca fechada).
+- Ao colocar no jogo: as animações dos heróis guardam a rotação "absoluta" de cada osso, então o urso ficaria com a postura de um humano (reto, pernas juntas). Para manter o jeito curvado e de pernas abertas, as animações devem ser aplicadas como diferença em relação à pose de repouso do herói (pose do urso × (repouso do herói⁻¹ × animação)).
+
 ## Pendências
-- Forma de urso (o autor vai gerar).
 - Regras da transformação (duração, se mantém a arma, urso em pé ou de quatro).
 - Conferir a deformação com as animações de verdade do jogo (ombros, cristais e a tira pendurada atrás).
