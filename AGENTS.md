@@ -16,6 +16,7 @@ Este projeto é o **Arena de Honra**, um action RPG de horda feito em um único
 - Boneco 3D opcional: só o modelo VRM 0.0 que o jogador carregar nas configurações (o repositório não traz modelo; ver `modelos/LEIA-ME.md`), carregados com three-vrm **0.6.5** (a última compatível com three r128). O modelo segue o esqueleto antigo do jogo: os golpes continuam animando `sw`/`sw2` e `vrmUpd` faz o corpo VRM acompanhar. Inimigos continuam com modelos simples.
 - Configurações ficam em `localStorage['arena_set']` e o recorde em
   `localStorage['arena_rec']`.
+- Raças: `RACES` tem 9 entradas (a 9ª, `BEAR`, é a secreta Urso-trovão, liberada por `localStorage['arena_premio_dif']`). Tabelas por raça e sexo usam `raça + RN*sexo` (`RN=RACES.length`), não 8. O raio do urso sai de `cmbHit` (`bearRoll`/`bearBolt`).
 - Saves num endereço fixo: o itch.io põe cada upload num endereço novo, então o primeiro `<script>` do `index.html` abre escondida a `save.html` de `https://beuworf.github.io/arena-de-honra-meior/` (GitHub Pages do `main` do arena-de-honra-meior) e sincroniza com ela toda chave `arena_*` (as `arena__*` são só locais). O jogo (`__svRun`) e o idioma só começam depois de juntar as cópias (no máximo 3 s); conquistas e recordes são somados, nunca trocados. A `save.html` precisa continuar no `main` com o mesmo endereço; para testar em outro endereço use `window.ARENA_SAVE_URL`.
 
 ## Regras
