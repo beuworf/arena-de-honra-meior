@@ -5,7 +5,7 @@ Modelos 3D e animações (CC0, domínio público, exceto onde indicado):
 - Animais (lobo, husky, cavalo, boi, burro, vaca e cervo): "Ultimate Animated Animals" de Quaternius
 - Natureza (bétulas, bordos, árvores secas, arbustos, grama, flores e textura das pedras): "Stylized Nature MegaKit" de Quaternius (CC0)
 - Demônio voador: "Demon" de Quaternius (Ultimate Monsters)
-- Torretas do Maquinista (canhão, canhão de engrenagem e laser) e golens ("Giant"): Quaternius
+- Torretas do Maquinista (pacote de torretas: canhões, metralhadoras, lasers e lançadores; 24 modelos, um por nível) e golens ("Giant"): Quaternius (CC0)
 - Armas: "KayKit Fantasy Weapons Bits" de Kay Lousberg (kaylousberg.com); os inimigos usam as peças que os jogadores não usam (arco A, escudos A e C, sai)
 - Chave de boca do Maquinista: "KayKit RPG Tools Bits" de Kay Lousberg (kaylousberg.com, CC0)
 - Cajado do Necromante, kukri do Armadilheiro e armas dos inimigos (espada curta, espadão, lâmina de folha e machado barbado): "Low Poly Weapon Pack" de Kickin' It Studios (kickinitstudios.itch.io; uso livre em jogos, crédito apreciado, proibido revender os modelos)

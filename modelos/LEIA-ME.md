@@ -9,7 +9,7 @@ JSON com o `.glb` em base64. Veja os créditos em `CREDITOS.txt`.
   roupas por tipo e pintura de ossos nos esqueletos.
 - `animacoes2.json`: animações (Universal Animation Library 1 e 2, Quaternius),
   convertidas para o esqueleto dos heróis, com o instante de impacto de cada golpe.
-- `torretas.json`: torretas do Maquinista (3 modelos OBJ convertidos, Quaternius: canhão, canhão de engrenagem e laser; base fixa, meio e cano giram).
+- `torretas.json`: torretas do Maquinista (24 modelos OBJ do pacote de torretas da Quaternius, CC0). Formato v2: `m[nome].B` = base parada, `m[nome].H` = meio + cano (giram), cada material (Dark/Light) como malha indexada `[vértices Int16 base64 (escala 10000), índices Uint16 base64]`; `y[nome]` = altura do topo da base, usada para encaixar a cabeça de um modelo na base de outro. O jogo escolhe o modelo de cada nível (1–5) na tabela `TMT`.
 - `golem.json`: golem do Maquinista (modelo "Giant", Quaternius), com pintura de metal e circuitos feita no shader.
 - `natureza.json`: árvores (bétulas, bordos e árvores secas), arbustos, grama, flores e a textura das pedras ("Stylized Nature MegaKit", Quaternius, CC0). Troncos simplificados e metade dos cartões de folha (os que ficam um pouco maiores), texturas reduzidas para 256 px. Usado na qualidade Alta.
 - `ani_vaca.json`, `ani_cervo.json`: vaca e cervo ("Ultimate Animated Animals", Quaternius), animais de cenário na vila e no caminho (qualidades Média e Alta).
