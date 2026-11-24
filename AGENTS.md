@@ -33,6 +33,7 @@ Este projeto é o **Arena de Honra**, um action RPG de horda feito em um único
 - Entrar no meio da partida: o anfitrião, na fase `p`, põe no elenco quem está na sala (`ph:'l'`) e marcou pronto (`hostLate`, presença `ro`/`lt`/`lv`); o cliente começa por `netStart(ro,lv)` e vira espírito com `lateGhost` até `netLvl` reviver todo mundo. Enquanto `NET.xb` (presença `xb`), `xGain` multiplica o XP por 3 até o nível de `lateTgt()` (menor `xl` entre os outros sem bônus).
 - Paladino: combos em `W[7].C` com `pf` (efeito extra em `palPf`, chamado no fim de `strike`); carga do ○ em `palHold`; defesa + ○/△ em `palBlk` (`palSpiral`/`palWave`, evento `pfx` só visual para os outros).
 - Animações: clipes em `modelos/animacoes2.json` (`c`), escolhidos por classe em `heroPickAnim` e por gesto em `gaPick`; inimigos em `emClipPick`/`emAnim` (lista de clipes em `emClips`). Os clipes `m*` só têm ossos do corpo e recebem a pegada dos dedos de `p.grip` em `heroClips`. Conversor em `ferramentas/animacoes/`.
+- Equipamentos dos NPCs: `WG.k*`/`WG.s*` vêm de `modelos/equip.json` (formato compacto, carregado logo depois das armas); `eqDeco` sorteia por tipo de inimigo em `mkRig`; `eqW`/`eqS` marcam `userData.kq` para manter as cores no modelo 3D (sem `WPMR`).
 - Diagnóstico: `errLog` guarda os últimos erros em `arena_errs`; `arena_bc` marca se a aba estava jogando (para avisar quando ela fecha sozinha).
 - Não use pausa, câmera lenta ou qualquer coisa que pare o tempo quando
   `NET.on` for verdadeiro.

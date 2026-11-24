@@ -16,6 +16,7 @@ JSON com o `.glb` em base64. Veja os créditos em `CREDITOS.txt`.
 - `natureza.json`: árvores (bétulas, bordos e árvores secas), arbustos, grama, flores e a textura das pedras ("Stylized Nature MegaKit", Quaternius, CC0). Troncos simplificados e metade dos cartões de folha (os que ficam um pouco maiores), texturas reduzidas para 256 px. Usado na qualidade Alta.
 - `ani_vaca.json`, `ani_cervo.json`: vaca e cervo ("Ultimate Animated Animals", Quaternius), animais de cenário na vila e no caminho (qualidades Média e Alta).
 - `armas.json`: armas 3D (KayKit Fantasy Weapons Bits).
+- `equip.json`: equipamentos dos NPCs (KayKit Adventurers e Skeletons, Kay Lousberg, CC0), num formato compacto: para cada item, posição Int16 (×10000), normal Int8 (×127), cor Uint8 e índices Uint16, em base64. Comprimento em +Z com o cabo na origem; escudos com a frente em X. Itens: `kSword`, `kGreat`, `kAxe`, `kGAxe`, `kDagger`, `kWand`, `kStaff`, `kShRound`, `kShSquare`, `kShBadge`, `kShSpikes`, `kBook`, `kTome`, `kSmoke`, `kQuiver`, `sAxe`, `sBlade`, `sShLA`, `sShLB`, `sShSA`, `sShSB`. Conversor em `ferramentas/equipamentos/`.
 - `armas2.json`: armas próprias de classe — chave de boca do Maquinista (KayKit RPG Tools Bits), cajado do Necromante e kukri do Armadilheiro (Low Poly Weapon Pack, Kickin' It Studios) e cajado do Xamã (KayKit Fantasy Weapons Bits), mais as armas dos inimigos (chaves com prefixo `e`). Malhas com cor por vértice, cabo no eixo Z.
 
 O boneco 3D vem ligado por padrão (*Configurações → Boneco 3D*). Desligado, o

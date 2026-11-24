@@ -1,0 +1,33 @@
+<!doctype html><html><body><script src="three.min.js"></script><script src="GLTFLoader.js"></script><script src="GLTFExporter.js"></script><script>
+// itens do KayKit → formato das armas do jogo: cor por vértice (tirada da textura), comprimento em +Z (cabo na origem), escudos com a frente em +X
+const L=new THREE.GLTFLoader(),ld=u=>new Promise((r,e)=>L.load(u,r,null,e));
+window.conv=async(items)=>{const sc=new THREE.Scene(),info={};
+ for(const it of items){const g=await ld('eq/'+it.f+'.gltf');g.scene.updateMatrixWorld(true);const P=[],N=[],C=[];
+  const mats=[];g.scene.traverse(o=>{if(o.isMesh)mats.push(o)});
+  for(const m of mats){const geo=m.geometry.index?m.geometry.toNonIndexed():m.geometry.clone();geo.applyMatrix4(m.matrixWorld);const pa=geo.attributes.position,na=geo.attributes.normal,ua=geo.attributes.uv;
+   const img=m.material.map&&m.material.map.image;let px=null,W=0,H=0;if(img){const cv=document.createElement('canvas');W=cv.width=img.width;H=cv.height=img.height;const x=cv.getContext('2d');x.drawImage(img,0,0);px=x.getImageData(0,0,W,H).data}
+   const base=m.material.color||new THREE.Color(1,1,1);
+   // cor por triângulo: média dos 3 cantos (a textura do KayKit é um atlas de faixas de cor)
+   for(let i=0;i<pa.count;i+=3){let r=0,gg=0,b=0;for(let k=0;k<3;k++){if(px&&ua){let u=ua.getX(i+k)%1,v=ua.getY(i+k)%1;if(u<0)u+=1;if(v<0)v+=1;const X=Math.min(W-1,Math.floor(u*W)),Y=Math.min(H-1,Math.floor(v*H)),o=(Y*W+X)*4;r+=px[o]/255;gg+=px[o+1]/255;b+=px[o+2]/255}else{r+=1;gg+=1;b+=1}}
+    const c=new THREE.Color(r/3*base.r,gg/3*base.g,b/3*base.b).convertSRGBToLinear();for(let k=0;k<3;k++){P.push(pa.getX(i+k),pa.getY(i+k),pa.getZ(i+k));N.push(na.getX(i+k),na.getY(i+k),na.getZ(i+k));C.push(c.r,c.g,c.b)}}}
+  const q=new THREE.BufferGeometry();{const M=new Map(),P2=[],N2=[],C2=[],I=[];for(let i=0;i<P.length/3;i++){const k=[P[i*3],P[i*3+1],P[i*3+2],N[i*3],N[i*3+1],N[i*3+2],C[i*3],C[i*3+1],C[i*3+2]].map(v=>Math.round(v*1e4)).join(',');let j=M.get(k);if(j===undefined){j=P2.length/3;M.set(k,j);P2.push(P[i*3],P[i*3+1],P[i*3+2]);N2.push(N[i*3],N[i*3+1],N[i*3+2]);C2.push(C[i*3],C[i*3+1],C[i*3+2])}I.push(j)}
+   q.setAttribute('position',new THREE.Float32BufferAttribute(P2,3));q.setAttribute('normal',new THREE.Float32BufferAttribute(N2,3));q.setAttribute('color',new THREE.Float32BufferAttribute(C2,3));q.setIndex(I)}
+  if(it.o=='w')q.rotateX(Math.PI/2);else if(it.o=='s')q.rotateY(Math.PI/2);else if(it.o=='b')q.rotateX(Math.PI/2);
+  q.computeBoundingBox();const bb=q.boundingBox,sz=bb.getSize(new THREE.Vector3()),ext=it.o=='s'?Math.max(sz.y,sz.z):it.o=='w'?sz.z:Math.max(sz.x,sz.y,sz.z),s=it.len/ext;q.scale(s,s,s);
+  if(it.o=='s'||it.o=='c'){q.computeBoundingBox();const ct=q.boundingBox.getCenter(new THREE.Vector3());q.translate(-ct.x,-ct.y,-ct.z)}
+  q.computeBoundingBox();info[it.n]={min:q.boundingBox.min.toArray().map(v=>+v.toFixed(2)),max:q.boundingBox.max.toArray().map(v=>+v.toFixed(2)),tri:P.length/9};
+  const mesh=new THREE.Mesh(q,new THREE.MeshBasicMaterial({vertexColors:true}));mesh.name=it.n;sc.add(mesh)}
+ // formato compacto: posição Int16 (×10000), normal Int8 (×127), cor Uint8, índices Uint16
+ const b64=a=>{let s='',u=new Uint8Array(a.buffer);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)},M={};
+ sc.children.forEach(m=>{const g=m.geometry,P=g.attributes.position.array,N=g.attributes.normal.array,C=g.attributes.color.array,I=g.index.array;
+  const p=new Int16Array(P.length),n=new Int8Array(N.length),c=new Uint8Array(C.length);for(let i=0;i<P.length;i++){p[i]=Math.round(P[i]*10000);n[i]=Math.round(N[i]*127);c[i]=Math.round(Math.pow(C[i],1/2.2)*255)}
+  M[m.name]=[b64(p),b64(n),b64(c),b64(new Uint16Array(I))]});
+ const glb=await new Promise(r=>new THREE.GLTFExporter().parse(sc,r,{binary:true}));let s='',u=new Uint8Array(glb);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));
+ return JSON.stringify({b:btoa(s),m:M,info})};
+// prévia: desenha cada item
+window.prevEq=async(b64,names)=>{const bin=Uint8Array.from(atob(b64),c=>c.charCodeAt(0)).buffer,g=await new Promise((ok,no)=>new THREE.GLTFLoader().parse(bin,'',ok,no));
+ const R=new THREE.WebGLRenderer({antialias:true});const w=150,h=170;R.setSize(w*names.length,h);document.body.innerHTML='';document.body.appendChild(R.domElement);R.setScissorTest(true);
+ names.forEach((n,i)=>{const sc=new THREE.Scene();sc.background=new THREE.Color(0x30343c);const m=g.scene.getObjectByName(n).clone();m.material=new THREE.MeshBasicMaterial({vertexColors:true});sc.add(m);
+  const bb=new THREE.Box3().setFromObject(m),ct=bb.getCenter(new THREE.Vector3()),sz=bb.getSize(new THREE.Vector3()).length();const cam=new THREE.PerspectiveCamera(35,w/h,.01,50);cam.position.set(ct.x+sz*1.1,ct.y+sz*.5,ct.z+sz*.9);cam.lookAt(ct);
+  R.setViewport(i*w,0,w,h);R.setScissor(i*w,0,w,h);R.render(sc,cam)});return true};
+</script></body></html>

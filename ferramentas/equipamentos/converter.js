@@ -1,0 +1,4 @@
+const {chromium}=require('playwright'),fs=require('fs');(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-unsafe-swiftshader','--no-proxy-server']});const pg=await b.newPage({viewport:{width:1800,height:200}});pg.on('pageerror',e=>console.log('ERR',e.message));
+await pg.goto('http://127.0.0.1:8779/eqconv.html');await pg.waitForFunction(()=>window.conv);const list=JSON.parse(fs.readFileSync('kk/eqlist.json'));const out=JSON.parse(await pg.evaluate(l=>conv(l),list));
+fs.writeFileSync('kk/equip.json',JSON.stringify({v:1,m:out.m}));for(const k in out.info)console.log(k,JSON.stringify(out.info[k]));console.log('KB',Math.round(JSON.stringify(out.m).length/1024));
+const names=list.map(i=>i.n);for(let i=0;i<names.length;i+=12){await pg.evaluate(([b,n])=>prevEq(b,n),[out.b,names.slice(i,i+12)]);await pg.screenshot({path:'kk/eq_'+i+'.png'})}await b.close()})();
