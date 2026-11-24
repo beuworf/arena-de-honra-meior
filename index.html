@@ -892,6 +892,20 @@ function mkKeyedPool(opts){const capPerKey=opts.capPerKey|0,totalCap=opts.totalC
     clear(){for(const k in buckets)buckets[k].length=0;while(lru.length){const o=lru.pop();if(dispose)dispose(o)}}}}
 /* POOL_PURE_END */
 function emAttachRig(rig,k){if(!EMD.ok||rig.md)return;const tmp={g:rig.g,k,aL:rig.aL,aR:rig.aR,lL:rig.lL,lR:rig.lR,md:null,bow3:0};emAttach(tmp);rig.md=tmp.md;rig.bow3=tmp.bow3;if(rig.md){if(k=='I')rig.g.children.forEach(c=>{if(IFM.includes(c.material)||c===rig.g.iau)c.visible=true});rig.g.children.forEach(c=>{if(c.userData.old)c.visible=false});if(k=='j')jSpikes(rig)}}
+// empunhadura dos NPCs no modelo 3D: tipo de pegada de cada malha (mesma tabela HGS do herói; 'shield' = no antebraço, 'palm' = apoiado na palma)
+// ponto do cabo que fica na mão nos itens do KayKit (os machados têm cabo curto: a mão vai para perto do pé do cabo; espadas, logo abaixo da guarda)
+const EQZ={kSword:-.1,sBlade:-.17,kGreat:.12,kAxe:-.15,sAxe:-.14,kGAxe:-.38,kDagger:-.06,kWand:-.13,kStaff:0};
+function emGripKind(geo){if(!window.EGK){const m=new Map(),put=(k,l)=>l.forEach(n=>{if(WG[n])m.set(WG[n],k)});
+    put('sword',['sword','eSword','kSword','sBlade','eKop']);put('long',['long','eGreat','kGreat','eKrieg','kGAxe','eDAxe']);put('axe',['axe','eAxe','kAxe','sAxe']);
+    put('hammer',['hammer','eClub','eDHam']);put('dagger',['dagger','eLeaf','eSai','kDagger','kWand','knifeT']);put('staff',['staff','staffN','staffX','kStaff','eWand']);
+    put('spear',['spear','eHal']);put('bow',['bow','eBow']);put('shield',['shield','eShield','eShield2','kShRound','kShSquare','kShBadge','kShSpikes','sShLA','sShLB','sShSA','sShSB']);put('palm',['kBook','kTome','kSmoke']);window.EGK=m;window.EGZ=new Map(Object.entries(EQZ).map(([n,z])=>[WG[n],z]))}
+  return EGK.get(geo)||null}
+function emGrip(c,ax,kd,s){
+  if(kd=='shield'){if(!ax.qs){const X=ax.N.clone(),Y=ax.T.clone(),Z=new THREE.Vector3().crossVectors(X,Y);ax.qs=new THREE.Quaternion().setFromRotationMatrix(HGM.makeBasis(X,Y,Z));ax.Ps=ax.F.clone().multiplyScalar(-ax.len*.5).addScaledVector(ax.N,-ax.len*.55)}
+    c.quaternion.copy(ax.qs);c.position.copy(ax.Ps).multiplyScalar(s);return}
+  if(kd=='palm'){if(!ax.qp){const Z=ax.N.clone(),X=ax.F.clone(),Y=new THREE.Vector3().crossVectors(Z,X);ax.qp=new THREE.Quaternion().setFromRotationMatrix(HGM.makeBasis(X,Y,Z))}
+    c.quaternion.copy(ax.qp);c.position.copy(ax.P).multiplyScalar(s).addScaledVector(ax.N,.07);return}
+  const S=HGS[kd],q=hgQuat(ax,kd,0),g=c.geometry,gz=EGZ.has(g)?EGZ.get(g):c.userData.kq||g===WG.eWand?0:(g===WG.staff||g===WG.staffN||g===WG.staffX)?S[2]+.7:S[2];c.quaternion.copy(q);c.position.copy(ax.P).multiplyScalar(s).sub(new THREE.Vector3(0,0,gz*c.scale.z).applyQuaternion(q))}
 // equipamentos do KayKit nos NPCs: cada boneco sorteia os seus quando é criado (kq = mantém as cores, sem o tom de ferrugem dos inimigos)
 const eqPick=a=>a[Math.floor(Math.random()*a.length)];
 function eqW(k,arm,rx=-.6,s=1){const w=add(WG[k],WPM,0,-.7,.05,arm);w.rotation.x=rx;if(s!==1)w.scale.setScalar(s);w.userData.kq=1;return w}
@@ -4531,7 +4545,7 @@ function emBodyMat(src,lm,skel){const n=new THREE.MeshLambertMaterial({map:src.m
 // EMDMP: ossos em que só uma parte dessa diferença entra (o urso já é curvado; o tronco inteiro dobraria demais e esconderia os braços);
 // -1 = o osso usa a rotação da animação direto (braços do urso: golpeiam como os do herói, para frente e visíveis)
 const EMDMP={oto:{Hips:.6,Spine:.35,Chest:.35,UpperChest:.35,Neck:.6,Head:.6,LeftShoulder:-1,LeftUpperArm:-1,LeftLowerArm:-1,LeftHand:-1,RightShoulder:-1,RightUpperArm:-1,RightLowerArm:-1,RightHand:-1},valrei_u:{Hips:.45,Spine:.2,Chest:.2,UpperChest:.2,Neck:.5,Head:.5,LeftShoulder:-1,LeftUpperArm:-1,LeftLowerArm:-1,LeftHand:-1,RightShoulder:-1,RightUpperArm:-1,RightLowerArm:-1,RightHand:-1}};
-function emClips(src,D){const C={},h0=src.B.Hips.position,RM={},RI={},q1=new THREE.Quaternion(),qI=new THREE.Quaternion();if(src.rq)for(const bn in src.rq)if(src.B[bn]){RI[bn]=new THREE.Quaternion(...src.rq[bn]).invert();RM[bn]=src.B[bn].quaternion.clone().multiply(RI[bn])}const dec=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer};
+function emClips(src,D){if(D.p&&D.p.grip)window.EMGRIP=D.p.grip;const C={},h0=src.B.Hips.position,RM={},RI={},q1=new THREE.Quaternion(),qI=new THREE.Quaternion();if(src.rq)for(const bn in src.rq)if(src.B[bn]){RI[bn]=new THREE.Quaternion(...src.rq[bn]).invert();RM[bn]=src.B[bn].quaternion.clone().multiply(RI[bn])}const dec=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer};
   for(const k of['idle','walk','jog','sprint','walkBack','strafeL','strafeR','crouchIdle','atkA','atkB','slam','spell','bow','hit','death','chop','jab','cross','bash','throw','kick','stab','dualCombo','twoHandSwing','spearThrust','staffCombo','m2hSlam','mGround','mJumpAtk','mSwC','mAirV','mKickS','mKickF','mJabL','mJabR','mHook','mKnife','mSpearT','mGrenade','mBlast','mPowerB','mPowerUp','mStaffSpin','mHammer','mZScratch','mZYell','mAngry','mVictory']){const c=D.c[k];if(!c)continue;const n=c.n,nb=c.b.length,T=new Float32Array(n);for(let i=0;i<n;i++)T[i]=i<n-1?i/D.fps:c.d;
     const q=new Int16Array(dec(c.q)),h=new Float32Array(dec(c.h)),tr=[];
     c.b.forEach((bn,j)=>{if(/Proximal|Intermediate|Distal/.test(bn)||!src.B[bn])return;const a=new Float32Array(n*4);for(let i=0;i<n;i++)for(let e=0;e<4;e++)a[i*4+e]=q[(i*nb+j)*4+e]/32767;if(RM[bn]&&!(src.dm&&src.dm[bn]<0)){const f=src.dm&&src.dm[bn];for(let i=0;i<n;i++){q1.fromArray(a,i*4);if(f!==undefined){q1.premultiply(RI[bn]);qI.set(0,0,0,1).slerp(q1,f);q1.copy(src.B[bn].quaternion).multiply(qI)}else q1.premultiply(RM[bn]);q1.toArray(a,i*4)}}tr.push(new THREE.QuaternionKeyframeTrack(bn+'.quaternion',T,a))});
@@ -4588,9 +4602,16 @@ function emAttach(e){if(!EMD.ok)return;const k=e.k[0]=='X'?'X':e.k,T=EMT[k];if(!
   rigMerge(sc,nm+'|'+k+'|'+skel);
   sc.rotation.y=Math.PI;sc.scale.setScalar(src.s);g.add(sc);
   // armas e cajados das mãos do boneco antigo passam para as mãos do modelo (o braço do jogo à direita = mão esquerda do modelo)
+  // armas, escudos e livros conhecidos usam a mesma empunhadura do herói (eixos da mão: dedos, polegar e palma) e os dedos dessa mão fecham;
+  // o resto (cajado de caixa, esferas) continua no ajuste antigo
+  const hv={B,hg:{}};
   for(const [arm,side,zr] of [[e.aR,'Left',-1],[e.aL,'Right',1]]){const hb=B[side+'Hand'];if(!hb)continue;const ho=new THREE.Group();ho.position.set(side=='Left'?-.08:.08,0,0);
     ho.quaternion.setFromAxisAngle(new THREE.Vector3(0,0,1),zr*Math.PI/2).multiply(EMQY);ho.scale.setScalar(1/src.s);hb.add(ho);
-    arm.children.slice().forEach(c=>{if(c.geometry===EGR){c.visible=false;return}if((c.geometry===WG.bow||c.geometry===WG.eBow)&&side=='Right')e.bow3=1;ho.add(c);c.position.y+=.72;c.position.z-=.04;if(c.material===WPM&&!c.userData.kq){if(!window.WPMR){window.WPMR=WPM.clone();WPMR.color.setHex(0xb87a52)}c.material=WPMR}})}
+    const hg=new THREE.Group();hg.scale.setScalar(1/src.s);hb.add(hg);const ax=hgAxes(hv,side);let held=0;
+    arm.children.slice().forEach(c=>{if(c.geometry===EGR){c.visible=false;return}if((c.geometry===WG.bow||c.geometry===WG.eBow)&&side=='Right')e.bow3=1;
+      const kd=ax&&c.isMesh?emGripKind(c.geometry):null;if(kd){hg.add(c);emGrip(c,ax,kd,src.s);held=1}else{ho.add(c);c.position.y+=.72;c.position.z-=.04}
+      if(c.material===WPM&&!c.userData.kq){if(!window.WPMR){window.WPMR=WPM.clone();WPMR.color.setHex(0xb87a52)}c.material=WPMR}});
+    if(held&&window.EMGRIP)for(const bn in EMGRIP)if(bn.startsWith(side)&&B[bn])B[bn].quaternion.fromArray(EMGRIP[bn])}
   if(skel){const gl=new THREE.MeshBasicMaterial({color:skel==2?0xb05aff:0x7fe8ff}),H=src.lm.top-src.lm.hd;for(const s of[-1,1]){const o=new THREE.Mesh(new THREE.SphereGeometry(.013,6,5),gl);o.position.set(s*.033,.46*H,-.09);B.Head.add(o)}}
   if(skel==2){const gd=L(0xd8b040),cr=new THREE.Group(),H=src.lm.top-src.lm.hd;cr.position.set(0,.88*H,.01);B.Head.add(cr);cr.add(new THREE.Mesh(new THREE.CylinderGeometry(.1,.095,.04,10,1,true),gd));for(let i=0;i<6;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(.018,.07,4),gd),a=i/6*Math.PI*2;c.position.set(Math.sin(a)*.097,.05,Math.cos(a)*.097);cr.add(c)}}
   const mx=new THREE.AnimationMixer(sc),A={};for(const c in src.C){const a=mx.clipAction(src.C[c]);if(!/^(idle|walk|jog|sprint|walkBack|strafeL|strafeR|crouchIdle|shield)$/.test(c)){a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true}A[c]=a}
