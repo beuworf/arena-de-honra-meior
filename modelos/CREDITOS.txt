@@ -1,7 +1,7 @@
 Modelos 3D e animações (CC0, domínio público, exceto onde indicado):
 - Heróis: "Universal Base Characters" e "Modular Character Outfits - Fantasy" de Quaternius (quaternius.com)
 - Inimigos: "Characters - Fantasy Races" e "Bestiary - Dungeon Monsters" de Quaternius
-- Animações: "Universal Animation Library" 1 e 2 de Quaternius e biblioteca humana extra do Mesh2Motion (mesh2motion.org, CC0)
+- Animações: "Universal Animation Library" 1 e 2 de Quaternius e biblioteca humana extra do Mesh2Motion (mesh2motion.org, CC0); da biblioteca do Mesh2Motion também vêm os golpes novos (pancada de duas mãos por cima, pancada no chão, salto com golpe, golpe aéreo, combo de espada, chutes lateral e frontal, jabs, gancho, arremessos de faca, lança e granada, explosão e aumento de poder, giro do cajado, martelada, garras e grito de zumbi, raiva e vitória)
 - Animais (lobo, husky, cavalo, boi, burro, vaca e cervo): "Ultimate Animated Animals" de Quaternius
 - Natureza (bétulas, bordos, árvores secas, arbustos, grama, flores e textura das pedras): "Stylized Nature MegaKit" de Quaternius (CC0)
 - Demônio voador: "Demon" de Quaternius (Ultimate Monsters)

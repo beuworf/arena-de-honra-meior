@@ -1,0 +1,54 @@
+<!doctype html><html><body style="margin:0;background:#2a3040"><script src="three.min.js"></script><script src="GLTFLoader.js"></script><script src="meshopt_decoder.js"></script><script>
+const L=new THREE.GLTFLoader();L.setMeshoptDecoder(MeshoptDecoder);const ld=u=>new Promise((r,e)=>L.load(u,r,null,e)),Q=THREE.Quaternion,V=THREE.Vector3;
+const MAPK={Hips:'hips',Spine:'spine',Chest:'chest',Head:'head',RightUpperArm:'upperarml',RightLowerArm:'lowerarml',RightHand:'handl',LeftUpperArm:'upperarmr',LeftLowerArm:'lowerarmr',LeftHand:'handr',
+ RightUpperLeg:'upperlegl',RightLowerLeg:'lowerlegl',RightFoot:'footl',RightToes:'toesl',LeftUpperLeg:'upperlegr',LeftLowerLeg:'lowerlegr',LeftFoot:'footr',LeftToes:'toesr'};
+const MAPM={Hips:'pelvis',Spine:'spine_01',Chest:'spine_02',UpperChest:'spine_03',Neck:'neck_01',Head:'head'};
+for(const [h,m] of [['Right','l'],['Left','r']]){Object.assign(MAPM,{[h+'Shoulder']:'clavicle_'+m,[h+'UpperArm']:'upperarm_'+m,[h+'LowerArm']:'lowerarm_'+m,[h+'Hand']:'hand_'+m,[h+'UpperLeg']:'thigh_'+m,[h+'LowerLeg']:'calf_'+m,[h+'Foot']:'foot_'+m,[h+'Toes']:'ball_'+m})}
+let REST=null;
+const bones=s=>{const m={};s.traverse(o=>{if(o.isBone)m[o.name]=o});return m};
+const tq=q=>new Q(-q.x,-q.y,q.z,q.w); // gira 180° em Y (o KayKit olha para +Z) e espelha esquerda/direita (armas na mão esquerda)
+let H,HB,HI,ORDER,REFW={},RESTL={},ROOTW,ROOTINV,HIPY,SRC={};
+async function init(){if(H)return;H=await ld('herois_m.glb');HB=bones(H.scene);H.scene.updateMatrixWorld(true);HI=await (await fetch('heroinfo.json')).json();
+ ORDER=[];H.scene.traverse(o=>{if(o.isBone)ORDER.push(o.name)});for(const n of ORDER){REFW[n]=HB[n].getWorldQuaternion(new Q());RESTL[n]=HB[n].quaternion.clone()}
+ ROOTW=HB.Hips.parent.getWorldQuaternion(new Q());ROOTINV=new THREE.Matrix4().copy(HB.Hips.parent.matrixWorld).invert();HIPY=new V().setFromMatrixPosition(HB.Hips.matrixWorld).y}
+async function src(f){if(SRC[f])return SRC[f];const g=await ld(f),kb=bones(g.scene),mx=new THREE.AnimationMixer(g.scene),m2m=!!kb.pelvis;if(m2m&&!REST)REST=(await ld('m2m/rest-pose.glb')).animations[0];
+ const tp=mx.clipAction(m2m?REST:g.animations.find(a=>a.name=='T-Pose'));tp.play();mx.update(0);g.scene.updateMatrixWorld(true);const ref={};for(const k in kb)ref[k]=kb[k].getWorldQuaternion(new Q());
+ const hip=m2m?kb.pelvis:kb.hips,hp=new V().setFromMatrixPosition(hip.matrixWorld);tp.stop();return SRC[f]={g,kb,mx,ref,hp,hy:hp.y,MAP:m2m?MAPM:MAPK,hip,wh:m2m?kb.hand_r:(kb.handslotr||kb.handr)}}
+function sample(S,clip,t,act){act.time=t;S.mx.update(0);S.g.scene.updateMatrixWorld(true);const W={},L={};
+ for(const n of ORDER){const b=HB[n],pn=b.parent&&b.parent.isBone?b.parent.name:null,pw=pn?W[pn]:ROOTW;let w;
+  if(S.MAP[n]){const sb=S.kb[S.MAP[n]],d=sb.getWorldQuaternion(new Q()).multiply(S.ref[S.MAP[n]].clone().invert());w=tq(d).multiply(REFW[n])}
+  else{const l=HI.grip[n]?new Q(...HI.grip[n]):RESTL[n];w=pw.clone().multiply(l)}
+  W[n]=w;L[n]=pw.clone().invert().multiply(w).normalize()}
+ const hp=new V().setFromMatrixPosition(S.hip.matrixWorld).sub(S.hp),s=HIPY/S.hy,dv=new V(hp.x*s,hp.y*s,-hp.z*s);
+ const o=new V(0,0,0).applyMatrix4(ROOTINV),hl=dv.clone().applyMatrix4(ROOTINV).sub(o);
+ const hand=new V().setFromMatrixPosition((S.limb?S.kb[S.limb]:S.wh).matrixWorld);return {L,hl,hand}}
+const b64=buf=>{let s='',u=new Uint8Array(buf);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)};
+window.conv=async(list,BODY)=>{await init();const out={},B=BODY||HI.b;
+ for(const it of list){const S=await src(it.f),clip=it.c?S.g.animations.find(a=>a.name==it.c):S.g.animations[0];if(!clip){out[it.n]={err:'sem '+it.c};continue}
+  S.limb=it.limb||null;const d=clip.duration*(it.cut||1),n=Math.ceil(d*30-1e-6)+1,act=S.mx.clipAction(clip);act.reset().play();act.setLoop(THREE.LoopOnce,1);act.clampWhenFinished=true;
+  const q=new Int16Array(n*B.length*4),h=new Float32Array(n*3),prev={},hs=[];
+  for(let i=0;i<n;i++){const t=i<n-1?i/30:d,r=sample(S,clip,t,act);
+   B.forEach((bn,j)=>{let x=r.L[bn]||RESTL[bn];if(prev[bn]&&prev[bn].dot(x)<0)x=new Q(-x.x,-x.y,-x.z,-x.w);prev[bn]=x;const k=(i*B.length+j)*4;q[k]=Math.round(x.x*32767);q[k+1]=Math.round(x.y*32767);q[k+2]=Math.round(x.z*32767);q[k+3]=Math.round(x.w*32767)});
+   h[i*3]=r.hl.x;h[i*3+1]=r.hl.y;h[i*3+2]=r.hl.z;hs.push(r.hand)}
+  act.stop();
+  // impacto = maior velocidade da mão da arma; início = quando a mão começa a se mexer
+  let vm=0,ti=0;const sp=[0];for(let i=1;i<n;i++){const v=hs[i].distanceTo(hs[i-1]);sp.push(v);if(i/30>=.12&&v>vm&&i<n-2){vm=v;ti=i}}
+  let t0=0;for(let i=1;i<ti;i++)if(sp[i]>vm*.12){t0=Math.max(0,(i-2)/30);break}
+  const iv=it.ti!=null?it.ti:+(ti/30).toFixed(2);out[it.n]={d:+d.toFixed(4),n,o:1,b:B,q:b64(q.buffer),h:b64(h.buffer),i:[it.t0!=null?it.t0:+t0.toFixed(2),iv]}}
+ return JSON.stringify(out)};
+// prévia: aplica um clipe convertido no herói e desenha alguns quadros
+window.prev=async(cj,name,times,w=260,hh=300)=>{await init();const c=JSON.parse(cj)[name];const R=new THREE.WebGLRenderer({antialias:true});R.setSize(w*times.length,hh);document.body.innerHTML='';document.body.appendChild(R.domElement);R.setScissorTest(true);
+ const sc=new THREE.Scene();sc.background=new THREE.Color(0x2a3040);sc.add(new THREE.HemisphereLight(0xffffff,0x445566,1.1));const dl=new THREE.DirectionalLight(0xffffff,.8);dl.position.set(2,4,-3);sc.add(dl);sc.add(H.scene);
+ const B=c.b,dec=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer},q=new Int16Array(dec(c.q)),h=new Float32Array(dec(c.h)),h0=HB.Hips.position.clone();
+ const cam=new THREE.PerspectiveCamera(35,w/hh,.1,50);cam.position.set(-2.2,1.5,-3.2);cam.lookAt(0,.9,0);
+ times.forEach((tt,k)=>{const i=Math.min(c.n-1,Math.round(tt*30));B.forEach((bn,j)=>{const o=(i*B.length+j)*4;HB[bn].quaternion.set(q[o]/32767,q[o+1]/32767,q[o+2]/32767,q[o+3]/32767).normalize()});HB.Hips.position.set(h0.x+h[i*3],h0.y+h[i*3+1],h0.z+h[i*3+2]);H.scene.updateMatrixWorld(true);
+  R.setViewport(k*w,0,w,hh);R.setScissor(k*w,0,w,hh);R.render(sc,cam)});return true};
+</script></body></html>
+<script>
+window.prevSrc=async(f,cn,times,w=260,hh=300)=>{const S=await src(f),clip=cn?S.g.animations.find(a=>a.name==cn):S.g.animations[0],act=S.mx.clipAction(clip);act.reset().play();
+ const R=new THREE.WebGLRenderer({antialias:true});R.setSize(w*times.length,hh);document.body.innerHTML='';document.body.appendChild(R.domElement);R.setScissorTest(true);
+ const sc=new THREE.Scene();sc.background=new THREE.Color(0x30402a);sc.add(new THREE.HemisphereLight(0xffffff,0x445566,1.1));sc.add(S.g.scene);
+ S.g.scene.updateMatrixWorld(true);const bb=new THREE.Box3().setFromObject(S.g.scene),sz=bb.getSize(new V()),ct=bb.getCenter(new V());window.__bb=[sz.toArray(),ct.toArray()];const cam=new THREE.PerspectiveCamera(35,w/hh,.01,500);cam.position.set(ct.x+sz.y*.9,ct.y+sz.y*.25,ct.z+sz.y*1.6);cam.lookAt(ct.x,ct.y,ct.z);
+ times.forEach((tt,k)=>{act.time=tt;S.mx.update(0);S.g.scene.updateMatrixWorld(true);R.setViewport(k*w,0,w,hh);R.setScissor(k*w,0,w,hh);R.render(sc,cam)});act.stop();return true};
+window.prevOld=async(name,times)=>{const D=await (await fetch('/anim2.json')).json();return prev(JSON.stringify({[name]:D.c[name]}),name,times)};
+</script>

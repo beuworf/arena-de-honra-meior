@@ -297,6 +297,19 @@ em **Configurações**.
 - **Faraó/Demônio no cooperativo:** os pilares de proteção também vão no pacote que o anfitrião manda várias vezes por segundo, então aparecem para o convidado mesmo que o aviso se perca.
 - **Entrada do Castelo:** a frente do castelo ganhou areia, dunas baixas, cactos, pedras de arenito e uma coluna meio enterrada, para a transição do deserto ficar suave.
 - **Travamento no celular:** os modelos do Oto e do Valrei agora só carregam na fase deles (antes o Oto já carregava no Castelo, pesando mais na memória do celular). O jogo também guarda a fase a cada 4 s: se a aba fechar sozinha no meio da partida, na próxima partida aparece um aviso sugerindo a qualidade gráfica Baixa. Os últimos erros do jogo ficam salvos no aparelho (`arena_errs`) para investigar.
+- **Golpes mais variados (animações novas):** 22 animações novas da biblioteca humana do Mesh2Motion (CC0), convertidas para o esqueleto dos heróis (ferramenta em `ferramentas/animacoes/`). Cada classe ganhou golpes próprios:
+  - **Paladino:** ○ alterna varrida de duas mãos e corte por cima; △ no combo é a **pancada de duas mãos por cima**; ○○○ gira o martelo; o 4º golpe, ○△△ e o porradão carregado são a **pancada no chão**; no ar, golpe aéreo. Carregando o ○ ele segura o martelo erguido; a cura ergue o braço (aumento de poder), os martelos giratórios giram o martelo e a onda de fogo estende as duas mãos.
+  - **Guardião (e padrão):** corrente de três golpes de espada (A → B → **golpe final**).
+  - **Disciplinado:** ○○○ termina com o golpe final da espada; pancada por cima no golpe pesado.
+  - **Berserk:** ○△ com os dois machados por cima.
+  - **Monge:** jabs de luta (esquerda → direita → direto), **chute lateral** alternando com o chute alto, **chute frontal** e **gancho**.
+  - **Corrompido:** gancho, **garras** e pancada no chão.
+  - **Caçador Selvagem:** salto com golpe de lança.
+  - **Maquinista:** **martelada** com a chave alternando com o golpe por cima.
+  - **Armadilheiro:** arremesso de faca alternando com o corte cruzado; a isca e o laço são lançados com o arremesso de granada.
+  - **Arqueiro (corpo a corpo):** chute frontal para afastar.
+  - **Mago, Necromante e Xamã:** giro do cajado alternando com o combo; as magias alternam com **explosão de duas mãos** (Mago e Xamã) ou **aumento de poder** (Necromante).
+  - **Inimigos:** os comuns ganharam golpe final de espada e gancho; magos, giro do cajado e explosão; os grandes, pancada por cima e no chão. **Chefes:** o Oto soca com jabs e gancho, bate no chão e sopra com as duas mãos; o Valrei arranha com garras, ruge (grito) e salta com golpe; o Faraó alterna três magias; os dois guerreiros e a Brunilda ganharam a pancada por cima e o combo de espada.
 - **Bombas que caem dos inimigos:** a bolinha escura que cai dos inimigos agora é uma bomba de verdade (com pavio aceso) e **explode na hora em que você pega**: raio de 5,5, tira 35% da vida dos inimigos comuns (no mínimo 4), empurra e atordoa por 0,8 s; nos chefes tira só 1,5%. Continua dando 5 de XP. Antes ela só dava XP.
 - **Mochila removida:** a mochila de itens (poção, bomba e tônico guardados) não abria mais em nenhuma classe; o código que sobrou dela foi tirado. O L1 (tecla Q) é a melhoria de nível para todas as classes; quando não há melhoria para escolher, o Necromante marca um aliado (cooperativo) e o Paladino arremessa o martelo.
 - **Progresso salvo entre versões (itch.io):** o itch.io coloca cada upload num endereço novo e o navegador separa o que cada endereço salva, por isso conquistas, recordes e configurações sumiam a cada atualização. Agora o jogo guarda uma cópia num endereço fixo: a página `save.html`, publicada pelo GitHub Pages do repositório arena-de-honra-meior (`https://beuworf.github.io/arena-de-honra-meior/save.html`), que o jogo abre escondida.
