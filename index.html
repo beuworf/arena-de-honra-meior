@@ -1172,7 +1172,11 @@ const xCan=k=>{const u=XUP[k];return(!u[5]||u[5].includes(wi))&&(XL.n[k]||0)<u[3
 const XPK={n:2,r:2,c:2.5,k:1,b:12,B:80,K:120,Q:120,I:160,H:120,e:8,a:12,f:9,u:10,t:8,j:10,g:6,g1:3,g2:1.5,w:12,l:8,o:8,p:12,y:10,z:16,i:30,x:4,h:8,v:10,m:.5},xpOf=e=>e.k[0]=='X'?45:XPK[e.k]||2,xNeed=()=>10+XL.lv*8;
 function xApply(){const b={...RBASE,...RACES[race].m},lv=(XL.lv-1)*.03+(p.bfT>0?.25:0);RC.phy=b.phy+XL.dp+lv;RC.mag=b.mag+XL.dq+lv;RC.ev=b.ev+XL.ev;RC.shot=b.shot+XL.pj;RC.heal=(race==6&&!NET.on?Math.max(b.heal,1.08):b.heal)+XL.hl;RC.ally=b.ally+XL.hl;PMX=100+XL.hp+(XL.lv-1)*4;if(p.hp>PMX)p.hp=PMX}
 function xReset(){Object.assign(XL,{sup:0,lv:1,xp:0,dp:0,dq:0,hp:0,sp:0,cd:0,ev:0,rg:0,kh:0,pj:0,rp:0,rm:0,rc:0,lh:0,ls:0,hl:0,mn:0,pc:0,pd:0,qc:0,qd:0,cx:0,tc:0,n:{},pend:0,opts:null,sel:0,kd:0});PMX=100;xUI()}
-function xGain(a){if(cls<0||scr!='play')return;XL.xp+=a;let up=0;while(XL.xp>=xNeed()){XL.xp-=xNeed();XL.lv++;XL.pend++;up=1}
+// entrou no meio da partida: XP ×3 até alcançar o nível do jogador mais fraco do grupo (quem também está com o bônus não conta)
+function lateTgt(){if(!NET.on||!NET.R)return 0;let m=0;for(const q of NET.R.peers())if(!q.isMe&&q.presence&&q.presence.ph=='p'&&!q.presence.xb){const l=q.presence.xl||1;m=m?Math.min(m,l):l}return m}
+function lateXbEnd(){NET.xb=0;npres({xb:0});xUI()}
+function xGain(a){if(cls<0||scr!='play')return;let xt=0;if(NET.xb){xt=lateTgt();if(xt&&XL.lv<xt){a*=3;NET.xbU=1}}XL.xp+=a;let up=0;while(XL.xp>=xNeed()){XL.xp-=xNeed();XL.lv++;XL.pend++;up=1}
+  if(NET.xb&&(!xt||XL.lv>=xt)){lateXbEnd();if(NET.xbU)setTimeout(()=>toast('Você alcançou o nível do grupo: fim do bônus de XP'),1500)}
   if(up){xApply();p.hp=Math.min(PMX,p.hp+10);toast('⬆ Nível '+XL.lv+'! Escolha uma melhoria');sfx('lvl');const o=NET.rx;NET.rx=1;ring(p.x,p.z,2.2,0xc9a6ff);NET.rx=o;puff(p.x,1,p.z,14,0xc9a6ff,3,4,.6,.14);achOnLvl(XL.lv);if(!XL.opts)xOffer()}xUI()}
 // apoio no online: cura e escudo de verdade aplicados em aliados (e marcar aliado) viram pontos de Apoio e XP
 function xSup(v,r){if(!NET.on||!(v>0))return;const ef=r&&r.hp!=null?Math.min(v,Math.max(0,100-r.hp)+.5):v;if(ef<=0)return;XL.sup+=ef;xGain(ef*.25)}
@@ -1185,7 +1189,7 @@ function xDown(){if(XL.opts)XL.kd=performance.now()}
 function xUp(){if(!XL.opts||!XL.kd)return;const h=performance.now()-XL.kd;XL.kd=0;if(h<420){XL.sel=(XL.sel+1)%XL.opts.length;xUI()}}
 function xTick(){if(XL.opts&&XL.kd&&performance.now()-XL.kd>=420)xPick(XL.sel)}
 function xupDemo(){const u=$('xup');u.innerHTML='<b>⬆ Nv 2</b><span class="xo on">⚔️ Dano físico +8%</span><span class="xo">❤️ Vida máx. +12</span><span class="xo">🛡️ Res. a projéteis +8%</span><small>exemplo do painel de bônus</small>';u.style.display='flex'}
-function xUI(){const n=xNeed();$('xi').style.width=Math.min(100,XL.xp/n*100)+'%';$('xl').textContent='Nv '+XL.lv+(NET.on&&XL.sup>=1?' · 💚 '+Math.round(XL.sup):'');const u=$('xup');if(document.body.classList.contains('led')){xupDemo();return}
+function xUI(){const n=xNeed();$('xi').style.width=Math.min(100,XL.xp/n*100)+'%';$('xl').textContent='Nv '+XL.lv+(NET.on&&XL.sup>=1?' · 💚 '+Math.round(XL.sup):'')+(NET.xb?' · ⚡XP×3':'');const u=$('xup');if(document.body.classList.contains('led')){xupDemo();return}
   if(!XL.opts||scr!='play'){u.style.display='none';return}const pc=matchMedia('(pointer:fine)').matches,keys='ZXV';
   u.innerHTML='<b>⬆ Nv '+XL.lv+(XL.pend>1?' (+'+(XL.pend-1)+')':'')+'</b>'+XL.opts.map((k,i)=>'<span class="xo'+(i==XL.sel?' on':'')+'" data-x="'+i+'">'+'<span>'+XUP[k][0]+' '+XUP[k][1]+'</span><small>'+((XL.n[k]||0)+1)+'/'+XUP[k][3]+(pc?' · '+keys[i]:'')+'</small></span>').join('')+'<small>'+(pc?'Q: trocar · segure: escolher':'L1: trocar · segure: escolher')+'</small>';u.style.display='flex'}
 $('xup').addEventListener('pointerdown',e=>{const t=e.target.closest('[data-x]');e.stopPropagation();e.preventDefault();if(t)xPick(+t.dataset.x)});
@@ -2774,11 +2778,11 @@ function lateMsg(){$('lm').textContent='A partida já começou: escolha raça e 
 function hostLate(){const ps=NET.R.peers().filter(q=>!q.isMe&&q.presence&&q.presence.ph=='l'&&q.presence.rd==1&&!NET.roster.includes(q.peer));if(!ps.length)return;
   NET.lt=NET.lt||[];for(const q of ps){NET.roster.push(q.peer);NET.lt.push(q.peer);toast('👻 Entrou na partida como espírito até o chefe do trecho cair: '+(q.presence.nm||'Jogador'))}
   NET.n=NET.roster.length;npres({ro:NET.roster.slice(),lt:NET.lt.slice(),lv:LV})}
-function lateGhost(lv){if(lv&&lv!==LV){LV=lv;pal(LV-1)}NET.late=1;netDie();setTimeout(()=>{if(NET.gh&&NET.late)toast('Você entrou no meio da partida: fica como espírito até o chefe do trecho cair')},60);setTimeout(()=>{if(NET.gh&&NET.late&&NET.ph=='p')ghDie()},3800)}
+function lateGhost(lv){if(lv&&lv!==LV){LV=lv;pal(LV-1)}NET.late=1;NET.xb=1;NET.xbU=0;npres({xb:1});xUI();netDie();setTimeout(()=>{if(NET.xb&&NET.ph=='p')toast('⚡ Bônus de XP ×3 até alcançar o nível do jogador mais fraco do grupo')},7600);setTimeout(()=>{if(NET.gh&&NET.late)toast('Você entrou no meio da partida: fica como espírito até o chefe do trecho cair')},60);setTimeout(()=>{if(NET.gh&&NET.late&&NET.ph=='p')ghDie()},3800)}
 function netEnter(R,code,host){Object.assign(NET,{R,on:1,h:host,c:!host,code,ph:'l',rp:[],rpm:{},em:{},hostT:0,atk:0,starting:0,gh:0,n:1,roster:[]});NET.me.rc=race;NET.me.sx=sex;NET.me.rd=0;NET.me.nm=NET.me.nm||('Jogador'+(1+Math.floor(Math.random()*99)));$('lnm').value=NET.me.nm;
   R.on('snap',onSnap);R.on('dmg',onDmg);R.on('ehit',onEhit);R.on('ev',onEv);R.on('cmd',onCmd);R.onPeers(()=>{if(scr=='lobby')lobUI();hostCheck()});
   npres({h:host?1:0,nm:NET.me.nm,sx:NET.me.sx,rc:NET.me.rc,w:meW(),a:NET.me.a,rd:0,ph:'l'});showScr('lobby');lobUI();$('lm').textContent=host?'Você é o anfitrião. Compartilhe o código com seus amigos. Quando todos marcarem "Pronto", a partida começa.':'Conectado à sala. Escolha raça e classe e marque "Pronto".';if(R.url)try{$('lm').textContent+=' (servidor: '+new URL(R.url).hostname+')'}catch(e){}}
-async function netLeave(msg){if(NET.pm)onPause(false);const R=NET.R;NET.R=null;NET.on=0;NET.h=0;NET.c=0;NET.ph='';NET.gh=0;rpClear();try{if(R)await R.leave()}catch(e){}restart();cls=-1;$('cls').style.display='none';$('tm').style.display='none';showScr('menu');if(msg)toast(msg)}
+async function netLeave(msg){if(NET.pm)onPause(false);const R=NET.R;NET.R=null;NET.on=0;NET.h=0;NET.c=0;NET.ph='';NET.gh=0;NET.xb=0;NET.late=0;rpClear();try{if(R)await R.leave()}catch(e){}restart();cls=-1;$('cls').style.display='none';$('tm').style.display='none';showScr('menu');if(msg)toast(msg)}
 function lobUI(){if(!NET.R)return;const ps=NET.R.peers().filter(q=>q.presence&&(q.presence.ph=='l'||q.presence.ph=='p')),ord=ps.map(q=>q.peer).sort();$('lc').textContent=NET.code;
   $('lp').innerHTML=ps.sort((a,b)=>a.peer<b.peer?-1:1).map(q=>{const r=q.presence,c='#'+PCOL[ord.indexOf(q.peer)%6].toString(16).padStart(6,'0');return '<div class="lr"><span class="dot" style="background:'+c+'"></span>'+(r.h?'👑 ':'')+'<b>'+esc(r.nm||'Jogador')+(q.isMe?' (você)':'')+'</b> '+(RACES[r.rc]?RACES[r.rc].e+' '+RACES[r.rc].n+(r.sx?' ♀':' ♂'):'')+' · '+esc(W[r.w]?W[r.w].n:'?')+' · '+(r.rd?'✅ pronto':'⏳')+'</div>'}).join('');
   const m=NET.me,bt=(a,i,t,on)=>'<span class="btn'+(on?' on':'')+'" data-'+a+'="'+i+'">'+t+'</span>';
@@ -2805,11 +2809,11 @@ function hostCheck(){if(NET.h&&NET.ph=='p'&&NET.R){hostLate();return}if(!NET.h||
 // contagem 3, 2, 1 antes da partida online (todos veem ao mesmo tempo)
 function cdShow(){cdStop();const el=$('cdn');el.style.display='flex';let n=3;const st=()=>{el.innerHTML=n>0?'<b>'+n+'</b><small>A partida vai começar</small>':'<b style="color:#ffd34d">LUTEM!</b>';el.firstChild.style.animation='none';void el.offsetWidth;el.firstChild.style.animation='cdIn .9s ease-out';sfx(n>0?'pick':'boss');n--;if(n>=-1)cdShow.t=setTimeout(n<0?cdStop:st,n<0?700:1000)};st()}
 function cdStop(){clearTimeout(cdShow.t);const el=$('cdn');if(el)el.style.display='none'}
-function netStart(ro,late){if(NET.ph=='p')return;NET.ph='p';NET.late=0;NET.hck={};NET.stT=performance.now();NET.roster=ro;NET.idx=Math.max(0,ro.indexOf(meP()));NET.n=ro.length;NET.starting=0;
+function netStart(ro,late){if(NET.ph=='p')return;NET.ph='p';NET.late=0;NET.xb=0;NET.hck={};NET.stT=performance.now();NET.roster=ro;NET.idx=Math.max(0,ro.indexOf(meP()));NET.n=ro.length;NET.starting=0;
   restart();sex=NET.me.sx?1:0;NET.st={};NET.mid=meP();setRace(NET.me.rc);const w=meW();if(w==4){an.type=NET.me.a;an.max=[110,70,60][an.type];an.hp=an.max;AM2.color.setHex(AN[an.type][1]);AM2.map=an.type==1?TSTR:TFUR;anLook(an.type)}
   start(w);achFlag('mp');p.x=(NET.idx-(NET.n-1)/2)*2.6;p.z=0;cx=p.x;cz=0;NET.gh=0;NET.em={};NET.lk='';$('lob').style.display='none';$('tm').style.display='block';scr='play';
-  npres({ph:'p',d:0,hp:100,x:p.x,z:p.z,y:0,f:0,w,rc:NET.me.rc,at:0,sh:0,mk:0,zm:0,rd:0});if(late)lateGhost(late)}
-function netToLobby(msg){if(!NET.R)return;if(NET.pm)onPause(false);NET.ph='l';NET.starting=0;restart();cls=-1;$('cls').style.display='none';NET.gh=0;rpClear();$('tm').style.display='none';NET.me.rd=0;NET.lt=[];NET.late=0;npres({ph:'l',rd:0,d:0,ro:null,lt:null});scr='lobby';$('lob').style.display='flex';lobUI();if(msg)toast(msg)}
+  npres({ph:'p',d:0,hp:100,x:p.x,z:p.z,y:0,f:0,w,rc:NET.me.rc,at:0,sh:0,mk:0,zm:0,rd:0,xb:0});if(late)lateGhost(late)}
+function netToLobby(msg){if(!NET.R)return;if(NET.pm)onPause(false);NET.ph='l';NET.starting=0;restart();cls=-1;$('cls').style.display='none';NET.gh=0;rpClear();$('tm').style.display='none';NET.me.rd=0;NET.lt=[];NET.late=0;NET.xb=0;npres({ph:'l',rd:0,d:0,ro:null,lt:null,xb:0});scr='lobby';$('lob').style.display='flex';lobUI();if(msg)toast(msg)}
 function rpClear(){NET.rp.forEach(rpDrop);NET.rp=[];NET.rpm={}}
 // -- avatares dos outros jogadores
 function mkAvOld(peer,pr){const g=new THREE.Group(),ci=Math.max(0,NET.roster.indexOf(peer)),w=pr.w||0,cl=clsOf(w),mt=L(CCOL[cl%7]),sk=L(RACES[pr.rc]?RACES[pr.rc].skin:0xf0c8a0);
